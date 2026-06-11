@@ -11,8 +11,8 @@ type ProductImageProps = Omit<ImageProps, "src" | "alt"> & {
   fallbackClassName?: string;
 };
 
-function isLocalUpload(src: string) {
-  return src.startsWith("/uploads/");
+function isRawImage(src: string) {
+  return src.startsWith("/uploads/") || src.includes("blob.vercel-storage.com");
 }
 
 export function ProductImage({
@@ -40,7 +40,7 @@ export function ProductImage({
 
   if (!src || error) return fallback;
 
-  if (isLocalUpload(src)) {
+  if (isRawImage(src)) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img

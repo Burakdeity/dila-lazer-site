@@ -1,9 +1,8 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { randomUUID } from "crypto";
 import type { Order, OrderStatus } from "@/types/admin";
+import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
-const ORDERS_PATH = path.join(process.cwd(), "data", "orders.json");
+const STORE_KEY = "orders";
 
 const seedOrders: Order[] = [
   {
@@ -67,22 +66,16 @@ const seedOrders: Order[] = [
 ];
 
 async function ensureOrders(): Promise<Order[]> {
-  try {
-    const raw = (await fs.readFile(ORDERS_PATH, "utf-8")).trim();
-    if (!raw) throw new Error("empty");
-    const parsed = JSON.parse(raw) as Order[];
-    if (!Array.isArray(parsed) || parsed.length === 0) throw new Error("empty");
-    return parsed;
-  } catch {
-    await fs.mkdir(path.dirname(ORDERS_PATH), { recursive: true });
-    await fs.writeFile(ORDERS_PATH, JSON.stringify(seedOrders, null, 2), "utf-8");
+  const orders = await loadJsonStore<Order[]>(STORE_KEY, [...seedOrders]);
+  if (!Array.isArray(orders) || orders.length === 0) {
+    await saveJsonStore(STORE_KEY, seedOrders);
     return [...seedOrders];
   }
+  return orders;
 }
 
 async function saveOrders(orders: Order[]): Promise<void> {
-  await fs.mkdir(path.dirname(ORDERS_PATH), { recursive: true });
-  await fs.writeFile(ORDERS_PATH, JSON.stringify(orders, null, 2), "utf-8");
+  await saveJsonStore(STORE_KEY, orders);
 }
 
 export async function getAllOrders(): Promise<Order[]> {

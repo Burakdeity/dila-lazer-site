@@ -368,3 +368,10 @@ model Banner {
   sortOrder Int     @default(0)
   isActive  Boolean @default(true)
 }
+
+/// JSON key-value store for admin data (products, settings, orders, etc.)
+model AppData {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

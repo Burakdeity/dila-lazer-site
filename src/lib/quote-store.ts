@@ -1,9 +1,8 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { randomUUID } from "crypto";
 import type { Quote, QuoteStatus } from "@/types/admin";
+import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
-const QUOTES_PATH = path.join(process.cwd(), "data", "quotes.json");
+const STORE_KEY = "quotes";
 
 const seedQuotes: Quote[] = [
   {
@@ -51,22 +50,16 @@ const seedQuotes: Quote[] = [
 ];
 
 async function ensureQuotes(): Promise<Quote[]> {
-  try {
-    const raw = (await fs.readFile(QUOTES_PATH, "utf-8")).trim();
-    if (!raw) throw new Error("empty");
-    const parsed = JSON.parse(raw) as Quote[];
-    if (!Array.isArray(parsed) || parsed.length === 0) throw new Error("empty");
-    return parsed;
-  } catch {
-    await fs.mkdir(path.dirname(QUOTES_PATH), { recursive: true });
-    await fs.writeFile(QUOTES_PATH, JSON.stringify(seedQuotes, null, 2), "utf-8");
+  const quotes = await loadJsonStore<Quote[]>(STORE_KEY, [...seedQuotes]);
+  if (!Array.isArray(quotes) || quotes.length === 0) {
+    await saveJsonStore(STORE_KEY, seedQuotes);
     return [...seedQuotes];
   }
+  return quotes;
 }
 
 async function saveQuotes(quotes: Quote[]): Promise<void> {
-  await fs.mkdir(path.dirname(QUOTES_PATH), { recursive: true });
-  await fs.writeFile(QUOTES_PATH, JSON.stringify(quotes, null, 2), "utf-8");
+  await saveJsonStore(STORE_KEY, quotes);
 }
 
 export async function getAllQuotes(): Promise<Quote[]> {

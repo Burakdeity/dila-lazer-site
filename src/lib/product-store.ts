@@ -1,41 +1,24 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { randomUUID } from "crypto";
 import type { Product, ProductBadge } from "@/types/catalog";
 import { products as seedProducts } from "@/data/catalog/products";
 import { slugify } from "@/lib/utils";
+import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
-const PRODUCTS_PATH = path.join(process.cwd(), "data", "products.json");
-
-async function seedProductsFile(): Promise<Product[]> {
-  await fs.mkdir(path.dirname(PRODUCTS_PATH), { recursive: true });
-  await fs.writeFile(PRODUCTS_PATH, JSON.stringify(seedProducts, null, 2), "utf-8");
-  return [...seedProducts];
-}
+const STORE_KEY = "products";
 
 async function ensureProducts(): Promise<Product[]> {
-  try {
-    const raw = (await fs.readFile(PRODUCTS_PATH, "utf-8")).trim();
-    if (!raw) throw new Error("empty");
-    const parsed = JSON.parse(raw) as Product[];
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      return seedProductsFile();
-    }
-    return parsed.map((p) => ({
-      ...p,
-      sizes: p.sizes?.length ? p.sizes : ["60x30 cm"],
-      materials: p.materials?.length ? p.materials : ["Neon Flex"],
-      colors: p.colors?.length ? p.colors : ["Beyaz"],
-      images: (p.images ?? []).filter(Boolean),
-    }));
-  } catch {
-    return seedProductsFile();
+  const products = await loadJsonStore<Product[]>(STORE_KEY, [...seedProducts]);
+  if (!Array.isArray(products) || products.length === 0) {
+    await saveJsonStore(STORE_KEY, seedProducts);
+    return [...seedProducts];
   }
-}
-
-async function saveProducts(products: Product[]): Promise<void> {
-  await fs.mkdir(path.dirname(PRODUCTS_PATH), { recursive: true });
-  await fs.writeFile(PRODUCTS_PATH, JSON.stringify(products, null, 2), "utf-8");
+  return products.map((p) => ({
+    ...p,
+    sizes: p.sizes?.length ? p.sizes : ["60x30 cm"],
+    materials: p.materials?.length ? p.materials : ["Neon Flex"],
+    colors: p.colors?.length ? p.colors : ["Beyaz"],
+    images: (p.images ?? []).filter(Boolean),
+  }));
 }
 
 export async function getAllProductsFromStore(): Promise<Product[]> {
@@ -113,7 +96,7 @@ export async function createProductInStore(input: ProductInput): Promise<Product
   }
 
   products.unshift(product);
-  await saveProducts(products);
+  await saveJsonStore(STORE_KEY, products);
   return product;
 }
 
@@ -128,7 +111,7 @@ export async function updateProductInStore(id: string, input: ProductInput): Pro
   }
 
   products[index] = updated;
-  await saveProducts(products);
+  await saveJsonStore(STORE_KEY, products);
   return updated;
 }
 
@@ -136,6 +119,6 @@ export async function deleteProductFromStore(id: string): Promise<boolean> {
   const products = await ensureProducts();
   const next = products.filter((p) => p.id !== id);
   if (next.length === products.length) return false;
-  await saveProducts(next);
+  await saveJsonStore(STORE_KEY, next);
   return true;
 }

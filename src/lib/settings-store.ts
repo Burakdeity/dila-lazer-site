@@ -1,9 +1,8 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type { SiteSettings } from "@/types/admin";
 import { campaigns } from "@/data/catalog/campaigns";
+import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
-const SETTINGS_PATH = path.join(process.cwd(), "data", "settings.json");
+const STORE_KEY = "settings";
 
 const defaultSettings: SiteSettings = {
   seo: {
@@ -35,21 +34,13 @@ const defaultSettings: SiteSettings = {
 };
 
 async function ensureSettings(): Promise<SiteSettings> {
-  try {
-    const raw = (await fs.readFile(SETTINGS_PATH, "utf-8")).trim();
-    if (!raw) throw new Error("empty");
-    const parsed = JSON.parse(raw) as Partial<SiteSettings>;
-    return {
-      seo: { ...defaultSettings.seo, ...parsed.seo },
-      shipping: { ...defaultSettings.shipping, ...parsed.shipping },
-      contact: { ...defaultSettings.contact, ...parsed.contact },
-      banners: parsed.banners ?? defaultSettings.banners,
-    };
-  } catch {
-    await fs.mkdir(path.dirname(SETTINGS_PATH), { recursive: true });
-    await fs.writeFile(SETTINGS_PATH, JSON.stringify(defaultSettings, null, 2), "utf-8");
-    return { ...defaultSettings };
-  }
+  const parsed = await loadJsonStore<Partial<SiteSettings>>(STORE_KEY, defaultSettings);
+  return {
+    seo: { ...defaultSettings.seo, ...parsed.seo },
+    shipping: { ...defaultSettings.shipping, ...parsed.shipping },
+    contact: { ...defaultSettings.contact, ...parsed.contact },
+    banners: parsed.banners ?? defaultSettings.banners,
+  };
 }
 
 export async function getSettings(): Promise<SiteSettings> {
@@ -64,7 +55,6 @@ export async function updateSettings(partial: Partial<SiteSettings>): Promise<Si
     contact: { ...current.contact, ...partial.contact },
     banners: partial.banners ?? current.banners,
   };
-  await fs.mkdir(path.dirname(SETTINGS_PATH), { recursive: true });
-  await fs.writeFile(SETTINGS_PATH, JSON.stringify(updated, null, 2), "utf-8");
+  await saveJsonStore(STORE_KEY, updated);
   return updated;
 }

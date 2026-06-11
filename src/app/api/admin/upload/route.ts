@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
+import { put } from "@vercel/blob";
 import { requireAdminSession, adminUnauthorized } from "@/lib/admin-auth";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "products");
@@ -36,12 +37,31 @@ export async function POST(request: Request) {
     const safeExt = extOk ? ext : "jpg";
     const filename = `${randomUUID()}.${safeExt}`;
     const buffer = Buffer.from(await file.arrayBuffer());
+    const contentType = file.type || `image/${safeExt === "jpg" ? "jpeg" : safeExt}`;
+
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(`products/${filename}`, buffer, {
+        access: "public",
+        contentType,
+      });
+      return NextResponse.json({ url: blob.url });
+    }
+
+    if (process.env.VERCEL === "1") {
+      return NextResponse.json(
+        {
+          error:
+            "Resim yükleme için Vercel Blob gerekli. Vercel → Storage → Blob oluşturun ve projeye bağlayın.",
+        },
+        { status: 503 }
+      );
+    }
 
     await fs.mkdir(UPLOAD_DIR, { recursive: true });
     await fs.writeFile(path.join(UPLOAD_DIR, filename), buffer);
-
     return NextResponse.json({ url: `/uploads/products/${filename}` });
-  } catch {
+  } catch (err) {
+    console.error("Upload error:", err);
     return NextResponse.json({ error: "Yükleme başarısız" }, { status: 500 });
   }
 }

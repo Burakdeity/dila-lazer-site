@@ -1,9 +1,8 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { randomUUID } from "crypto";
 import type { Coupon } from "@/types/admin";
+import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
-const COUPONS_PATH = path.join(process.cwd(), "data", "coupons.json");
+const STORE_KEY = "coupons";
 
 const seedCoupons: Coupon[] = [
   {
@@ -43,22 +42,16 @@ const seedCoupons: Coupon[] = [
 ];
 
 async function ensureCoupons(): Promise<Coupon[]> {
-  try {
-    const raw = (await fs.readFile(COUPONS_PATH, "utf-8")).trim();
-    if (!raw) throw new Error("empty");
-    const parsed = JSON.parse(raw) as Coupon[];
-    if (!Array.isArray(parsed)) throw new Error("invalid");
-    return parsed;
-  } catch {
-    await fs.mkdir(path.dirname(COUPONS_PATH), { recursive: true });
-    await fs.writeFile(COUPONS_PATH, JSON.stringify(seedCoupons, null, 2), "utf-8");
+  const coupons = await loadJsonStore<Coupon[]>(STORE_KEY, [...seedCoupons]);
+  if (!Array.isArray(coupons)) {
+    await saveJsonStore(STORE_KEY, seedCoupons);
     return [...seedCoupons];
   }
+  return coupons;
 }
 
 async function saveCoupons(coupons: Coupon[]): Promise<void> {
-  await fs.mkdir(path.dirname(COUPONS_PATH), { recursive: true });
-  await fs.writeFile(COUPONS_PATH, JSON.stringify(coupons, null, 2), "utf-8");
+  await saveJsonStore(STORE_KEY, coupons);
 }
 
 export async function getAllCoupons(): Promise<Coupon[]> {
