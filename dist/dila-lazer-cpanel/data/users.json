@@ -1,0 +1,22 @@
+[
+  {
+    "id": "e9f3a454-29ad-477e-96f0-1fdb7cd93445",
+    "email": "burak@gmail.com",
+    "name": "burak",
+    "passwordHash": "$2b$12$exwEKknHyPRvUgu9r81JJ.BP/3jFlF35hEbdBpIGFolGT81uz0Ra2",
+    "role": "CUSTOMER",
+    "loyaltyTier": "BRONZE",
+    "points": 0,
+    "createdAt": "2026-06-08T12:49:26.882Z"
+  },
+  {
+    "id": "09a3d89b-49fc-466d-884a-d197fac482aa",
+    "email": "dilalazer54@gmail.com",
+    "name": "Admin",
+    "passwordHash": "$2b$12$M3a5JhuIeZ51UlLD00jeXeD23400Ae7eWI.Qy242c7Ebb4rcHEtsG",
+    "role": "ADMIN",
+    "loyaltyTier": "GOLD",
+    "points": 0,
+    "createdAt": "2026-06-11T08:40:03.581Z"
+  }
+]

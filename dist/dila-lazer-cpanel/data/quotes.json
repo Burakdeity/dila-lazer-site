@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "name": "Serkan Bulut",
+    "email": "serkan@firma.com",
+    "phone": "0533 100 20 30",
+    "company": "Bulut Cafe",
+    "productType": "Cafe Neon Tabela",
+    "message": "80x40 cm cafe neon, kırmızı ve beyaz renk. Duvar montajı dahil.",
+    "status": "reviewing",
+    "createdAt": "2025-06-07T08:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Ayşe Nur",
+    "email": "ayse@email.com",
+    "phone": "0544 200 30 40",
+    "productType": "Logo Neon",
+    "message": "Restoran logosu için özel tasarım neon istiyorum.",
+    "status": "reviewing",
+    "createdAt": "2025-06-06T15:30:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Mehmet Koç",
+    "email": "mehmet@isyeri.com",
+    "phone": "0555 300 40 50",
+    "company": "Koç Otomotiv",
+    "productType": "LED Kutu Harf",
+    "message": "Dış cephe kutu harf tabela, 3 metre genişlik.",
+    "status": "quoted",
+    "createdAt": "2025-06-05T11:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Deniz Ak",
+    "email": "deniz@email.com",
+    "phone": "0532 400 50 60",
+    "productType": "MDF Dekor",
+    "message": "Ofis duvarı için MDF tablo seti.",
+    "status": "accepted",
+    "createdAt": "2025-06-03T09:45:00.000Z"
+  }
+]

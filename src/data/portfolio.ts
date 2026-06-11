@@ -1,0 +1,62 @@
+export const portfolioProjects = [
+  {
+    id: "1",
+    title: "Lüks Otel Giriş Neon Tabela",
+    slug: "luks-otel-giris-neon",
+    sector: "Otel & Turizm",
+    city: "İstanbul",
+    afterImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=90",
+    beforeImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=90",
+    isFeatured: true,
+  },
+  {
+    id: "2",
+    title: "Premium Cafe Neon Yazı",
+    slug: "premium-cafe-neon",
+    sector: "Cafe & Restoran",
+    city: "Ankara",
+    afterImage: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=90",
+    beforeImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=90",
+    isFeatured: true,
+  },
+  {
+    id: "3",
+    title: "Kurumsal Kutu Harf Cephe",
+    slug: "kurumsal-kutu-harf-cephe",
+    sector: "Kurumsal",
+    city: "İzmir",
+    afterImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=90",
+    beforeImage: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=90",
+    isFeatured: true,
+  },
+  {
+    id: "4",
+    title: "Mağaza Vitrin LED Tabela",
+    slug: "magaza-vitrin-led",
+    sector: "Perakende",
+    city: "Bursa",
+    afterImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=90",
+    isFeatured: false,
+  },
+  {
+    id: "5",
+    title: "Restoran İç Mekan Neon",
+    slug: "restoran-ic-mekan-neon",
+    sector: "Cafe & Restoran",
+    city: "Antalya",
+    afterImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=90",
+    isFeatured: false,
+  },
+  {
+    id: "6",
+    title: "Ofis Yönlendirme Sistemi",
+    slug: "ofis-yonlendirme",
+    sector: "Ofis",
+    city: "İstanbul",
+    afterImage: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=90",
+    isFeatured: false,
+  },
+] as const;
+
+export const sectors = [...new Set(portfolioProjects.map((p) => p.sector))];
+export const cities = [...new Set(portfolioProjects.map((p) => p.city))];

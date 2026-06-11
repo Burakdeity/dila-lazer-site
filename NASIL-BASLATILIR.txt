@@ -1,0 +1,12 @@
+DILA LAZER - SITEYI BASLATMA
+=============================
+
+Not Defteri aciliyorsa su dosyalardan birini kullanin:
+
+  1) Siteyi-Baslat.vbs   <-- EN KOLAY (cift tiklayin)
+  2) baslat.cmd
+  3) baslat.bat
+
+Site acildiginda tarayicida: http://localhost:3000
+
+Kapatmak icin siyah komut penceresinde Ctrl+C basin.

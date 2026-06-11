@@ -1,0 +1,37 @@
+DILA LAZER — cPanel Kurulum (Kisa Rehber)
+==========================================
+
+ONEMLI: Bu site WordPress gibi degildir. Hosting panelinde NODE.JS destegi olmali.
+Sadece public_html'e atip acamazsiniz.
+
+ADIM 1 — ZIP yukle
+  cPanel > Dosya Yoneticisi > public_html
+  dila-lazer-cpanel.zip yukleyin, sag tik > Extract (Cikar)
+  Klasorde server.js dosyasi gorunmeli.
+
+ADIM 2 — Node.js uygulamasi
+  cPanel > "Setup Node.js App" / "Node.js Selector"
+  - Node: 18 veya 20
+  - Application root: public_html
+  - Startup file: server.js
+  - Mode: Production
+  Kaydet.
+
+ADIM 3 — .env dosyasi
+  .env.ornek dosyasini kopyalayip adini .env yapin.
+  Domain adresinizi yazin (https://www.ornek.com)
+  NEXTAUTH_SECRET icin rastgele uzun bir sifre uretin.
+
+ADIM 4 — Baslat
+  Node.js ekraninda "Run NPM Install" (varsa) sonra "Restart".
+
+ADIM 5 — Admin
+  SSH/Terminal varsa: npm run seed:admin
+  Yoksa data/users.json zaten admin icerir; .env ADMIN bilgileriyle giris yapin.
+
+IZINLER
+  data/ ve public/uploads/ klasorleri yazilabilir olmali (755 veya 775).
+
+SORUN
+  Beyaz sayfa: Node.js log + cPanel Error Log kontrol edin.
+  Hosting Node.js desteklemiyorsa baska plan gerekir (Vercel, VPS vb.).

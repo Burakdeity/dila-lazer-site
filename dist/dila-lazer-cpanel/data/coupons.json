@@ -1,0 +1,36 @@
+[
+  {
+    "id": "1",
+    "code": "NEON20",
+    "discountType": "percent",
+    "discountValue": 20,
+    "minOrder": 1000,
+    "usageLimit": 100,
+    "usedCount": 34,
+    "isActive": true,
+    "expiresAt": "2025-12-31",
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "code": "HOSGELDIN",
+    "discountType": "fixed",
+    "discountValue": 250,
+    "minOrder": 500,
+    "usageLimit": 500,
+    "usedCount": 128,
+    "isActive": true,
+    "expiresAt": "2025-09-30",
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "code": "YAZ2025",
+    "discountType": "percent",
+    "discountValue": 15,
+    "usedCount": 0,
+    "isActive": false,
+    "expiresAt": "2025-08-31",
+    "createdAt": "2025-05-01T00:00:00.000Z"
+  }
+]

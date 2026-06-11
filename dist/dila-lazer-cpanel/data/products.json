@@ -1,0 +1,444 @@
+[
+  {
+    "id": "1",
+    "name": "Premium İsim Neon Tabela",
+    "slug": "premium-isim-neon-tabela",
+    "shortDesc": "Kişiye özel isim neon tabela — el yapımı kalite",
+    "description": "Neon flex teknolojisi ile üretilen, duvara montaj aksesuarları dahil premium isim neon tabela.",
+    "basePrice": 1890,
+    "categorySlug": "neon-led-tabelalar",
+    "subcategorySlug": "isim-neonlari",
+    "images": [
+      "/uploads/products/62e6dc2c-4e0b-42e6-b8e9-fd2c17ebd4ab.jpeg"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller",
+      "featured"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": true,
+    "stock": 150,
+    "deliveryDays": 5,
+    "rating": 4.9,
+    "reviewCount": 342,
+    "sizes": [
+      "30x15 cm",
+      "50x25 cm",
+      "70x35 cm"
+    ],
+    "materials": [
+      "neon"
+    ],
+    "colors": [
+      "kirmizi",
+      "pembe",
+      "mavi",
+      "rgb"
+    ],
+    "createdAt": "2025-01-15"
+  },
+  {
+    "id": "2",
+    "name": "Cafe Neon Açık Tabela",
+    "slug": "cafe-neon-acik-tabela",
+    "shortDesc": "Sıcak atmosfer için cafe neon açık tabela",
+    "description": "Cafe ve restoranlar için özel tasarım neon açık tabela. İç ve dış mekan uyumlu.",
+    "basePrice": 2490,
+    "salePrice": 2190,
+    "categorySlug": "neon-led-tabelalar",
+    "subcategorySlug": "cafe-neonlari",
+    "images": [
+      "/uploads/products/db9bdc99-efd0-4128-a569-53e6916b12b2.jpg"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller",
+      "sale"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": false,
+    "stock": 80,
+    "deliveryDays": 7,
+    "rating": 4.8,
+    "reviewCount": 198,
+    "sizes": [
+      "40x20 cm",
+      "60x30 cm",
+      "80x40 cm"
+    ],
+    "materials": [
+      "neon",
+      "pleksi"
+    ],
+    "colors": [
+      "kirmizi",
+      "yesil",
+      "rgb"
+    ],
+    "createdAt": "2025-02-01"
+  },
+  {
+    "id": "3",
+    "name": "RGB Akıllı Neon Yazı",
+    "slug": "rgb-akilli-neon-yazi",
+    "shortDesc": "Uygulama kontrollü RGB neon yazı",
+    "description": "16 milyon renk, müzik senkronizasyonu ve uzaktan kumanda ile RGB akıllı neon.",
+    "basePrice": 3290,
+    "categorySlug": "neon-led-tabelalar",
+    "subcategorySlug": "rgb-neonlar",
+    "images": [
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "new",
+      "featured"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": true,
+    "stock": 60,
+    "deliveryDays": 6,
+    "rating": 5,
+    "reviewCount": 87,
+    "sizes": [
+      "50x25 cm",
+      "70x35 cm",
+      "100x50 cm"
+    ],
+    "materials": [
+      "neon"
+    ],
+    "colors": [
+      "rgb"
+    ],
+    "createdAt": "2025-05-01"
+  },
+  {
+    "id": "4",
+    "name": "MDF Geometrik Duvar Dekoru",
+    "slug": "mdf-geometrik-duvar-dekoru",
+    "shortDesc": "Modern geometrik MDF duvar dekorasyonu",
+    "description": "CNC kesim, boyalı MDF duvar dekoru. Kolay montaj, premium finish.",
+    "basePrice": 890,
+    "categorySlug": "mdf-urunler",
+    "subcategorySlug": "mdf-duvar-dekorlari",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": false,
+    "stock": 200,
+    "deliveryDays": 4,
+    "rating": 4.7,
+    "reviewCount": 156,
+    "sizes": [
+      "40x40 cm",
+      "60x60 cm"
+    ],
+    "materials": [
+      "mdf"
+    ],
+    "colors": [
+      "siyah",
+      "beyaz",
+      "dogal"
+    ],
+    "createdAt": "2025-03-10"
+  },
+  {
+    "id": "5",
+    "name": "MDF Duvar Saati — Minimal",
+    "slug": "mdf-duvar-saati-minimal",
+    "shortDesc": "Minimal tasarım MDF duvar saati",
+    "description": "Sessiz quartz mekanizma, CNC kesim MDF gövde.",
+    "basePrice": 650,
+    "categorySlug": "mdf-urunler",
+    "subcategorySlug": "mdf-saatler",
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "new"
+    ],
+    "isFeatured": false,
+    "isCustomDesign": false,
+    "stock": 120,
+    "deliveryDays": 3,
+    "rating": 4.6,
+    "reviewCount": 74,
+    "sizes": [
+      "30 cm",
+      "40 cm",
+      "50 cm"
+    ],
+    "materials": [
+      "mdf"
+    ],
+    "colors": [
+      "siyah",
+      "beyaz"
+    ],
+    "createdAt": "2025-05-10"
+  },
+  {
+    "id": "6",
+    "name": "Pleksi Masa İsimliği — Premium",
+    "slug": "pleksi-masa-isimligi-premium",
+    "shortDesc": "Şeffaf pleksi masa isimliği, lazer baskılı",
+    "description": "3mm şeffaf pleksi, UV baskı, altın/gümüş ayak seçenekleri.",
+    "basePrice": 290,
+    "categorySlug": "pleksi-urunler",
+    "subcategorySlug": "pleksi-masa-isimlikleri",
+    "images": [
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": true,
+    "stock": 500,
+    "deliveryDays": 3,
+    "rating": 4.9,
+    "reviewCount": 421,
+    "sizes": [
+      "9x5 cm",
+      "10x6 cm",
+      "12x8 cm"
+    ],
+    "materials": [
+      "pleksi"
+    ],
+    "colors": [
+      "seffaf",
+      "buzlu",
+      "siyah"
+    ],
+    "createdAt": "2025-01-20"
+  },
+  {
+    "id": "7",
+    "name": "Pleksi Kutu Harf Tabela Seti",
+    "slug": "pleksi-kutu-harf-tabela-seti",
+    "shortDesc": "LED aydınlatmalı pleksi kutu harf",
+    "description": "Opal pleksi yüzey, alüminyum gövde, enerji tasarruflu LED modül.",
+    "basePrice": 4500,
+    "categorySlug": "pleksi-urunler",
+    "subcategorySlug": "pleksi-kutu-harfler",
+    "images": [
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "featured"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": true,
+    "stock": 40,
+    "deliveryDays": 10,
+    "rating": 4.8,
+    "reviewCount": 93,
+    "sizes": [
+      "Harf başına",
+      "Kelime seti"
+    ],
+    "materials": [
+      "pleksi",
+      "led"
+    ],
+    "colors": [
+      "beyaz",
+      "kirmizi",
+      "mavi"
+    ],
+    "createdAt": "2025-02-15"
+  },
+  {
+    "id": "8",
+    "name": "3D Logo Tabela — CNC",
+    "slug": "3d-logo-tabela-cnc",
+    "shortDesc": "CNC kesim 3D logo tabela",
+    "description": "Alüminyum kompozit veya pleksi malzeme ile 3D logo tabela üretimi.",
+    "basePrice": 5200,
+    "categorySlug": "3d-urunler",
+    "subcategorySlug": "3d-logolar",
+    "images": [
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller",
+      "featured"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": true,
+    "stock": 30,
+    "deliveryDays": 12,
+    "rating": 4.9,
+    "reviewCount": 67,
+    "sizes": [
+      "40x20 cm",
+      "60x30 cm",
+      "80x40 cm",
+      "Özel ölçü"
+    ],
+    "materials": [
+      "3d",
+      "pleksi"
+    ],
+    "colors": [
+      "beyaz",
+      "kirmizi",
+      "altin"
+    ],
+    "createdAt": "2025-01-05"
+  },
+  {
+    "id": "9",
+    "name": "3D Dekoratif Figür Seti",
+    "slug": "3d-dekoratif-figur-seti",
+    "shortDesc": "3D baskı dekoratif figür koleksiyonu",
+    "description": "PLA+ malzeme ile üretilen premium 3D dekoratif figürler.",
+    "basePrice": 450,
+    "categorySlug": "3d-urunler",
+    "subcategorySlug": "3d-figurler",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "new"
+    ],
+    "isFeatured": false,
+    "isCustomDesign": false,
+    "stock": 180,
+    "deliveryDays": 4,
+    "rating": 4.5,
+    "reviewCount": 38,
+    "sizes": [
+      "10 cm",
+      "15 cm",
+      "20 cm"
+    ],
+    "materials": [
+      "3d"
+    ],
+    "colors": [
+      "beyaz",
+      "siyah",
+      "altin"
+    ],
+    "createdAt": "2025-05-15"
+  },
+  {
+    "id": "10",
+    "name": "RGB LED Şerit 5M — IP65",
+    "slug": "rgb-led-serit-5m-ip65",
+    "shortDesc": "Su geçirmez RGB LED şerit, 5 metre",
+    "description": "5050 SMD LED, 16 milyon renk, Bluetooth kontrol, dış mekan uyumlu IP65.",
+    "basePrice": 890,
+    "salePrice": 749,
+    "categorySlug": "elektronik-urunler",
+    "subcategorySlug": "led-seritler",
+    "images": [
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller",
+      "sale"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": false,
+    "stock": 300,
+    "deliveryDays": 2,
+    "rating": 4.7,
+    "reviewCount": 512,
+    "sizes": [
+      "5 metre"
+    ],
+    "materials": [
+      "led"
+    ],
+    "colors": [
+      "rgb"
+    ],
+    "createdAt": "2025-02-20"
+  },
+  {
+    "id": "11",
+    "name": "12V 10A LED Güç Kaynağı",
+    "slug": "12v-10a-led-guc-kaynagi",
+    "shortDesc": "Profesyonel 12V LED güç kaynağı",
+    "description": "Aşırı akım, kısa devre ve aşırı ısınma korumalı 120W güç kaynağı.",
+    "basePrice": 320,
+    "categorySlug": "elektronik-urunler",
+    "subcategorySlug": "guc-kaynaklari",
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "bestseller"
+    ],
+    "isFeatured": false,
+    "isCustomDesign": false,
+    "stock": 400,
+    "deliveryDays": 2,
+    "rating": 4.8,
+    "reviewCount": 289,
+    "sizes": [
+      "10A",
+      "15A",
+      "20A"
+    ],
+    "materials": [
+      "elektronik"
+    ],
+    "colors": [
+      "siyah"
+    ],
+    "createdAt": "2025-01-10"
+  },
+  {
+    "id": "12",
+    "name": "WiFi RGB Kontrol Modülü",
+    "slug": "wifi-rgb-kontrol-modulu",
+    "shortDesc": "Akıllı ev uyumlu WiFi RGB kontrol",
+    "description": "Alexa ve Google Home uyumlu, uygulama ile kontrol edilebilir RGB modül.",
+    "basePrice": 450,
+    "categorySlug": "elektronik-urunler",
+    "subcategorySlug": "rgb-kontrol-sistemleri",
+    "images": [
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=90"
+    ],
+    "videos": [],
+    "badges": [
+      "new",
+      "featured"
+    ],
+    "isFeatured": true,
+    "isCustomDesign": false,
+    "stock": 150,
+    "deliveryDays": 2,
+    "rating": 4.6,
+    "reviewCount": 95,
+    "sizes": [
+      "Standart"
+    ],
+    "materials": [
+      "elektronik"
+    ],
+    "colors": [
+      "siyah"
+    ],
+    "createdAt": "2025-05-20"
+  }
+]
