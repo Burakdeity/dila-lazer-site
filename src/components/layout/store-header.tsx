@@ -9,30 +9,26 @@ import { BrandLogo } from "@/components/layout/brand-logo";
 import { brand } from "@/lib/brand";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
-import { mainCategories } from "@/data/catalog/categories";
+import type { MainCategory } from "@/types/catalog";
+import type { SiteMenus } from "@/types/admin";
 
-const topLinks = [
-  { href: "/siparis-takip", label: "Sipariş Takip" },
-  { href: "/hesabim/siparisler", label: "Siparişlerim" },
-  { href: "/kampanyalar", label: "Kampanyalar" },
-  { href: "/portfolyo", label: "Projeler" },
-  { href: "/hakkimizda", label: "Hakkımızda" },
-  { href: "/blog", label: "Blog" },
-  { href: "/iletisim", label: "İletişim" },
-];
+interface StoreHeaderProps {
+  categories: MainCategory[];
+  menus: SiteMenus;
+}
 
-const navCategories = [
-  ...mainCategories.map((c) => ({ href: `/kategori/${c.slug}`, label: c.name })),
-  { href: "/ozel-tasarim-merkezi", label: "Kendin Tasarla" },
-  { href: "/teklif-al", label: "Teklif Al" },
-];
-
-export function StoreHeader() {
+export function StoreHeader({ categories, menus }: StoreHeaderProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const cartTotal = useCartStore((s) => s.subtotal());
   const itemCount = useCartStore((s) => s.itemCount());
+
+  const topLinks = menus.topBarLinks.filter((l) => l.isActive);
+  const navCategories = [
+    ...categories.map((c) => ({ href: `/kategori/${c.slug}`, label: c.name })),
+    ...menus.extraNavLinks.filter((l) => l.isActive).map((l) => ({ href: l.href, label: l.label })),
+  ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +37,6 @@ export function StoreHeader() {
 
   return (
     <header className="relative z-40 w-full bg-white">
-      {/* Üst bilgi barı */}
       <div className="bg-brand-black text-white text-xs relative overflow-hidden">
         <div className="absolute inset-0 neon-topbar-shimmer pointer-events-none" />
         <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-9 relative z-10">
@@ -58,7 +53,7 @@ export function StoreHeader() {
           <div className="hidden lg:flex items-center gap-5 shrink-0">
             {topLinks.map((link) => (
               <Link
-                key={link.label}
+                key={link.id}
                 href={link.href}
                 className="text-white/70 hover:text-white transition-colors whitespace-nowrap"
               >
@@ -76,10 +71,8 @@ export function StoreHeader() {
         </div>
       </div>
 
-      {/* Logo + Arama + Sepet */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1400px] mx-auto px-4 py-2 lg:py-2">
-          {/* Mobil: logo + aksiyonlar, arama alt satır */}
           <div className="flex flex-col gap-2.5 md:hidden">
             <div className="flex items-center justify-between gap-2">
               <BrandLogo size="sm" priority />
@@ -121,7 +114,6 @@ export function StoreHeader() {
             </form>
           </div>
 
-          {/* Tablet + masaüstü */}
           <div className="hidden md:flex items-center gap-4 lg:gap-8">
             <div className="shrink-0 lg:hidden">
               <BrandLogo size="md" priority />
@@ -175,7 +167,6 @@ export function StoreHeader() {
         </div>
       </div>
 
-      {/* Kategori navigasyonu */}
       <nav className="bg-brand-red text-white hidden lg:block">
         <div className="max-w-[1400px] mx-auto px-4">
           <ul className="flex items-center">
@@ -193,7 +184,6 @@ export function StoreHeader() {
         </div>
       </nav>
 
-      {/* Mobil menü */}
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg max-h-[70vh] overflow-y-auto">
           <div className="px-4 py-3 space-y-1">

@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { brand } from "@/lib/brand";
-import { mainCategories } from "@/data/catalog/categories";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { BrandLogo } from "@/components/layout/brand-logo";
+import type { MainCategory } from "@/types/catalog";
+import type { SiteMenus } from "@/types/admin";
 
-export function StoreFooter() {
+interface StoreFooterProps {
+  categories: MainCategory[];
+  menus: SiteMenus;
+}
+
+export function StoreFooter({ categories, menus }: StoreFooterProps) {
+  const corporateLinks = menus.footerCorporateLinks.filter((l) => l.isActive);
+  const serviceLinks = menus.footerServiceLinks.filter((l) => l.isActive);
+
   return (
     <footer className="bg-white border-t border-gray-200 mt-12">
-      {/* Newsletter */}
       <div className="bg-gray-50 border-b border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 py-10">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -62,7 +70,7 @@ export function StoreFooter() {
           <div>
             <h4 className="font-bold text-brand-black mb-4 text-sm uppercase tracking-wide">Kategoriler</h4>
             <ul className="space-y-2.5">
-              {mainCategories.map((c) => (
+              {categories.map((c) => (
                 <li key={c.id}>
                   <Link href={`/kategori/${c.slug}`} className="text-sm text-gray-500 hover:text-brand-red transition-colors">
                     {c.name}
@@ -75,26 +83,25 @@ export function StoreFooter() {
           <div>
             <h4 className="font-bold text-brand-black mb-4 text-sm uppercase tracking-wide">Kurumsal</h4>
             <ul className="space-y-2.5 text-sm text-gray-500">
-              <li><Link href="/hakkimizda" className="hover:text-brand-red transition-colors">Hakkımızda</Link></li>
-              <li><Link href="/portfolyo" className="hover:text-brand-red transition-colors">Projeler & Referanslar</Link></li>
-              <li><Link href="/blog" className="hover:text-brand-red transition-colors">Blog</Link></li>
-              <li><Link href="/iletisim" className="hover:text-brand-red transition-colors">İletişim</Link></li>
-              <li><Link href="/ozel-tasarim-merkezi" className="hover:text-brand-red transition-colors">Kendin Tasarla</Link></li>
+              {corporateLinks.map((link) => (
+                <li key={link.id}>
+                  <Link href={link.href} className="hover:text-brand-red transition-colors">{link.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-brand-black mb-4 text-sm uppercase tracking-wide">Müşteri Hizmetleri</h4>
             <ul className="space-y-2.5 text-sm text-gray-500">
-              <li><Link href="/siparis-takip" className="hover:text-brand-red transition-colors">Sipariş Takip</Link></li>
-              <li><Link href="/iade-politikasi" className="hover:text-brand-red transition-colors">İade Politikası</Link></li>
-              <li><Link href="/kargo-teslimat" className="hover:text-brand-red transition-colors">Kargo & Teslimat</Link></li>
-              <li><Link href="/teklif-al" className="hover:text-brand-red transition-colors">Teklif Al</Link></li>
-              <li><Link href="/gizlilik" className="hover:text-brand-red transition-colors">Gizlilik Politikası</Link></li>
+              {serviceLinks.map((link) => (
+                <li key={link.id}>
+                  <Link href={link.href} className="hover:text-brand-red transition-colors">{link.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
-
       </div>
 
       <div className="bg-brand-black text-gray-400 text-xs py-4">

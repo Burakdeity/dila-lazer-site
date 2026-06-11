@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function ProductsPage() {
   const products = await getAllProducts();
-  const categories = getMainCategories();
+  const categories = await getMainCategories();
 
   return (
     <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>

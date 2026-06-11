@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Pencil, Plus } from "lucide-react";
 import { getMainCategories } from "@/lib/catalog";
 import { getAllProductsFromStore } from "@/lib/product-store";
 import { AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/admin-ui";
 
 export default async function AdminCategoriesPage() {
-  const categories = getMainCategories();
+  const categories = await getMainCategories();
   const products = await getAllProductsFromStore();
 
   const countByCategory = new Map<string, number>();
@@ -19,6 +19,11 @@ export default async function AdminCategoriesPage() {
       <AdminPageHeader
         title="Kategoriler"
         description={`${categories.length} ana kategori, ${categories.reduce((s, c) => s + c.subcategories.length, 0)} alt kategori`}
+        action={
+          <Link href="/admin/kategoriler/yeni" className="inline-flex items-center gap-2 px-4 py-2 bg-brand-red text-white text-sm font-medium rounded-xl hover:bg-brand-red/90">
+            <Plus className="h-4 w-4" /> Yeni Kategori
+          </Link>
+        }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -40,9 +45,14 @@ export default async function AdminCategoriesPage() {
                     <h3 className="text-white font-semibold">{cat.name}</h3>
                     <p className="text-xs text-gray-500 mt-0.5">{cat.slug}</p>
                   </div>
-                  <Link href={`/kategori/${cat.slug}`} target="_blank" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5">
-                    <ExternalLink className="h-4 w-4" />
-                  </Link>
+                  <div className="flex items-center gap-1">
+                    <Link href={`/admin/kategoriler/${cat.id}`} className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5" title="Düzenle">
+                      <Pencil className="h-4 w-4" />
+                    </Link>
+                    <Link href={`/kategori/${cat.slug}`} target="_blank" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5">
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
+                  </div>
                 </div>
                 <p className="text-sm text-gray-400 mt-2 line-clamp-2">{cat.description}</p>
                 <p className="text-xs text-brand-red mt-2 font-medium">

@@ -9,33 +9,11 @@ interface FontPickerProps {
 }
 
 function fontPreviewStyle(font: NeonFont, color: string): React.CSSProperties {
-  const base: React.CSSProperties = {
-    fontFamily: `"${font.family}", cursive`,
-    fontWeight: font.weight ?? 400,
-    fontStyle: font.style ?? "normal",
-    letterSpacing: font.letterSpacing,
-    textTransform: font.textTransform,
+  return {
+    fontFamily: `"${font.family}", cursive, sans-serif`,
+    color,
     lineHeight: 1.1,
   };
-
-  if (font.variant === "outline" || font.variant === "neon-outline") {
-    return {
-      ...base,
-      color: "transparent",
-      WebkitTextStroke: `1px ${color}`,
-    };
-  }
-
-  if (font.variant === "thin-outline") {
-    return {
-      ...base,
-      color: "transparent",
-      WebkitTextStroke: `0.75px ${color}`,
-      opacity: 0.85,
-    };
-  }
-
-  return { ...base, color };
 }
 
 export function FontPicker({ selectedId, onSelect, previewColor = "#333" }: FontPickerProps) {

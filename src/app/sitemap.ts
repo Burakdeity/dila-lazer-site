@@ -1,9 +1,8 @@
 import type { MetadataRoute } from "next";
 
 export const dynamic = "force-dynamic";
-import { blogPosts } from "@/data/catalog/blog";
-import { mainCategories } from "@/data/catalog/categories";
-import { getAllProducts } from "@/lib/catalog";
+import { getAllBlogPostsFromStore } from "@/lib/blog-store";
+import { getAllProducts, getMainCategories } from "@/lib/catalog";
 import { getSiteUrl } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -31,6 +30,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: path === "" ? ("daily" as const) : ("weekly" as const),
     priority,
   }));
+
+  const [blogPosts, mainCategories] = await Promise.all([
+    getAllBlogPostsFromStore(),
+    getMainCategories(),
+  ]);
 
   const blogPages = blogPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,

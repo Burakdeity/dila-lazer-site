@@ -16,11 +16,7 @@ interface NeonGlowTextProps {
 function buildFontStyle(font: NeonFont): React.CSSProperties {
   return {
     fontFamily: `"${font.family}", cursive, sans-serif`,
-    fontWeight: font.weight ?? 400,
-    fontStyle: font.style ?? "normal",
-    letterSpacing: font.letterSpacing,
-    textTransform: font.textTransform,
-    lineHeight: 1.15,
+    lineHeight: 1.05,
   };
 }
 
@@ -74,29 +70,8 @@ export const NeonGlowText = memo(function NeonGlowText({
   const fontStyle = useMemo(() => buildFontStyle(font), [font]);
   const rgbClass = isRgb && lit ? "neon-rgb-text" : "";
   const tube = useMemo(() => buildTubeGlow(glowColor, intensity), [glowColor, intensity]);
-  const outlineStroke = font.variant === "thin-outline" ? 1.75 : 2.75;
-  const isOutline =
-    font.variant === "outline" ||
-    font.variant === "neon-outline" ||
-    font.variant === "thin-outline";
 
   if (!lit) {
-    if (isOutline) {
-      return (
-        <span
-          className={`block whitespace-pre-wrap text-center select-none ${fontSize}`}
-          style={{
-            ...fontStyle,
-            color: "transparent",
-            WebkitTextStroke: `${outlineStroke * 0.55}px ${glowColor}66`,
-            opacity: 0.35,
-          }}
-        >
-          {display}
-        </span>
-      );
-    }
-
     return (
       <span
         className={`block whitespace-pre-wrap text-center select-none ${fontSize}`}
@@ -105,42 +80,6 @@ export const NeonGlowText = memo(function NeonGlowText({
           color: glowColor,
           opacity: 0.28,
         }}
-      >
-        {display}
-      </span>
-    );
-  }
-
-  if (isOutline) {
-    const isNeonOutline = font.variant === "neon-outline";
-
-    return (
-      <span
-        className={`block whitespace-pre-wrap text-center select-none ${fontSize} ${rgbClass}`}
-        style={
-          isRgb && lit
-            ? {
-                ...fontStyle,
-                color: isNeonOutline ? glowColor : "transparent",
-                WebkitTextStroke: `${outlineStroke}px ${glowColor}`,
-              }
-            : isNeonOutline
-              ? {
-                  ...fontStyle,
-                  color: glowColor,
-                  WebkitTextStroke: "1px rgba(255,255,255,0.9)",
-                  paintOrder: "stroke fill",
-                  textShadow: tube.textShadow,
-                  filter: tube.filter,
-                }
-              : {
-                  ...fontStyle,
-                  color: "transparent",
-                  WebkitTextStroke: `${outlineStroke}px ${glowColor}`,
-                  textShadow: tube.textShadow,
-                  filter: tube.filter,
-                }
-        }
       >
         {display}
       </span>

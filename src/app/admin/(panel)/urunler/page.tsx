@@ -8,7 +8,7 @@ import { ProductActions } from "@/components/admin/product-actions";
 
 export default async function AdminProductsPage() {
   const products = await getAllProductsFromStore();
-  const categories = getMainCategories();
+  const categories = await getMainCategories();
 
   const categoryMap = new Map(categories.map((c) => [c.slug, c.name]));
 

@@ -4,17 +4,20 @@ import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { mainCategories } from "@/data/catalog/categories";
+import type { MainCategory } from "@/types/catalog";
 
-const carouselItems = mainCategories.flatMap((cat) =>
-  cat.subcategories.slice(0, 2).map((sub) => ({
-    name: sub.name,
-    href: `/kategori/${cat.slug}/${sub.slug}`,
-    image: cat.image,
-  }))
-).slice(0, 12);
+function buildCarouselItems(categories: MainCategory[]) {
+  return categories.flatMap((cat) =>
+    cat.subcategories.slice(0, 2).map((sub) => ({
+      name: sub.name,
+      href: `/kategori/${cat.slug}/${sub.slug}`,
+      image: cat.image,
+    }))
+  ).slice(0, 12);
+}
 
-export function CategoryCarousel() {
+export function CategoryCarousel({ categories }: { categories: MainCategory[] }) {
+  const carouselItems = buildCarouselItems(categories);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {

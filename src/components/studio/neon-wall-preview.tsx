@@ -12,8 +12,6 @@ interface NeonWallPreviewProps {
   font: NeonFont;
   glowColor: string;
   colorName: string;
-  sizeDim: string;
-  sizeId: string;
   productName: string;
   logoPreview: string | null;
   isRgb?: boolean;
@@ -21,12 +19,9 @@ interface NeonWallPreviewProps {
 
 type TimeMode = "day" | "night";
 
-const sizeScale: Record<string, { font: string; scale: number; glow: number }> = {
-  small: { font: "text-xl sm:text-3xl", scale: 0.72, glow: 0.92 },
-  medium: { font: "text-2xl sm:text-4xl", scale: 0.88, glow: 1.05 },
-  large: { font: "text-3xl sm:text-5xl", scale: 1, glow: 1.15 },
-  xlarge: { font: "text-3xl sm:text-[3.25rem]", scale: 1.12, glow: 1.25 },
-};
+const PREVIEW_FONT = "text-5xl sm:text-7xl lg:text-8xl";
+const PREVIEW_SCALE = 1.35;
+const PREVIEW_GLOW = 1.2;
 
 function roomFilter(timeMode: TimeMode, lightOn: boolean): string {
   if (timeMode === "day") {
@@ -44,8 +39,6 @@ export function NeonWallPreview({
   font,
   glowColor,
   colorName,
-  sizeDim,
-  sizeId,
   productName,
   logoPreview,
   isRgb = false,
@@ -55,11 +48,10 @@ export function NeonWallPreview({
   const [timeMode, setTimeMode] = useState<TimeMode>("night");
 
   const room = roomScenes.find((r) => r.id === roomId) ?? roomScenes[0];
-  const scale = sizeScale[sizeId] ?? sizeScale.medium;
-  const totalScale = scale.scale * (room.neonScale ?? 1);
+  const totalScale = PREVIEW_SCALE * (room.neonScale ?? 1);
   const isNight = timeMode === "night";
   const glowMultiplier = isNight ? 1.12 : 0.68;
-  const intensity = lightOn ? scale.glow * glowMultiplier : 0.1;
+  const intensity = lightOn ? PREVIEW_GLOW * glowMultiplier : 0.1;
 
   const metaTags = [room.label, isNight ? "Gece" : "Gündüz", colorName];
 
@@ -83,7 +75,7 @@ export function NeonWallPreview({
   return (
     <div className="flex flex-col bg-[#111] select-none">
       <div
-        className="relative aspect-[4/3] overflow-hidden"
+        className="relative aspect-[4/3] sm:aspect-[5/4] min-h-[320px] sm:min-h-[460px] lg:min-h-[520px] overflow-hidden"
         style={{ "--neon-glow": glowColor } as React.CSSProperties}
       >
         <Image
@@ -96,7 +88,7 @@ export function NeonWallPreview({
             objectPosition: room.objectPosition,
             filter: roomFilter(timeMode, lightOn),
           }}
-          sizes="(max-width: 768px) 100vw, 600px"
+          sizes="(max-width: 768px) 100vw, 800px"
           priority
         />
 
@@ -128,8 +120,8 @@ export function NeonWallPreview({
               className={`absolute left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-200 ${isRgb ? "neon-rgb-wall-glow" : ""}`}
               style={{
                 top: `calc(${room.neonTop} - 4%)`,
-                width: isNight ? "72%" : "58%",
-                height: "42%",
+                width: isNight ? "78%" : "64%",
+                height: "48%",
                 mixBlendMode: "screen",
                 ...wallGlowStyle,
                 filter: "blur(26px)",
@@ -141,8 +133,8 @@ export function NeonWallPreview({
               className="absolute left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-200"
               style={{
                 top: `calc(${room.neonTop} + 2%)`,
-                width: "38%",
-                height: "18%",
+                width: "42%",
+                height: "22%",
                 mixBlendMode: "screen",
                 ...wallGlowSpotStyle,
                 filter: "blur(12px)",
@@ -153,11 +145,11 @@ export function NeonWallPreview({
         )}
 
         <div
-          className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-full px-6 sm:px-8 pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-full px-4 sm:px-6 pointer-events-none"
           style={{ top: room.neonTop }}
         >
           <div
-            className="origin-center transition-transform duration-500 max-w-full"
+            className="origin-center transition-transform duration-500 max-w-[95%]"
             style={{ transform: `scale(${totalScale})` }}
           >
             {logoPreview ? (
@@ -165,7 +157,7 @@ export function NeonWallPreview({
               <img
                 src={logoPreview}
                 alt="Logo önizleme"
-                className="max-h-[64px] sm:max-h-[100px] max-w-[min(240px,80vw)] object-contain"
+                className="max-h-[80px] sm:max-h-[120px] max-w-[min(280px,90vw)] object-contain"
                 style={{
                   filter: lightOn
                     ? [
@@ -183,7 +175,7 @@ export function NeonWallPreview({
                 font={font}
                 glowColor={glowColor}
                 intensity={intensity}
-                fontSize={scale.font}
+                fontSize={PREVIEW_FONT}
                 lit={lightOn}
                 isRgb={isRgb}
               />
@@ -191,8 +183,6 @@ export function NeonWallPreview({
           </div>
         </div>
 
-
-        {/* Masaüstü kontroller — görsel üzerinde */}
         <div className="hidden sm:flex absolute top-3 left-3 right-3 z-20 items-start justify-between gap-2">
           <div className="flex items-center rounded-full bg-black/50 backdrop-blur-md border border-white/20 p-0.5 shadow-xl">
             <button
@@ -230,10 +220,6 @@ export function NeonWallPreview({
           </div>
         </div>
 
-        <div className="hidden sm:block absolute top-14 right-3 z-20 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 pointer-events-none">
-          <span className="text-[10px] font-mono text-white/85">{sizeDim}</span>
-        </div>
-
         <div className="hidden sm:block absolute bottom-0 inset-x-0 z-20 px-3 pb-3 pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent">
           <p className="text-[9px] uppercase tracking-widest text-white/45 text-center mb-2">Duvar Seç</p>
           <div className="flex gap-2 justify-center overflow-x-auto scrollbar-hide pb-1">
@@ -264,7 +250,6 @@ export function NeonWallPreview({
         </div>
       </div>
 
-      {/* Mobil kontroller — görselin altında, taşma yok */}
       <div className="sm:hidden bg-[#161616] border-t border-white/10 px-3 py-3 space-y-3">
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center justify-center rounded-full bg-black/40 border border-white/15 p-0.5">
@@ -303,10 +288,7 @@ export function NeonWallPreview({
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-[10px] uppercase tracking-wider text-white/50">Duvar seç</p>
-          <span className="text-[10px] font-mono text-white/70 px-2 py-0.5 rounded bg-white/10">{sizeDim}</span>
-        </div>
+        <p className="text-[10px] uppercase tracking-wider text-white/50">Duvar seç</p>
 
         <div className="grid grid-cols-3 gap-2">
           {roomScenes.map((scene) => {

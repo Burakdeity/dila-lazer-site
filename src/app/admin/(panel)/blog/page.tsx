@@ -1,19 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
-import { blogPosts } from "@/data/catalog/blog";
+import { ExternalLink, Pencil, Plus } from "lucide-react";
+import { getAllBlogPostsFromStore } from "@/lib/blog-store";
 import { AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/admin-ui";
 
-export default function AdminBlogPage() {
+export default async function AdminBlogPage() {
+  const blogPosts = await getAllBlogPostsFromStore();
+
   return (
     <div>
       <AdminPageHeader
         title="Blog"
         description={`${blogPosts.length} yazı`}
         action={
-          <Link href="/blog" target="_blank" className="text-sm text-brand-red hover:underline">
-            Blogu görüntüle →
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/blog" target="_blank" className="text-sm text-gray-400 hover:text-white">
+              Blogu görüntüle →
+            </Link>
+            <Link href="/admin/blog/yeni" className="inline-flex items-center gap-2 px-4 py-2 bg-brand-red text-white text-sm font-medium rounded-xl hover:bg-brand-red/90">
+              <Plus className="h-4 w-4" /> Yeni Yazı
+            </Link>
+          </div>
         }
       />
 
@@ -32,9 +39,14 @@ export default function AdminBlogPage() {
                     <p className="text-sm text-gray-400 mt-1">{post.excerpt}</p>
                     <p className="text-xs text-gray-500 mt-2">{post.author} · {post.date}</p>
                   </div>
-                  <Link href={`/blog`} target="_blank" className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5">
-                    <ExternalLink className="h-4 w-4" />
-                  </Link>
+                  <div className="flex items-center gap-1">
+                    <Link href={`/admin/blog/${post.slug}`} className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5" title="Düzenle">
+                      <Pencil className="h-4 w-4" />
+                    </Link>
+                    <Link href={`/blog/${post.slug}`} target="_blank" className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5">
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

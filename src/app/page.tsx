@@ -22,7 +22,10 @@ import {
   getNewArrivals,
   getFeaturedProducts,
   getAllProducts,
+  getMainCategories,
 } from "@/lib/catalog";
+import { getAllBlogPostsFromStore } from "@/lib/blog-store";
+import { getSettings } from "@/lib/settings-store";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Neon Tabela, LED & Lazer Kesim",
@@ -30,11 +33,14 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function HomePage() {
-  const [bestSellers, newArrivals, featured, allProducts] = await Promise.all([
+  const [bestSellers, newArrivals, featured, allProducts, categories, blogPosts, settings] = await Promise.all([
     getBestSellers(8),
     getNewArrivals(8),
     getFeaturedProducts(8),
     getAllProducts(),
+    getMainCategories(),
+    getAllBlogPostsFromStore(),
+    getSettings(),
   ]);
 
   const dealProducts = allProducts
@@ -44,10 +50,10 @@ export default async function HomePage() {
   return (
     <div className="bg-gray-50">
       <JsonLd data={homePageSchemas()} />
-      <StoreHero />
+      <StoreHero slides={settings.heroSlides} />
       <NeonTicker />
       <TrustBar />
-      <CategoryCarousel />
+      <CategoryCarousel categories={categories} />
       <FeaturedCollection products={featured.length ? featured : bestSellers} />
       <ProcessSection />
       <DealsSection products={dealProducts.length > 0 ? dealProducts : bestSellers} />
@@ -68,7 +74,7 @@ export default async function HomePage() {
       <StatsSection />
       <ProjectsSection />
       <Testimonials />
-      <BlogPreview />
+      <BlogPreview posts={blogPosts} />
       <CtaSection />
     </div>
   );

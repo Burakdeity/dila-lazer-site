@@ -12,19 +12,19 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, subslug } = await params;
-  const cat = getCategoryBySlug(slug);
+  const cat = await getCategoryBySlug(slug);
   const sub = cat?.subcategories.find((s) => s.slug === subslug);
   return { title: sub?.name || "Alt Kategori" };
 }
 
 export default async function SubcategoryPage({ params }: Props) {
   const { slug, subslug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug);
   const subcategory = category?.subcategories.find((s) => s.slug === subslug);
   if (!category || !subcategory) notFound();
 
   const products = await getProductsBySubcategory(subslug);
-  const categories = getMainCategories();
+  const categories = await getMainCategories();
 
   const subcategoryLinks = category.subcategories.map((sub) => ({
     name: sub.name,

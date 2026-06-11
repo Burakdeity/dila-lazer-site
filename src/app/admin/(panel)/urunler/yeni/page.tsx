@@ -1,7 +1,7 @@
 import { ProductForm } from "@/components/admin/product-form";
 import { getMainCategories } from "@/lib/catalog";
 
-export default function NewProductPage() {
-  const categories = getMainCategories();
+export default async function NewProductPage() {
+  const categories = await getMainCategories();
   return <ProductForm categories={categories} />;
 }

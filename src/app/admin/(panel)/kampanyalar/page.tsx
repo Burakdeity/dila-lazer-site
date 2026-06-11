@@ -1,15 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
-import { campaigns } from "@/data/catalog/campaigns";
+import { ExternalLink, Pencil, Plus } from "lucide-react";
+import { getAllCampaignsFromStore } from "@/lib/campaign-store";
 import { AdminPageHeader, AdminCard, AdminBadge, AdminStatCard } from "@/components/admin/admin-ui";
 
-export default function AdminCampaignsPage() {
+export default async function AdminCampaignsPage() {
+  const campaigns = await getAllCampaignsFromStore();
   const active = campaigns.filter((c) => !c.endsAt || new Date(c.endsAt) >= new Date());
 
   return (
     <div>
-      <AdminPageHeader title="Kampanyalar" description={`${campaigns.length} kampanya`} />
+      <AdminPageHeader
+        title="Kampanyalar"
+        description={`${campaigns.length} kampanya`}
+        action={
+          <Link href="/admin/kampanyalar/yeni" className="inline-flex items-center gap-2 px-4 py-2 bg-brand-red text-white text-sm font-medium rounded-xl hover:bg-brand-red/90">
+            <Plus className="h-4 w-4" /> Yeni Kampanya
+          </Link>
+        }
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <AdminStatCard label="Toplam Kampanya" value={campaigns.length} />
@@ -42,9 +51,14 @@ export default function AdminCampaignsPage() {
                 {c.endsAt && (
                   <p className="text-xs text-gray-500 mt-3">Bitiş: {new Date(c.endsAt).toLocaleDateString("tr-TR")}</p>
                 )}
-                <Link href={c.link} target="_blank" className="inline-flex items-center gap-1 text-xs text-brand-red mt-3 hover:underline">
-                  Mağazada gör <ExternalLink className="h-3 w-3" />
-                </Link>
+                <div className="flex items-center gap-3 mt-3">
+                  <Link href={`/admin/kampanyalar/${c.id}`} className="inline-flex items-center gap-1 text-xs text-brand-red hover:underline">
+                    <Pencil className="h-3 w-3" /> Düzenle
+                  </Link>
+                  <Link href={c.link} target="_blank" className="inline-flex items-center gap-1 text-xs text-gray-400 hover:underline">
+                    Mağazada gör <ExternalLink className="h-3 w-3" />
+                  </Link>
+                </div>
               </div>
             </AdminCard>
           );

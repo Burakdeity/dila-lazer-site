@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { blogPosts } from "@/data/catalog/blog";
+import { getAllBlogPostsFromStore } from "@/lib/blog-store";
 import { Container } from "@/components/ui/container";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Blog",
   description: "Neon tabela, dekorasyon ve elektronik ürünler hakkında rehberler.",
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const blogPosts = await getAllBlogPostsFromStore();
+
   return (
     <div className="pt-24 lg:pt-32 pb-20 bg-white min-h-screen">
       <Container>

@@ -6,49 +6,33 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { NeonAmbient } from "@/components/effects/neon-ambient";
+import type { HeroSlide } from "@/types/admin";
 
-const slides = [
-  {
-    id: 1,
-    eyebrow: "Neon & LED Tabela",
-    title: "Markanızı Işıkla Öne Çıkarın",
-    subtitle: "Özel üretim neon tabelalar, 81 ile güvenli teslimat ve 2 yıl garanti.",
-    image: "/hero/slide-neon-led.png",
-    cta: { label: "Koleksiyonu İncele", href: "/kategori/neon-led-tabelalar" },
-    secondary: { label: "Teklif Al", href: "/teklif-al" },
-  },
-  {
-    id: 2,
-    eyebrow: "3D Yazıcı Üretim",
-    title: "Hayalinizdeki Modeli Basıyoruz",
-    subtitle: "Prototip, dekoratif parça ve özel tasarım 3D baskı — PLA, PETG ve reçine seçenekleriyle hızlı üretim.",
-    image: "/hero/slide-3d-kurumsal.png",
-    imageClass: "object-cover object-center sm:object-right opacity-70",
-    overlayClass: "bg-gradient-to-r from-brand-black via-brand-black/70 to-brand-black/15",
-    cta: { label: "3D Ürünler", href: "/kategori/3d-urunler" },
-    secondary: { label: "Teklif Al", href: "/teklif-al" },
-  },
-  {
-    id: 3,
-    eyebrow: "Kendin Tasarla",
-    title: "Hayalinizdeki Ürünü Tasarlayın",
-    subtitle: "Canlı önizleme, anlık fiyat hesaplama ve uzman tasarım desteği.",
-    image: "/hero/slide-uretim.png",
-    cta: { label: "Tasarlamaya Başla", href: "/ozel-tasarim-merkezi" },
-    secondary: { label: "Nasıl Çalışır?", href: "/hakkimizda" },
-  },
-];
+interface StoreHeroProps {
+  slides: HeroSlide[];
+}
 
-export function StoreHero() {
+export function StoreHero({ slides: allSlides }: StoreHeroProps) {
+  const slides = allSlides.filter((s) => s.isActive);
   const [current, setCurrent] = useState(0);
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), []);
+  const next = useCallback(() => {
+    if (!slides.length) return;
+    setCurrent((c) => (c + 1) % slides.length);
+  }, [slides.length]);
+
+  const prev = useCallback(() => {
+    if (!slides.length) return;
+    setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   useEffect(() => {
+    if (!slides.length) return;
     const timer = setInterval(next, 7000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, slides.length]);
+
+  if (!slides.length) return null;
 
   const slide = slides[current];
 
@@ -109,51 +93,53 @@ export function StoreHero() {
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    href={slide.cta.href}
+                    href={slide.ctaHref}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-brand-red text-white text-sm font-semibold rounded-lg hover:bg-brand-red/90 transition-colors neon-btn-glow"
                   >
-                    {slide.cta.label}
+                    {slide.ctaLabel}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
-                    href={slide.secondary.href}
+                    href={slide.secondaryHref}
                     className="inline-flex items-center px-6 py-3 bg-white/10 text-white text-sm font-medium rounded-lg border border-white/20 hover:bg-white/15 transition-colors backdrop-blur-sm"
                   >
-                    {slide.secondary.label}
+                    {slide.secondaryLabel}
                   </Link>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10 flex items-center gap-2">
-            <button
-              onClick={prev}
-              className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-colors"
-              aria-label="Önceki slayt"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <div className="flex gap-1.5 px-1">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === current ? "w-6 bg-brand-red" : "w-1.5 bg-white/40 hover:bg-white/60"
-                  }`}
-                  aria-label={`Slayt ${i + 1}`}
-                />
-              ))}
+          {slides.length > 1 && (
+            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10 flex items-center gap-2">
+              <button
+                onClick={prev}
+                className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-colors"
+                aria-label="Önceki slayt"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <div className="flex gap-1.5 px-1">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrent(i)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      i === current ? "w-6 bg-brand-red" : "w-1.5 bg-white/40 hover:bg-white/60"
+                    }`}
+                    aria-label={`Slayt ${i + 1}`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={next}
+                className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-colors"
+                aria-label="Sonraki slayt"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
-            <button
-              onClick={next}
-              className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-colors"
-              aria-label="Sonraki slayt"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { campaigns } from "@/data/catalog/campaigns";
+import { getAllCampaignsFromStore } from "@/lib/campaign-store";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Kampanyalar",
   description: "Aktif kampanya ve indirim fırsatları.",
 };
 
-export default function CampaignsPage() {
+export default async function CampaignsPage() {
+  const campaigns = await getAllCampaignsFromStore();
+
   return (
     <div className="pt-24 lg:pt-32 pb-20 bg-white min-h-screen">
       <Container>
@@ -26,8 +30,8 @@ export default function CampaignsPage() {
                     %{c.discount} İndirim
                   </span>
                 )}
-                <h2 className="text-2xl font-bold text-brand-black">{c.title}</h2>
-                <p className="text-gray-500 mt-2">{c.subtitle}</p>
+                <h2 className="text-2xl font-bold text-white">{c.title}</h2>
+                <p className="text-white/80 mt-2">{c.subtitle}</p>
                 <Link href={c.link} className="inline-block mt-4">
                   <Button>İncele</Button>
                 </Link>

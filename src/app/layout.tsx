@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { StoreChrome } from "@/components/layout/store-chrome";
+import { StoreLayout } from "@/components/layout/store-layout";
 import { AppProviders } from "@/components/providers/app-providers";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { brand } from "@/lib/brand";
@@ -61,9 +61,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GoogleAnalytics />
         <AppProviders>
           <AuthSessionProvider>
-            <StoreChrome>
+            <StoreLayout>
               <main>{children}</main>
-            </StoreChrome>
+            </StoreLayout>
           </AuthSessionProvider>
         </AppProviders>
       </body>

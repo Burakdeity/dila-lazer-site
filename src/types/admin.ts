@@ -46,6 +46,44 @@ export interface Coupon {
   createdAt: string;
 }
 
+export interface MenuLink {
+  id: string;
+  label: string;
+  href: string;
+  isActive: boolean;
+}
+
+export interface HeroSlide {
+  id: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  imageClass?: string;
+  overlayClass?: string;
+  ctaLabel: string;
+  ctaHref: string;
+  secondaryLabel: string;
+  secondaryHref: string;
+  isActive: boolean;
+}
+
+export interface SiteBanner {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  link: string;
+  isActive: boolean;
+}
+
+export interface SiteMenus {
+  topBarLinks: MenuLink[];
+  extraNavLinks: MenuLink[];
+  footerCorporateLinks: MenuLink[];
+  footerServiceLinks: MenuLink[];
+}
+
 export interface SiteSettings {
   seo: {
     title: string;
@@ -64,14 +102,9 @@ export interface SiteSettings {
     whatsapp: string;
     mapsQuery?: string;
   };
-  banners: {
-    id: string;
-    title: string;
-    subtitle: string;
-    image: string;
-    link: string;
-    isActive: boolean;
-  }[];
+  banners: SiteBanner[];
+  heroSlides: HeroSlide[];
+  menus: SiteMenus;
 }
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {

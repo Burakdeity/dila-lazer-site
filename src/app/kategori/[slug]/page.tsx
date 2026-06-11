@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 import { getCategoryBySlug, getProductsByCategory, getMainCategories } from "@/lib/catalog";
-import { mainCategories } from "@/data/catalog/categories";
 import { ProductCatalog } from "@/components/catalog/product-catalog";
 import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
 import { buildPageMetadata } from "@/lib/seo";
@@ -13,13 +12,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return mainCategories.map((c) => ({ slug: c.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const cat = getCategoryBySlug(slug);
+  const cat = await getCategoryBySlug(slug);
   if (!cat) return { title: "Kategori Bulunamadı" };
   return buildPageMetadata({
     title: cat.name,
@@ -31,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug);
   if (!category) notFound();
 
   const products = await getProductsByCategory(slug);
-  const categories = getMainCategories();
+  const categories = await getMainCategories();
 
   const subcategoryLinks = category.subcategories.map((sub) => ({
     name: sub.name,

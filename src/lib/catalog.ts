@@ -1,21 +1,32 @@
-import { mainCategories, allSubcategories } from "@/data/catalog/categories";
+import {
+  getAllCategoriesFromStore,
+  getCategoryBySlugFromStore,
+} from "@/lib/category-store";
 import {
   getAllProductsFromStore,
   getProductBySlugFromStore,
 } from "@/lib/product-store";
 import type { Product, MainCategory } from "@/types/catalog";
 
-export function getMainCategories(): MainCategory[] {
-  return mainCategories;
+export async function getMainCategories(): Promise<MainCategory[]> {
+  return getAllCategoriesFromStore();
 }
 
-export function getCategoryBySlug(slug: string): MainCategory | undefined {
-  return mainCategories.find((c) => c.slug === slug);
+export async function getCategoryBySlug(slug: string): Promise<MainCategory | undefined> {
+  const cat = await getCategoryBySlugFromStore(slug);
+  return cat ?? undefined;
 }
 
-export function getSubcategory(parentSlug: string, subSlug: string) {
-  const cat = getCategoryBySlug(parentSlug);
+export async function getSubcategory(parentSlug: string, subSlug: string) {
+  const cat = await getCategoryBySlug(parentSlug);
   return cat?.subcategories.find((s) => s.slug === subSlug);
+}
+
+export async function getAllSubcategories() {
+  const categories = await getAllCategoriesFromStore();
+  return categories.flatMap((c) =>
+    c.subcategories.map((s) => ({ ...s, parentSlug: c.slug, parentName: c.name }))
+  );
 }
 
 export async function getAllProducts(): Promise<Product[]> {
@@ -79,5 +90,3 @@ export async function searchProducts(query: string): Promise<Product[]> {
       p.description.toLowerCase().includes(q)
   );
 }
-
-export { allSubcategories };

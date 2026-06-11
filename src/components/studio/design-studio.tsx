@@ -44,15 +44,8 @@ const productTypes = [
   { id: "led", name: "LED / Elektronik", material: "led" },
 ];
 
-const sizes = [
-  { id: "small", label: "Küçük", dim: "40×20 cm", w: 40, h: 20 },
-  { id: "medium", label: "Orta", dim: "60×30 cm", w: 60, h: 30 },
-  { id: "large", label: "Büyük", dim: "80×40 cm", w: 80, h: 40 },
-  { id: "xlarge", label: "XL", dim: "100×50 cm", w: 100, h: 50 },
-];
-
 const steps = [
-  { num: 1, title: "Tasarla", desc: "Yazı, renk ve boyut seçin" },
+  { num: 1, title: "Tasarla", desc: "Yazı ve renk seçin" },
   { num: 2, title: "Önizle", desc: "Canlı neon simülasyonu" },
   { num: 3, title: "Teklif", desc: "WhatsApp üzerinden fiyat alın" },
 ];
@@ -90,7 +83,6 @@ function buildQuoteMessage(
   text: string,
   font: NeonFont,
   colorName: string,
-  sizeDim: string,
   productName: string,
 ) {
   return `Merhaba, özel tasarımım için fiyat teklifi almak istiyorum.
@@ -98,7 +90,6 @@ function buildQuoteMessage(
 Yazı: ${text}
 Font: ${font.name}
 Renk: ${colorName}
-Boyut: ${sizeDim}
 Ürün: ${productName}`;
 }
 
@@ -107,7 +98,6 @@ export function DesignStudio() {
   const [text, setText] = useState("Kendin Yarat!");
   const [font, setFont] = useState<NeonFont>(defaultNeonFont);
   const [color, setColor] = useState(neonColors[0]);
-  const [size, setSize] = useState(sizes[1]);
   const [productType, setProductType] = useState(productTypes[0]);
   const [material, setMaterial] = useState(productTypes[0].material);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
@@ -119,7 +109,7 @@ export function DesignStudio() {
   } | null>(null);
 
   const whatsAppQuoteUrl = getWhatsAppUrl(
-    buildQuoteMessage(text, font, color.name, size.dim, productType.name),
+    buildQuoteMessage(text, font, color.name, productType.name),
   );
 
   const handleLogoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +138,6 @@ export function DesignStudio() {
     setAiResult(null);
     setFont(defaultNeonFont);
     setColor(neonColors[0]);
-    setSize(sizes[1]);
     setProductType(productTypes[0]);
     setMaterial("neon");
   };
@@ -171,7 +160,7 @@ export function DesignStudio() {
                 Profesyonel Tasarım Stüdyosu
               </h1>
               <p className="text-white/65 max-w-xl text-sm sm:text-base leading-relaxed">
-                Yazınızı yazın, rengi ve boyutu seçin — canlı neon önizlemesi ile tasarımınızı oluşturun
+                Yazınızı yazın, rengi seçin — canlı neon önizlemesi ile tasarımınızı oluşturun
                 dakikalar içinde siparişe hazır olun.
               </p>
             </div>
@@ -215,7 +204,7 @@ export function DesignStudio() {
       <div className="max-w-[1400px] mx-auto px-3 sm:px-4 py-5 sm:py-8 lg:py-10">
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {/* Önizleme — mobilde üstte */}
-          <div className="xl:col-span-2 order-1">
+          <div className="xl:col-span-3 order-1">
             <div className="xl:sticky xl:top-24 space-y-4">
               <div className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden shadow-sm">
                 <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100 bg-gray-50">
@@ -228,8 +217,6 @@ export function DesignStudio() {
                   font={font}
                   glowColor={glowColor}
                   colorName={color.name}
-                  sizeDim={size.dim}
-                  sizeId={size.id}
                   productName={productType.name}
                   logoPreview={logoPreview}
                   isRgb={color.id === "rgb"}
@@ -293,7 +280,7 @@ export function DesignStudio() {
           </div>
 
           {/* Kontroller */}
-          <div className="xl:col-span-3 order-2 space-y-3 sm:space-y-4">
+          <div className="xl:col-span-2 order-2 space-y-3 sm:space-y-4">
             <div className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
               <div className="flex border-b border-gray-200">
                 {designTabs.map((tab) => (
@@ -355,13 +342,9 @@ export function DesignStudio() {
                     <div className="mt-5 p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-400 mb-2">Seçili font önizlemesi</p>
                       <p
-                        className="text-2xl truncate"
+                        className="text-3xl sm:text-4xl truncate"
                         style={{
-                          fontFamily: `"${font.family}", cursive`,
-                          fontWeight: font.weight,
-                          fontStyle: font.style,
-                          letterSpacing: font.letterSpacing,
-                          textTransform: font.textTransform,
+                          fontFamily: `"${font.family}", cursive, sans-serif`,
                           color: glowColor,
                         }}
                       >
@@ -382,49 +365,27 @@ export function DesignStudio() {
                 )}
 
                 {activeTab === "color" && (
-                  <div className="space-y-4">
-                    <Panel title="Neon Rengi" icon={Palette}>
-                      <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
-                        {neonColors.map((c) => (
-                          <button
-                            key={c.id}
-                            onClick={() => setColor(c)}
-                            className="flex flex-col items-center gap-2 group"
-                          >
-                            <span
-                              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl border-2 transition-all shadow-sm ${
-                                color.id === c.id
-                                  ? "border-brand-red scale-110 ring-2 ring-brand-red/20"
-                                  : "border-gray-200 group-hover:border-gray-300"
-                              }`}
-                              style={{ background: c.hex }}
-                            />
-                            <span className="text-[10px] text-gray-500 font-medium">{c.name}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </Panel>
-                    <Panel title="Boyut" icon={Ruler}>
-                      <div className="grid grid-cols-2 gap-3">
-                        {sizes.map((s) => (
-                          <button
-                            key={s.id}
-                            onClick={() => setSize(s)}
-                            className={`px-4 py-4 rounded-xl text-left border transition-all ${
-                              size.id === s.id
-                                ? "bg-brand-red text-white border-brand-red shadow-sm"
-                                : "bg-gray-50 text-gray-700 border-gray-200 hover:border-gray-300"
+                  <Panel title="Neon Rengi" icon={Palette}>
+                    <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
+                      {neonColors.map((c) => (
+                        <button
+                          key={c.id}
+                          onClick={() => setColor(c)}
+                          className="flex flex-col items-center gap-2 group"
+                        >
+                          <span
+                            className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl border-2 transition-all shadow-sm ${
+                              color.id === c.id
+                                ? "border-brand-red scale-110 ring-2 ring-brand-red/20"
+                                : "border-gray-200 group-hover:border-gray-300"
                             }`}
-                          >
-                            <span className="block text-sm font-semibold">{s.label}</span>
-                            <span className={`block text-xs mt-0.5 ${size.id === s.id ? "text-white/70" : "text-gray-400"}`}>
-                              {s.dim}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </Panel>
-                  </div>
+                            style={{ background: c.hex }}
+                          />
+                          <span className="text-[10px] text-gray-500 font-medium">{c.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </Panel>
                 )}
 
                 {activeTab === "product" && (

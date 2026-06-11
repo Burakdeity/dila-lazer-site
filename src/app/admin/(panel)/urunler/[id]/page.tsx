@@ -12,6 +12,6 @@ export default async function EditProductPage({ params }: Props) {
   const product = await getProductByIdFromStore(id);
   if (!product) notFound();
 
-  const categories = getMainCategories();
+  const categories = await getMainCategories();
   return <ProductForm categories={categories} product={product} />;
 }

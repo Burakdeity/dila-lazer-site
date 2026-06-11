@@ -1,12 +1,20 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import type { MainCategory } from "@/types/catalog";
+import type { SiteMenus } from "@/types/admin";
 import { StoreHeader } from "@/components/layout/store-header";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { WhatsAppFloat } from "@/components/shared/whatsapp-float";
 import { SocialProofToast } from "@/components/shared/social-proof";
 
-export function StoreChrome({ children }: { children: React.ReactNode }) {
+interface StoreChromeProps {
+  children: React.ReactNode;
+  categories: MainCategory[];
+  menus: SiteMenus;
+}
+
+export function StoreChrome({ children, categories, menus }: StoreChromeProps) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
 
@@ -16,9 +24,9 @@ export function StoreChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <StoreHeader />
+      <StoreHeader categories={categories} menus={menus} />
       {children}
-      <StoreFooter />
+      <StoreFooter categories={categories} menus={menus} />
       <SocialProofToast />
       <WhatsAppFloat />
     </>

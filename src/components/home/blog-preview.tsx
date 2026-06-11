@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { blogPosts } from "@/data/catalog/blog";
+import type { BlogPost } from "@/data/catalog/blog";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
-export function BlogPreview() {
+export function BlogPreview({ posts }: { posts: BlogPost[] }) {
   return (
     <section className="py-20 lg:py-28 bg-gray-50">
       <Container>
@@ -26,7 +26,7 @@ export function BlogPreview() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {blogPosts.map((post, i) => (
+          {posts.slice(0, 3).map((post, i) => (
             <motion.div
               key={post.slug}
               initial={{ opacity: 0, y: 20 }}
