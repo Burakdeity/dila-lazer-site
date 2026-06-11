@@ -11,9 +11,14 @@ export async function GET(request: Request) {
 
   try {
     const result = await get(pathname, { access: "private" });
+
+    if (!result || result.statusCode !== 200 || !result.stream) {
+      return NextResponse.json({ error: "Dosya bulunamadı" }, { status: 404 });
+    }
+
     return new NextResponse(result.stream, {
       headers: {
-        "Content-Type": result.blob.contentType,
+        "Content-Type": result.blob.contentType ?? "application/octet-stream",
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
