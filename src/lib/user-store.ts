@@ -1,7 +1,5 @@
-import { promises as fs } from "fs";
-import path from "path";
-import { randomUUID } from "crypto";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
 export interface StoredUser {
   id: string;
@@ -14,41 +12,47 @@ export interface StoredUser {
   createdAt: string;
 }
 
-const USERS_PATH = path.join(process.cwd(), "data", "users.json");
-
-async function ensureFile(): Promise<StoredUser[]> {
-  try {
-    const raw = (await fs.readFile(USERS_PATH, "utf-8")).trim();
-    if (!raw) throw new Error("empty");
-    const parsed = JSON.parse(raw) as StoredUser[];
-    if (!Array.isArray(parsed)) throw new Error("invalid");
-    return parsed;
-  } catch {
-    await fs.mkdir(path.dirname(USERS_PATH), { recursive: true });
-    await fs.writeFile(USERS_PATH, "[]", "utf-8");
-    return [];
-  }
-}
-
-async function saveUsers(users: StoredUser[]): Promise<void> {
-  await fs.mkdir(path.dirname(USERS_PATH), { recursive: true });
-  await fs.writeFile(USERS_PATH, JSON.stringify(users, null, 2), "utf-8");
+function toStoredUser(user: {
+  id: string;
+  email: string | null;
+  name: string | null;
+  passwordHash: string | null;
+  role: string;
+  loyaltyTier: string;
+  points: number;
+  createdAt: Date;
+}): StoredUser {
+  return {
+    id: user.id,
+    email: user.email ?? "",
+    name: user.name ?? "",
+    passwordHash: user.passwordHash ?? "",
+    role: user.role,
+    loyaltyTier: user.loyaltyTier,
+    points: user.points,
+    createdAt: user.createdAt.toISOString(),
+  };
 }
 
 export async function getAllUsers(): Promise<StoredUser[]> {
-  return ensureFile();
+  const users = await prisma.user.findMany({ orderBy: { createdAt: "desc" } });
+  return users.map(toStoredUser);
 }
 
 export async function getCustomers(): Promise<StoredUser[]> {
-  const users = await ensureFile();
-  return users
-    .filter((u) => u.role === "CUSTOMER")
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  const users = await prisma.user.findMany({
+    where: { role: "CUSTOMER" },
+    orderBy: { createdAt: "desc" },
+  });
+  return users.map(toStoredUser);
 }
 
 export async function findUserByEmail(email: string): Promise<StoredUser | null> {
-  const users = await ensureFile();
-  return users.find((u) => u.email === email.toLowerCase()) ?? null;
+  const user = await prisma.user.findUnique({
+    where: { email: email.toLowerCase() },
+  });
+  if (!user || !user.passwordHash) return null;
+  return toStoredUser(user);
 }
 
 export async function createUser(data: {
@@ -56,27 +60,27 @@ export async function createUser(data: {
   name: string;
   passwordHash: string;
 }): Promise<StoredUser> {
-  const users = await ensureFile();
   const normalizedEmail = data.email.toLowerCase();
 
-  if (users.some((u) => u.email === normalizedEmail)) {
+  const existing = await prisma.user.findUnique({
+    where: { email: normalizedEmail },
+  });
+  if (existing) {
     throw new Error("EMAIL_EXISTS");
   }
 
-  const user: StoredUser = {
-    id: randomUUID(),
-    email: normalizedEmail,
-    name: data.name,
-    passwordHash: data.passwordHash,
-    role: "CUSTOMER",
-    loyaltyTier: "BRONZE",
-    points: 0,
-    createdAt: new Date().toISOString(),
-  };
+  const user = await prisma.user.create({
+    data: {
+      email: normalizedEmail,
+      name: data.name,
+      passwordHash: data.passwordHash,
+      role: "CUSTOMER",
+      loyaltyTier: "BRONZE",
+      points: 0,
+    },
+  });
 
-  users.push(user);
-  await saveUsers(users);
-  return user;
+  return toStoredUser(user);
 }
 
 /** .env içindeki ADMIN_EMAIL / ADMIN_PASSWORD ile admin hesabı oluşturur veya günceller */
@@ -86,26 +90,22 @@ export async function seedAdminUser(): Promise<void> {
 
   if (!email || !password) return;
 
-  const users = await ensureFile();
   const passwordHash = await bcrypt.hash(password, 12);
-  const existing = users.find((u) => u.email === email);
 
-  if (existing) {
-    existing.role = "ADMIN";
-    existing.passwordHash = passwordHash;
-    if (!existing.name) existing.name = "Admin";
-  } else {
-    users.push({
-      id: randomUUID(),
+  await prisma.user.upsert({
+    where: { email },
+    create: {
       email,
       name: "Admin",
       passwordHash,
       role: "ADMIN",
       loyaltyTier: "GOLD",
       points: 0,
-      createdAt: new Date().toISOString(),
-    });
-  }
-
-  await saveUsers(users);
+    },
+    update: {
+      passwordHash,
+      role: "ADMIN",
+      name: "Admin",
+    },
+  });
 }

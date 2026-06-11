@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "seed:admin": "node scripts/seed-admin.mjs",
-    "build": "next build",
+    "build": "prisma db push --skip-generate && next build",
     "build:cpanel": "node scripts/build-cpanel-zip.mjs",
     "start": "next start",
     "lint": "next lint",
