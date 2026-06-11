@@ -10,6 +10,18 @@ const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/pjpeg", "image/png", "image/webp", "image/gif"];
 const ALLOWED_EXT = ["jpg", "jpeg", "png", "webp", "gif"];
 
+function resolveBlobToken(): string | undefined {
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    return process.env.BLOB_READ_WRITE_TOKEN;
+  }
+  for (const [key, value] of Object.entries(process.env)) {
+    if (key.endsWith("_READ_WRITE_TOKEN") && value) {
+      return value;
+    }
+  }
+  return undefined;
+}
+
 export async function POST(request: Request) {
   const session = await requireAdminSession();
   if (!session) return adminUnauthorized();
@@ -39,22 +51,18 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const contentType = file.type || `image/${safeExt === "jpg" ? "jpeg" : safeExt}`;
 
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const blobToken = resolveBlobToken();
+    const hasBlobStore = Boolean(process.env.BLOB_STORE_ID);
+    const useBlob =
+      blobToken || hasBlobStore || process.env.VERCEL === "1";
+
+    if (useBlob) {
       const blob = await put(`products/${filename}`, buffer, {
         access: "public",
         contentType,
+        ...(blobToken ? { token: blobToken } : {}),
       });
       return NextResponse.json({ url: blob.url });
-    }
-
-    if (process.env.VERCEL === "1") {
-      return NextResponse.json(
-        {
-          error:
-            "Resim yükleme için Vercel Blob gerekli. Vercel → Storage → Blob oluşturun ve projeye bağlayın.",
-        },
-        { status: 503 }
-      );
     }
 
     await fs.mkdir(UPLOAD_DIR, { recursive: true });
