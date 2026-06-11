@@ -22,6 +22,17 @@ function resolveBlobToken(): string | undefined {
   return undefined;
 }
 
+function uploadErrorMessage(err: unknown): string {
+  const message = err instanceof Error ? err.message : String(err);
+  if (message.includes("access") || message.includes("Access")) {
+    return "Blob depolama erişim hatası. Vercel Storage ayarlarını kontrol edin.";
+  }
+  if (message.includes("token") || message.includes("Token")) {
+    return "Blob kimlik doğrulama hatası. Vercel'de Redeploy yapın.";
+  }
+  return "Yükleme başarısız. Dosya boyutunu ve formatını kontrol edin.";
+}
+
 export async function POST(request: Request) {
   const session = await requireAdminSession();
   if (!session) return adminUnauthorized();
@@ -48,21 +59,31 @@ export async function POST(request: Request) {
 
     const safeExt = extOk ? ext : "jpg";
     const filename = `${randomUUID()}.${safeExt}`;
+    const pathname = `products/${filename}`;
     const buffer = Buffer.from(await file.arrayBuffer());
     const contentType = file.type || `image/${safeExt === "jpg" ? "jpeg" : safeExt}`;
 
     const blobToken = resolveBlobToken();
-    const hasBlobStore = Boolean(process.env.BLOB_STORE_ID);
     const useBlob =
-      blobToken || hasBlobStore || process.env.VERCEL === "1";
+      blobToken || Boolean(process.env.BLOB_STORE_ID) || process.env.VERCEL === "1";
 
     if (useBlob) {
-      const blob = await put(`products/${filename}`, buffer, {
-        access: "public",
+      const putOptions = {
         contentType,
+        addRandomSuffix: false,
         ...(blobToken ? { token: blobToken } : {}),
-      });
-      return NextResponse.json({ url: blob.url });
+      };
+
+      let blob;
+      try {
+        blob = await put(pathname, buffer, { ...putOptions, access: "public" });
+        return NextResponse.json({ url: blob.url });
+      } catch (publicErr) {
+        console.warn("Public blob upload failed, trying private:", publicErr);
+        blob = await put(pathname, buffer, { ...putOptions, access: "private" });
+        const proxyUrl = `/api/media?pathname=${encodeURIComponent(pathname)}`;
+        return NextResponse.json({ url: proxyUrl, blobUrl: blob.url });
+      }
     }
 
     await fs.mkdir(UPLOAD_DIR, { recursive: true });
@@ -70,6 +91,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: `/uploads/products/${filename}` });
   } catch (err) {
     console.error("Upload error:", err);
-    return NextResponse.json({ error: "Yükleme başarısız" }, { status: 500 });
+    return NextResponse.json({ error: uploadErrorMessage(err) }, { status: 500 });
   }
 }
