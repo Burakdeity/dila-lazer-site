@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+
+export const dynamic = "force-dynamic";
 import { blogPosts } from "@/data/catalog/blog";
 import { mainCategories } from "@/data/catalog/categories";
 import { getAllProducts } from "@/lib/catalog";

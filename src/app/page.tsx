@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 import { StoreHero } from "@/components/home/store-hero";
 import { JsonLd, homePageSchemas } from "@/components/seo/json-ld";
 import { buildPageMetadata } from "@/lib/seo";

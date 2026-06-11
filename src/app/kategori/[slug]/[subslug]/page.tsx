@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 import { getCategoryBySlug, getProductsBySubcategory, getMainCategories } from "@/lib/catalog";
 import { ProductCatalog } from "@/components/catalog/product-catalog";
 

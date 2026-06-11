@@ -4,6 +4,8 @@ const dbUrl = process.env.DATABASE_URL ?? "";
 const isRemoteDb =
   dbUrl.startsWith("postgresql://") && !dbUrl.includes("localhost");
 
+execSync("npx prisma generate", { stdio: "inherit" });
+
 if (isRemoteDb) {
   console.log("Veritabani semasi guncelleniyor...");
   execSync("npx prisma db push --skip-generate", { stdio: "inherit" });

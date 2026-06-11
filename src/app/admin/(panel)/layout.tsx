@@ -1,6 +1,8 @@
 import { AdminNav } from "@/components/admin/admin-nav";
 import { BrandLogo } from "@/components/layout/brand-logo";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-[#0f0f0f]">
