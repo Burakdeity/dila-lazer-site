@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, Menu, X, Phone, Search } from "lucide-react";
@@ -32,6 +32,8 @@ export function StoreHeader() {
   const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
   const cartTotal = useCartStore((s) => s.subtotal());
   const itemCount = useCartStore((s) => s.itemCount());
 
@@ -42,13 +44,34 @@ export function StoreHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const updateHeight = () => setHeaderHeight(el.offsetHeight);
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(el);
+    window.addEventListener("resize", updateHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [mobileOpen]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) router.push(`/urunler?q=${encodeURIComponent(query.trim())}`);
   };
 
   return (
-    <header className={`sticky top-0 z-50 w-full transition-shadow duration-300 ${scrolled ? "shadow-md" : ""}`}>
+    <>
+    <header
+      ref={headerRef}
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-shadow duration-300 ${scrolled ? "shadow-md" : ""}`}
+    >
       {/* Üst bilgi barı */}
       <div className="bg-brand-black text-white text-xs relative overflow-hidden">
         <div className="absolute inset-0 neon-topbar-shimmer pointer-events-none" />
@@ -229,5 +252,7 @@ export function StoreHeader() {
         </div>
       )}
     </header>
+    <div aria-hidden style={{ height: headerHeight }} />
+    </>
   );
 }
