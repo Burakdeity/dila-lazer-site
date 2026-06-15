@@ -7,11 +7,11 @@ import { useSession } from "next-auth/react";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Tag, X, Loader2 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { FreeShippingBar, FREE_SHIPPING_THRESHOLD } from "@/components/cart/free-shipping-bar";
+import { FreeShippingBar } from "@/components/cart/free-shipping-bar";
+import { CheckoutSteps } from "@/components/checkout/checkout-steps";
 import { useCartStore } from "@/store/cart";
+import { calcGrandTotal, calcShipping } from "@/lib/checkout";
 import { formatPrice } from "@/lib/utils";
-
-const SHIPPING_FEE = 150;
 
 export default function CartPage() {
   const { data: session } = useSession();
@@ -33,8 +33,8 @@ export default function CartPage() {
 
   const total = subtotal();
   const discount = discountAmount();
-  const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  const grandTotal = Math.max(0, total - discount) + shipping;
+  const shipping = calcShipping(total);
+  const grandTotal = calcGrandTotal(total, discount, shipping);
 
   const applyCoupon = async () => {
     setCouponError("");
@@ -95,6 +95,7 @@ export default function CartPage() {
   return (
     <div className="pt-24 lg:pt-32 pb-20 bg-gray-50 min-h-screen">
       <Container>
+        <CheckoutSteps current={1} />
         <h1 className="text-2xl sm:text-3xl font-bold text-brand-black mb-6">
           Sepetim ({items.length} ürün)
         </h1>

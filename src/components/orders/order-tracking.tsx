@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Search, Package, CheckCircle2, Factory, Truck, XCircle,
   Loader2, MapPin, Calendar, CreditCard,
@@ -37,11 +38,19 @@ const STATUS_INDEX: Record<OrderStatus, number> = {
 };
 
 export function OrderTracking() {
+  const searchParams = useSearchParams();
   const [orderNo, setOrderNo] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [order, setOrder] = useState<TrackedOrder | null>(null);
+
+  useEffect(() => {
+    const qOrder = searchParams.get("order");
+    const qEmail = searchParams.get("email");
+    if (qOrder) setOrderNo(qOrder);
+    if (qEmail) setEmail(qEmail);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,7 +99,7 @@ export function OrderTracking() {
               required
               value={orderNo}
               onChange={(e) => setOrderNo(e.target.value.toUpperCase())}
-              placeholder="SIP-2025-001"
+              placeholder="DL1234567890"
               className="form-input w-full h-11 font-mono"
             />
           </div>

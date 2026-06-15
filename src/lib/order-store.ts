@@ -1,8 +1,13 @@
 import { randomUUID } from "crypto";
-import type { Order, OrderStatus } from "@/types/admin";
+import type { Order, OrderLineItem, OrderStatus } from "@/types/admin";
 import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
 const STORE_KEY = "orders";
+
+/** PayTR uyumlu alfanumerik sipariş no */
+export function generateOrderNo(): string {
+  return `DL${Date.now()}${Math.floor(Math.random() * 10000)}`;
+}
 
 const seedOrders: Order[] = [
   {
@@ -141,6 +146,14 @@ export async function updateOrderStatusByOrderNo(
   return orders[index];
 }
 
+export async function getOrdersByEmail(email: string): Promise<Order[]> {
+  const orders = await ensureOrders();
+  const normalized = email.trim().toLowerCase();
+  return orders
+    .filter((o) => o.customerEmail.toLowerCase() === normalized)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
 export async function createOrder(
   data: Omit<Order, "id" | "orderNo" | "createdAt">,
   options?: { orderNo?: string }
@@ -149,12 +162,12 @@ export async function createOrder(
   const order: Order = {
     ...data,
     id: randomUUID(),
-    orderNo:
-      options?.orderNo ??
-      `SIP-2025-${String(orders.length + 1).padStart(3, "0")}`,
+    orderNo: options?.orderNo ?? generateOrderNo(),
     createdAt: new Date().toISOString(),
   };
   orders.unshift(order);
   await saveOrders(orders);
   return order;
 }
+
+export type { OrderLineItem };

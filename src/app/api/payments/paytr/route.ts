@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { createOrder } from "@/lib/order-store";
+import { getOrderByOrderNo } from "@/lib/order-store";
 import {
   buildPaytrToken,
   buildUserBasket,
-  generateMerchantOid,
   getAppUrl,
   getClientIp,
   getPaytrConfig,
@@ -13,6 +12,7 @@ import {
 type BasketItem = { name: string; unitPrice: number; quantity: number };
 
 type PaytrRequestBody = {
+  orderNo: string;
   amount: number;
   email?: string;
   buyer?: {
@@ -29,8 +29,12 @@ type PaytrRequestBody = {
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as PaytrRequestBody;
-    const { amount, buyer, items = [], shipping = 0 } = body;
+    const { orderNo, amount, buyer, items = [], shipping = 0 } = body;
     const email = (body.email || buyer?.email || "").trim().toLowerCase();
+
+    if (!orderNo) {
+      return NextResponse.json({ error: "Sipariş numarası gerekli" }, { status: 400 });
+    }
 
     if (!email || !email.includes("@")) {
       return NextResponse.json({ error: "Geçerli bir e-posta adresi girin" }, { status: 400 });
@@ -38,6 +42,11 @@ export async function POST(request: Request) {
 
     if (!amount || amount <= 0) {
       return NextResponse.json({ error: "Geçersiz tutar" }, { status: 400 });
+    }
+
+    const existingOrder = await getOrderByOrderNo(orderNo);
+    if (!existingOrder) {
+      return NextResponse.json({ error: "Sipariş bulunamadı" }, { status: 404 });
     }
 
     const config = getPaytrConfig();
@@ -48,16 +57,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const merchantOid = generateMerchantOid();
+    const merchantOid = orderNo;
     const userIp = getClientIp(request);
     const paymentAmount = tlToKurus(amount);
 
     const basketItems: BasketItem[] =
       items.length > 0
         ? items
-        : [{ name: "Sipariş", unitPrice: amount - shipping, quantity: 1 }];
+        : existingOrder.items?.map((i) => ({
+            name: i.name,
+            unitPrice: i.unitPrice,
+            quantity: i.quantity,
+          })) ?? [{ name: "Sipariş", unitPrice: amount - shipping, quantity: 1 }];
 
-    if (shipping > 0) {
+    if (shipping > 0 && !basketItems.some((i) => i.name === "Kargo")) {
       basketItems.push({ name: "Kargo", unitPrice: shipping, quantity: 1 });
     }
 
@@ -73,9 +86,15 @@ export async function POST(request: Request) {
     const debugOn = process.env.PAYTR_DEBUG_ON === "1" ? 1 : 0;
     const appUrl = getAppUrl();
 
-    const userName = (buyer?.name || "Müşteri").slice(0, 60);
-    const userPhone = (buyer?.phone || "05000000000").replace(/\D/g, "").slice(0, 20);
-    const userAddress = [buyer?.address, buyer?.city].filter(Boolean).join(", ").slice(0, 400) || "Türkiye";
+    const userName = (buyer?.name || existingOrder.customerName || "Müşteri").slice(0, 60);
+    const userPhone = (buyer?.phone || existingOrder.customerPhone || "05000000000")
+      .replace(/\D/g, "")
+      .slice(0, 20);
+    const userAddress =
+      [buyer?.address || existingOrder.shippingAddress, buyer?.city || existingOrder.shippingCity]
+        .filter(Boolean)
+        .join(", ")
+        .slice(0, 400) || "Türkiye";
 
     const paytrToken = buildPaytrToken({
       merchantId: config.merchantId,
@@ -125,26 +144,6 @@ export async function POST(request: Request) {
         { status: 502 }
       );
     }
-
-    const productSummary =
-      items.length === 1
-        ? items[0].name
-        : items.length > 1
-          ? `${items[0].name} +${items.length - 1} ürün`
-          : "Online sipariş";
-
-    await createOrder(
-      {
-        customerName: userName,
-        customerEmail: email,
-        customerPhone: buyer?.phone,
-        productName: productSummary,
-        amount,
-        status: "pending",
-        shippingCity: buyer?.city,
-      },
-      { orderNo: merchantOid }
-    );
 
     return NextResponse.json({
       success: true,

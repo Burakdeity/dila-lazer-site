@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Truck, Shield, Clock, Headphones } from "lucide-react";
 import { OrderTracking } from "@/components/orders/order-tracking";
 
@@ -32,7 +33,9 @@ export default function OrderTrackingPage() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-4 -mt-8">
-        <OrderTracking />
+        <Suspense fallback={<div className="h-48 flex items-center justify-center text-gray-400">Yükleniyor…</div>}>
+          <OrderTracking />
+        </Suspense>
       </div>
 
       <div className="max-w-[1400px] mx-auto px-4 mt-12">

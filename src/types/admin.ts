@@ -6,6 +6,19 @@ export type OrderStatus =
   | "delivered"
   | "cancelled";
 
+export interface OrderLineItem {
+  productId: string;
+  name: string;
+  slug?: string;
+  image?: string;
+  quantity: number;
+  unitPrice: number;
+  size?: string;
+  material?: string;
+  color?: string;
+  customText?: string;
+}
+
 export interface Order {
   id: string;
   orderNo: string;
@@ -17,6 +30,17 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
   shippingCity?: string;
+  shippingDistrict?: string;
+  shippingAddress?: string;
+  items?: OrderLineItem[];
+  paymentMethod?: string;
+  carrier?: string;
+  subtotal?: number;
+  shippingCost?: number;
+  discount?: number;
+  couponCode?: string;
+  notes?: string;
+  userId?: string;
 }
 
 export type QuoteStatus = "new" | "reviewing" | "quoted" | "accepted" | "rejected";
