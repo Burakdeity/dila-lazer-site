@@ -1,18 +1,25 @@
 import type { Metadata } from "next";
 import { InfoPage } from "@/components/pages/info-page";
 import { brand } from "@/lib/brand";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Hakkımızda",
-  description: `${brand.name} — neon tabela, lazer kesim ve kurumsal tabela çözümleri.`,
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Hakkımızda — Sakarya Neon Tabela Atölyesi",
+  description: `${brand.name}, Sakarya Adapazarı merkezli neon tabela, lazer kesim ve kurumsal tabela üreticisi. 2 yıl garanti, ücretsiz teklif.`,
+  path: "/hakkimizda",
+});
 
 export default function AboutPage() {
   return (
     <InfoPage title="Hakkımızda" subtitle={brand.tagline}>
       <p>
-        <strong>{brand.name}</strong>, neon LED tabela, MDF ve pleksi dekorasyon, 3D kutu harf ve lazer kesim
-        alanlarında Türkiye geneline hizmet veren bir üretim ve e-ticaret markasıdır.
+        <strong>{brand.name}</strong>, Sakarya Adapazarı&apos;nda faaliyet gösteren; neon LED tabela, MDF ve pleksi
+        dekorasyon, 3D kutu harf ve lazer kesim alanlarında Türkiye geneline hizmet veren bir üretim ve e-ticaret
+        markasıdır.
+      </p>
+      <p>
+        Adapazarı atölyemizde her ürün özenle üretilir. Sakarya ve çevre ilçelerden gelen müşterilerimiz
+        tasarım sürecini yüz yüze takip edebilir; Türkiye&apos;nin her yerine ise sigortalı kargo ile teslimat yapıyoruz.
       </p>
       <p>
         Kendin Tasarla stüdyomuz ile müşterilerimiz canlı önizleme yaparak kişiye özel ürünlerini

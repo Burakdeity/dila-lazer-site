@@ -4,16 +4,18 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { ContactMap } from "@/components/contact/contact-map";
 import { InfoPage } from "@/components/pages/info-page";
 import { brand } from "@/lib/brand";
+import { buildPageMetadata } from "@/lib/seo";
 import { getWhatsAppUrl } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "İletişim",
-  description: `${brand.name} iletişim bilgileri ve destek kanalları.`,
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "İletişim — Sakarya Adapazarı Atölye",
+  description: `${brand.name} Sakarya Adapazarı atölye adresi, telefon ve WhatsApp. Neon tabela için ücretsiz teklif alın.`,
+  path: "/iletisim",
+});
 
 export default function ContactPage() {
   return (
-    <InfoPage title="İletişim" subtitle="Sorularınız için bize ulaşın">
+    <InfoPage title="İletişim" subtitle="Sakarya Adapazarı atölyemize ulaşın">
       <ul className="space-y-4 not-prose">
         <li className="flex items-start gap-3">
           <Phone className="h-5 w-5 text-brand-red shrink-0 mt-0.5" />

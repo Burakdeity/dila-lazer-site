@@ -2,7 +2,32 @@ import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
 
 export const siteDescription =
-  "Neon LED tabela, MDF, pleksi, 3D kutu harf ve lazer kesim ürünler. Kendin Tasarla stüdyosu ile canlı önizleme, 81 ile teslimat, 2 yıl garanti.";
+  "Sakarya Adapazarı merkezli neon LED tabela, pleksi, 3D kutu harf ve lazer kesim atölyesi. Kendin Tasarla stüdyosu, ücretsiz teklif, 81 ile teslimat ve 2 yıl garanti.";
+
+export const siteKeywords = [
+  "sakarya neon tabela",
+  "sakarya led tabela",
+  "adapazarı tabela",
+  "sakarya lazer kesim",
+  "sakarya reklam tabela",
+  "sakarya 3d kutu harf",
+  "sakarya pleksi tabela",
+  "neon tabela",
+  "led tabela",
+  "özel neon yazı",
+  "kendin tasarla neon",
+  "mdf dekor",
+  "3d kutu harf",
+  "lazer kesim tabela",
+  "cafe tabela",
+  "dükkan tabelası",
+] as const;
+
+export const sakaryaGeo = {
+  latitude: 40.7831,
+  longitude: 30.4032,
+  mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(brand.contact.mapsQuery)}`,
+} as const;
 
 export function getSiteUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -21,12 +46,14 @@ export function getDefaultOgImage(): string {
 export function buildPageMetadata({
   title,
   description = siteDescription,
+  keywords = [...siteKeywords],
   path,
   image,
   noIndex = false,
 }: {
   title: string;
   description?: string;
+  keywords?: string[];
   path?: string;
   image?: string;
   noIndex?: boolean;
@@ -37,6 +64,7 @@ export function buildPageMetadata({
   return {
     title,
     description,
+    keywords,
     alternates: url ? { canonical: url } : undefined,
     openGraph: {
       title,

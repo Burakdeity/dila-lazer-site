@@ -4,7 +4,7 @@ import { StoreLayout } from "@/components/layout/store-layout";
 import { AppProviders } from "@/components/providers/app-providers";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { brand } from "@/lib/brand";
-import { getDefaultOgImage, siteDescription } from "@/lib/seo";
+import { getDefaultOgImage, siteDescription, siteKeywords } from "@/lib/seo";
 import { GoogleAnalytics } from "@/components/seo/google-analytics";
 import "./globals.css";
 
@@ -17,27 +17,23 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: `${brand.name} | Neon, Tabela & Lazer Kesim`,
+    default: `${brand.name} | Sakarya Neon Tabela, LED & Lazer Kesim`,
     template: `%s | ${brand.name}`,
   },
   description: siteDescription,
-  keywords: [
-    "neon tabela", "led tabela", "özel neon yazı", "kendin tasarla neon",
-    "mdf dekor", "pleksi tabela", "3d kutu harf", "lazer kesim tabela",
-    "cafe tabela", "dükkan tabelası", "istanbul neon tabela",
-  ],
+  keywords: [...siteKeywords],
   authors: [{ name: brand.name }],
   openGraph: {
     type: "website",
     locale: "tr_TR",
     siteName: brand.name,
-    title: `${brand.name} | Neon, Tabela & Lazer Kesim`,
+    title: `${brand.name} | Sakarya Neon Tabela, LED & Lazer Kesim`,
     description: siteDescription,
     images: [{ url: getDefaultOgImage(), width: 1200, height: 630, alt: brand.name }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${brand.name} | Neon, Tabela & Lazer Kesim`,
+    title: `${brand.name} | Sakarya Neon Tabela, LED & Lazer Kesim`,
     description: siteDescription,
     images: [getDefaultOgImage()],
   },

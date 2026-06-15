@@ -13,6 +13,7 @@ import { FeaturedCollection } from "@/components/home/featured-collection";
 import { StatsSection } from "@/components/home/stats-section";
 import { Testimonials } from "@/components/home/testimonials";
 import { CtaSection } from "@/components/home/cta-section";
+import { LocalSeoSection } from "@/components/home/local-seo-section";
 import { ProcessSection } from "@/components/home/process-section";
 import { ProjectsSection } from "@/components/home/projects-section";
 import { BlogPreview } from "@/components/home/blog-preview";
@@ -28,7 +29,7 @@ import { getAllBlogPostsFromStore } from "@/lib/blog-store";
 import { getSettings } from "@/lib/settings-store";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Neon Tabela, LED & Lazer Kesim",
+  title: "Sakarya Neon Tabela, LED Tabela & Lazer Kesim",
   path: "/",
 });
 
@@ -72,6 +73,7 @@ export default async function HomePage() {
         muted
       />
       <StatsSection />
+      <LocalSeoSection />
       <ProjectsSection />
       <Testimonials />
       <BlogPreview posts={blogPosts} />

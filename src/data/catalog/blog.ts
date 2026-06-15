@@ -6,6 +6,20 @@ export interface BlogPost extends BlogPostPreview {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "sakarya-neon-tabela-rehberi",
+    title: "Sakarya'da Neon Tabela Seçim Rehberi",
+    excerpt: "Adapazarı ve Sakarya'da işletmeniz için doğru neon tabelayı nasıl seçersiniz?",
+    cover: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
+    category: "Sakarya",
+    date: "10 Haziran 2025",
+    author: "Editör",
+    content: [
+      "Sakarya'da neon tabela yaptırmadan önce kullanım alanınızı netleştirin: iç mekan cafe, vitrin veya dış cephe uygulamaları farklı malzeme ve IP koruma sınıfı gerektirir.",
+      "Adapazarı ve çevre ilçelerde yerel bir atölye ile çalışmak ölçü kontrolü, montaj ve satış sonrası destek açısından avantaj sağlar. Atölyeyi ziyaret ederek LED kalitesini ve malzeme detaylarını yerinde inceleyebilirsiniz.",
+      "Renk, font ve ölçü seçiminde marka kimliğinizi yansıtan tasarımlar tercih edin. Kendin Tasarla stüdyomuzda duvarınızda canlı önizleme yaparak sipariş öncesi karar verebilirsiniz.",
+    ],
+  },
+  {
     slug: "neon-tabela-secim-rehberi-2025",
     title: "2025 Neon Tabela Seçim Rehberi",
     excerpt: "İşletmeniz için doğru neon tabelayı nasıl seçersiniz?",

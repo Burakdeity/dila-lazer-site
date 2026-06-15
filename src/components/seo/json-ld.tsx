@@ -1,5 +1,5 @@
 import { brand } from "@/lib/brand";
-import { absoluteUrl, getSiteUrl } from "@/lib/seo";
+import { absoluteUrl, getSiteUrl, sakaryaGeo, siteDescription } from "@/lib/seo";
 
 interface JsonLdProps {
   data: Record<string, unknown> | Record<string, unknown>[];
@@ -23,27 +23,7 @@ export function organizationSchema() {
     name: brand.name,
     url: getSiteUrl(),
     logo: absoluteUrl("/logo.png"),
-    description: brand.tagline,
-    email: brand.contact.email,
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: brand.contact.phone.replace(/\s/g, ""),
-      contactType: "customer service",
-      areaServed: "TR",
-      availableLanguage: ["Turkish"],
-    },
-    sameAs: socialLinks,
-  };
-}
-
-export function localBusinessSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: brand.name,
-    image: absoluteUrl("/logo.png"),
-    url: getSiteUrl(),
-    telephone: brand.contact.phone.replace(/\s/g, ""),
+    description: siteDescription,
     email: brand.contact.email,
     address: {
       "@type": "PostalAddress",
@@ -53,11 +33,66 @@ export function localBusinessSchema() {
       postalCode: "54100",
       addressCountry: "TR",
     },
-    areaServed: {
-      "@type": "Country",
-      name: "Türkiye",
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: brand.contact.phone.replace(/\s/g, ""),
+      contactType: "customer service",
+      areaServed: ["Sakarya", "TR"],
+      availableLanguage: ["Turkish"],
     },
+    sameAs: socialLinks,
+  };
+}
+
+export function localBusinessSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "Store"],
+    "@id": `${getSiteUrl()}/#localbusiness`,
+    name: `${brand.name} — Sakarya Neon Tabela`,
+    image: absoluteUrl("/logo.png"),
+    url: getSiteUrl(),
+    telephone: brand.contact.phone.replace(/\s/g, ""),
+    email: brand.contact.email,
+    description: siteDescription,
     priceRange: "₺₺",
+    currenciesAccepted: "TRY",
+    paymentAccepted: "Cash, Credit Card, Bank Transfer",
+    hasMap: sakaryaGeo.mapsUrl,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: sakaryaGeo.latitude,
+      longitude: sakaryaGeo.longitude,
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Papuççular, Bostancı Sk. No:60",
+      addressLocality: "Adapazarı",
+      addressRegion: "Sakarya",
+      postalCode: "54100",
+      addressCountry: "TR",
+    },
+    areaServed: [
+      { "@type": "City", name: "Adapazarı" },
+      { "@type": "AdministrativeArea", name: "Sakarya" },
+      { "@type": "Country", name: "Türkiye" },
+    ],
+    knowsAbout: [
+      "Neon tabela",
+      "LED tabela",
+      "Lazer kesim",
+      "3D kutu harf",
+      "Pleksi tabela",
+      "Reklam tabelası",
+    ],
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        opens: "09:00",
+        closes: "19:00",
+      },
+    ],
   };
 }
 
@@ -131,4 +166,26 @@ export function productSchema(product: {
 
 export function homePageSchemas() {
   return [organizationSchema(), localBusinessSchema(), websiteSchema()];
+}
+
+export function faqSchema(items: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function sakaryaPageSchemas(faqs: { question: string; answer: string }[]) {
+  return [localBusinessSchema(), breadcrumbSchema([
+    { name: "Ana Sayfa", path: "/" },
+    { name: "Sakarya Neon Tabela", path: "/sakarya" },
+  ]), faqSchema(faqs)];
 }

@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages = [
     { path: "", priority: 1 },
+    { path: "/sakarya", priority: 0.95 },
     { path: "/urunler", priority: 0.9 },
     { path: "/ozel-tasarim-merkezi", priority: 0.9 },
     { path: "/teklif-al", priority: 0.8 },

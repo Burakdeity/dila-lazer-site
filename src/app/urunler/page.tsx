@@ -4,11 +4,13 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 import { getAllProducts, getMainCategories } from "@/lib/catalog";
 import { ProductCatalog } from "@/components/catalog/product-catalog";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Tüm Ürünler",
-  description: "Neon LED, MDF, pleksi, 3D ve elektronik ürünlerimizi keşfedin. Filtreleyin, sıralayın ve güvenle sipariş verin.",
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Sakarya Neon Tabela Ürünleri",
+  description: "Sakarya ve Türkiye geneline neon LED, MDF, pleksi, 3D ürünler. Filtreleyin, sıralayın ve güvenle sipariş verin.",
+  path: "/urunler",
+});
 
 export default async function ProductsPage() {
   const products = await getAllProducts();
