@@ -54,16 +54,17 @@ export function StoreHero({ slides: allSlides }: StoreHeroProps) {
                 src={slide.image}
                 alt=""
                 fill
-                className={slide.imageClass ?? "object-cover opacity-50"}
+                className={`${slide.imageClass ?? "object-cover opacity-45"} brightness-[0.62]`}
                 sizes="(max-width: 1400px) 100vw, 1400px"
                 priority={current === 0}
               />
               <div
-                className={
+                className={`absolute inset-0 ${
                   slide.overlayClass ??
-                  "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/85 to-brand-black/30"
-                }
+                  "bg-gradient-to-r from-brand-black via-brand-black/90 to-brand-black/40"
+                }`}
               />
+              <div className="absolute inset-0 bg-black/25 pointer-events-none" aria-hidden />
             </motion.div>
           </AnimatePresence>
 

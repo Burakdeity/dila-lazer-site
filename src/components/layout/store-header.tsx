@@ -39,18 +39,13 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
     <header className="relative z-40 w-full bg-white">
       <div className="bg-brand-black text-white text-xs relative overflow-hidden">
         <div className="absolute inset-0 neon-topbar-shimmer pointer-events-none" />
-        <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-9 relative z-10">
-          <p className="hidden sm:block truncate text-white/80">
+
+        {/* Masaüstü üst bar */}
+        <div className="hidden lg:flex max-w-[1400px] mx-auto px-4 items-center justify-between h-9 relative z-10">
+          <p className="truncate text-white/80">
             Premium neon, tabela ve lazer kesim — Türkiye geneli teslimat
           </p>
-          <a
-            href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
-            className="sm:hidden flex items-center gap-1.5 text-white/90 hover:text-white"
-          >
-            <Phone className="h-3.5 w-3.5" />
-            {brand.contact.phone}
-          </a>
-          <div className="hidden lg:flex items-center gap-5 shrink-0">
+          <div className="flex items-center gap-5 shrink-0">
             {topLinks.map((link) => (
               <Link
                 key={link.id}
@@ -63,6 +58,31 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
             <a
               href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
               className="flex items-center gap-1.5 text-white font-medium"
+            >
+              <Phone className="h-3.5 w-3.5" />
+              {brand.contact.phone}
+            </a>
+          </div>
+        </div>
+
+        {/* Mobil & tablet — yatay kaydırmalı linkler */}
+        <div className="lg:hidden relative z-10 border-b border-white/5">
+          <div className="flex items-center gap-4 h-9 px-4 overflow-x-auto overscroll-x-contain scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {topLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.href}
+                className="shrink-0 text-white/75 hover:text-white transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <span className="shrink-0 text-white/25" aria-hidden>
+              |
+            </span>
+            <a
+              href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
+              className="shrink-0 flex items-center gap-1.5 text-white font-medium whitespace-nowrap"
             >
               <Phone className="h-3.5 w-3.5" />
               {brand.contact.phone}
@@ -187,6 +207,23 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg max-h-[70vh] overflow-y-auto">
           <div className="px-4 py-3 space-y-1">
+            <p className="px-3 py-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wide">
+              Hızlı Erişim
+            </p>
+            {topLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block py-2 px-3 text-sm text-gray-600 hover:bg-gray-50 rounded-lg"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <hr className="my-2 border-gray-100" />
+            <p className="px-3 py-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wide">
+              Kategoriler
+            </p>
             {navCategories.map((cat) => (
               <Link
                 key={cat.href + cat.label}
