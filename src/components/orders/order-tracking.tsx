@@ -91,7 +91,7 @@ export function OrderTracking() {
               value={orderNo}
               onChange={(e) => setOrderNo(e.target.value.toUpperCase())}
               placeholder="SIP-2025-001"
-              className="w-full h-11 px-4 rounded-xl border border-gray-300 text-sm font-mono focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
+              className="form-input w-full h-11 font-mono"
             />
           </div>
           <div>
@@ -102,7 +102,7 @@ export function OrderTracking() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ornek@email.com"
-              className="w-full h-11 px-4 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
+              className="form-input w-full h-11"
             />
           </div>
         </div>

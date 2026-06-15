@@ -77,12 +77,12 @@ export default function CheckoutPage() {
                 <input
                   key={label}
                   placeholder={label}
-                  className="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-white text-sm placeholder:text-gray-400 focus:outline-none focus:border-brand-red/50"
+                  className="form-input w-full"
                 />
               ))}
               <input
                 placeholder="Adres"
-                className="sm:col-span-2 px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-white text-sm placeholder:text-gray-400 focus:outline-none focus:border-brand-red/50"
+                className="form-input w-full sm:col-span-2"
               />
             </div>
           </div>

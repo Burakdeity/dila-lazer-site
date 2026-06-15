@@ -44,6 +44,9 @@ const defaultHeroSlides: HeroSlide[] = [
     title: "Markanızı Işıkla Öne Çıkarın",
     subtitle: "Özel üretim neon tabelalar, 81 ile güvenli teslimat ve 2 yıl garanti.",
     image: "/hero/slide-neon-led.png",
+    imageClass: "object-cover opacity-[0.58]",
+    overlayClass:
+      "absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/72 to-brand-black/22",
     ctaLabel: "Koleksiyonu İncele",
     ctaHref: "/kategori/neon-led-tabelalar",
     secondaryLabel: "Teklif Al",
@@ -56,8 +59,9 @@ const defaultHeroSlides: HeroSlide[] = [
     title: "Hayalinizdeki Modeli Basıyoruz",
     subtitle: "Prototip, dekoratif parça ve özel tasarım 3D baskı — PLA, PETG ve reçine seçenekleriyle hızlı üretim.",
     image: "/hero/slide-3d-kurumsal.png",
-    imageClass: "object-cover object-center sm:object-right opacity-65 brightness-[0.92]",
-    overlayClass: "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/75 to-brand-black/22",
+    imageClass: "object-cover object-center sm:object-right opacity-[0.62] brightness-[0.94]",
+    overlayClass:
+      "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/72 to-brand-black/18",
     ctaLabel: "3D Ürünler",
     ctaHref: "/kategori/3d-urunler",
     secondaryLabel: "Teklif Al",
@@ -116,16 +120,25 @@ const defaultSettings: SiteSettings = {
 
 async function ensureSettings(): Promise<SiteSettings> {
   const parsed = await loadJsonStore<Partial<SiteSettings>>(STORE_KEY, defaultSettings);
-  const heroSlides = (parsed.heroSlides ?? defaultSettings.heroSlides).map((slide) =>
-    slide.id === "2"
-      ? {
-          ...slide,
-          imageClass: "object-cover object-center sm:object-right opacity-65 brightness-[0.92]",
-          overlayClass:
-            "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/75 to-brand-black/22",
-        }
-      : slide
-  );
+  const heroSlides = (parsed.heroSlides ?? defaultSettings.heroSlides).map((slide) => {
+    if (slide.id === "1") {
+      return {
+        ...slide,
+        imageClass: "object-cover opacity-[0.58]",
+        overlayClass:
+          "absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/72 to-brand-black/22",
+      };
+    }
+    if (slide.id === "2") {
+      return {
+        ...slide,
+        imageClass: "object-cover object-center sm:object-right opacity-[0.62] brightness-[0.94]",
+        overlayClass:
+          "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/72 to-brand-black/18",
+      };
+    }
+    return slide;
+  });
   return {
     seo: { ...defaultSettings.seo, ...parsed.seo },
     shipping: { ...defaultSettings.shipping, ...parsed.shipping },

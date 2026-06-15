@@ -27,7 +27,7 @@ export function StoreFooter({ categories, menus }: StoreFooterProps) {
               <input
                 type="email"
                 placeholder="E-posta adresiniz"
-                className="flex-1 lg:w-72 h-11 px-4 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
+                className="form-input flex-1 lg:w-72 h-11"
               />
               <button
                 type="submit"

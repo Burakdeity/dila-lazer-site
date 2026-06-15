@@ -191,6 +191,13 @@
     @apply bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:ring-0;
   }
 
+  /* Mağaza her zaman açık tema — form alanları okunaklı kalsın */
+  [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+  [data-theme="light"] textarea,
+  [data-theme="light"] select {
+    @apply text-brand-black;
+  }
+
   .page-section {
     @apply bg-white;
   }
