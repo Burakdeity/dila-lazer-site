@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, Menu, X, Phone, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, Phone, Search, ChevronDown } from "lucide-react";
 import { AccountLink } from "@/components/layout/account-link";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { brand } from "@/lib/brand";
@@ -21,13 +21,15 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const cartTotal = useCartStore((s) => s.subtotal());
   const itemCount = useCartStore((s) => s.itemCount());
 
   const topLinks = menus.topBarLinks.filter((l) => l.isActive);
+  const extraNavLinks = menus.extraNavLinks.filter((l) => l.isActive);
   const navCategories = [
     ...categories.map((c) => ({ href: `/kategori/${c.slug}`, label: c.name })),
-    ...menus.extraNavLinks.filter((l) => l.isActive).map((l) => ({ href: l.href, label: l.label })),
+    ...extraNavLinks.map((l) => ({ href: l.href, label: l.label })),
   ];
 
   const handleSearch = (e: React.FormEvent) => {
@@ -87,7 +89,12 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
                 </Link>
                 <button
                   className="p-2 rounded-lg hover:bg-gray-100"
-                  onClick={() => setMobileOpen(!mobileOpen)}
+                  onClick={() => {
+                    setMobileOpen((open) => {
+                      if (open) setExpandedCategory(null);
+                      return !open;
+                    });
+                  }}
                   aria-label="Menü"
                 >
                   {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -185,8 +192,85 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
       </nav>
 
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg max-h-[70vh] overflow-y-auto">
+        <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg max-h-[75vh] overflow-y-auto">
           <div className="px-4 py-3 space-y-1">
+            <p className="px-3 pt-1 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+              Kategoriler
+            </p>
+            <Link
+              href="/urunler"
+              onClick={() => setMobileOpen(false)}
+              className="block py-2.5 px-3 text-sm font-semibold text-brand-red hover:bg-brand-red/5 rounded-lg"
+            >
+              Tüm Ürünler
+            </Link>
+            {categories.map((cat) => {
+              const isExpanded = expandedCategory === cat.id;
+              const hasSubs = cat.subcategories.length > 0;
+              return (
+                <div key={cat.id}>
+                  <div className="flex items-center rounded-lg hover:bg-gray-50">
+                    <Link
+                      href={`/kategori/${cat.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex-1 py-2.5 px-3 text-sm font-medium text-brand-black"
+                    >
+                      {cat.name}
+                    </Link>
+                    {hasSubs && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedCategory(isExpanded ? null : cat.id)}
+                        className="p-2.5 text-gray-400 hover:text-brand-black"
+                        aria-label={`${cat.name} alt kategorileri`}
+                      >
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                    )}
+                  </div>
+                  {isExpanded && hasSubs && (
+                    <div className="ml-3 mb-1 border-l border-gray-100 pl-2 space-y-0.5">
+                      {cat.subcategories.map((sub) => (
+                        <Link
+                          key={sub.id}
+                          href={`/kategori/${cat.slug}/${sub.slug}`}
+                          onClick={() => setMobileOpen(false)}
+                          className="block py-2 px-3 text-sm text-gray-600 hover:bg-gray-50 rounded-lg"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            {extraNavLinks.length > 0 && (
+              <>
+                <hr className="my-2 border-gray-100" />
+                <p className="px-3 pt-1 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                  Hızlı Erişim
+                </p>
+                {extraNavLinks.map((link) => (
+                  <Link
+                    key={link.id}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </>
+            )}
+
+            <hr className="my-2 border-gray-100" />
+            <p className="px-3 pt-1 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+              Menü
+            </p>
             {topLinks.map((link) => (
               <Link
                 key={link.id}
