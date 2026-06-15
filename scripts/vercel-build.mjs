@@ -1,4 +1,5 @@
 import { execSync } from "node:child_process";
+import fs from "node:fs";
 
 const dbUrl = process.env.DATABASE_URL ?? "";
 const isRemoteDb =
@@ -19,3 +20,15 @@ if (isRemoteDb) {
 }
 
 execSync("npx next build", { stdio: "inherit" });
+
+try {
+  const commit = execSync("git rev-parse --short HEAD", { encoding: "utf8" }).trim();
+  const message = execSync("git log -1 --pretty=%s", { encoding: "utf8" }).trim();
+  fs.writeFileSync(
+    "public/version.json",
+    `${JSON.stringify({ commit, message, updated: new Date().toISOString() }, null, 2)}\n`,
+  );
+  console.log(`version.json guncellendi: ${commit}`);
+} catch {
+  console.warn("version.json yazilamadi (git bilgisi yok).");
+}
