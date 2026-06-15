@@ -194,6 +194,17 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg max-h-[75vh] overflow-y-auto">
           <div className="px-4 py-3 space-y-1">
+            <Link href="/giris" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium">
+              Giriş Yap
+            </Link>
+            <Link href="/kayit" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium">
+              Kayıt Ol
+            </Link>
+            <Link href="/sepet" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 text-sm font-semibold text-brand-red hover:bg-brand-red/5 rounded-lg">
+              Sepetim — {formatPrice(cartTotal)} ({itemCount})
+            </Link>
+
+            <hr className="my-2 border-gray-100" />
             <p className="px-3 pt-1 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
               Kategoriler
             </p>
@@ -248,25 +259,6 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
               );
             })}
 
-            {extraNavLinks.length > 0 && (
-              <>
-                <hr className="my-2 border-gray-100" />
-                <p className="px-3 pt-1 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
-                  Hızlı Erişim
-                </p>
-                {extraNavLinks.map((link) => (
-                  <Link
-                    key={link.id}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </>
-            )}
-
             <hr className="my-2 border-gray-100" />
             <p className="px-3 pt-1 pb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
               Menü
@@ -281,16 +273,6 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
                 {link.label}
               </Link>
             ))}
-            <hr className="my-2 border-gray-100" />
-            <Link href="/giris" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-              Giriş Yap
-            </Link>
-            <Link href="/kayit" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-              Kayıt Ol
-            </Link>
-            <Link href="/sepet" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 text-sm font-semibold text-brand-red">
-              Sepetim — {formatPrice(cartTotal)} ({itemCount})
-            </Link>
           </div>
         </div>
       )}
