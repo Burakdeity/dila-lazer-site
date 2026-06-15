@@ -1,4 +1,4 @@
-import type { SiteSettings, MenuLink, HeroSlide } from "@/types/admin";
+import type { SiteSettings, MenuLink, HeroSlide, PaymentMethodConfig } from "@/types/admin";
 import { campaigns } from "@/data/catalog/campaigns";
 import { loadJsonStore, saveJsonStore } from "@/lib/app-data";
 
@@ -82,6 +82,53 @@ const defaultHeroSlides: HeroSlide[] = [
   },
 ];
 
+const defaultPaymentMethods: PaymentMethodConfig[] = [
+  {
+    id: "paytr",
+    provider: "paytr",
+    name: "PayTR",
+    description: "Kredi kartı ve banka kartı ile güvenli ödeme",
+    isActive: true,
+    sortOrder: 1,
+  },
+  {
+    id: "iyzico",
+    provider: "iyzico",
+    name: "İyzico",
+    description: "Taksitli ödeme seçenekleri",
+    isActive: true,
+    sortOrder: 2,
+  },
+  {
+    id: "stripe",
+    provider: "stripe",
+    name: "Stripe",
+    description: "Uluslararası kart ile ödeme",
+    isActive: false,
+    sortOrder: 3,
+  },
+  {
+    id: "havale",
+    provider: "havale",
+    name: "Havale / EFT",
+    description: "Banka havalesi ile ödeme",
+    isActive: true,
+    sortOrder: 4,
+    bankName: "Ziraat Bankası",
+    accountHolder: "Dila Lazer",
+    iban: "TR00 0000 0000 0000 0000 0000 00",
+    instructions: "Açıklama kısmına sipariş numaranızı yazınız.",
+  },
+  {
+    id: "kapida",
+    provider: "kapida",
+    name: "Kapıda Ödeme",
+    description: "Teslimat sırasında nakit veya kart ile ödeme",
+    isActive: false,
+    sortOrder: 5,
+  },
+];
+
 const defaultSettings: SiteSettings = {
   seo: {
     title: "Dila Lazer | Neon, Tabela & Lazer Kesim",
@@ -116,6 +163,7 @@ const defaultSettings: SiteSettings = {
     footerCorporateLinks: defaultFooterCorporateLinks,
     footerServiceLinks: defaultFooterServiceLinks,
   },
+  paymentMethods: defaultPaymentMethods,
 };
 
 async function ensureSettings(): Promise<SiteSettings> {
@@ -151,6 +199,10 @@ async function ensureSettings(): Promise<SiteSettings> {
       footerCorporateLinks: parsed.menus?.footerCorporateLinks ?? defaultSettings.menus.footerCorporateLinks,
       footerServiceLinks: parsed.menus?.footerServiceLinks ?? defaultSettings.menus.footerServiceLinks,
     },
+    paymentMethods:
+      parsed.paymentMethods && parsed.paymentMethods.length > 0
+        ? parsed.paymentMethods
+        : defaultSettings.paymentMethods,
   };
 }
 
@@ -167,6 +219,7 @@ export async function updateSettings(partial: Partial<SiteSettings>): Promise<Si
     banners: partial.banners ?? current.banners,
     heroSlides: partial.heroSlides ?? current.heroSlides,
     menus: partial.menus ?? current.menus,
+    paymentMethods: partial.paymentMethods ?? current.paymentMethods,
   };
   await saveJsonStore(STORE_KEY, updated);
   return updated;

@@ -84,6 +84,21 @@ export interface SiteMenus {
   footerServiceLinks: MenuLink[];
 }
 
+export type PaymentProvider = "paytr" | "iyzico" | "stripe" | "havale" | "kapida";
+
+export interface PaymentMethodConfig {
+  id: string;
+  provider: PaymentProvider;
+  name: string;
+  description: string;
+  isActive: boolean;
+  sortOrder: number;
+  bankName?: string;
+  iban?: string;
+  accountHolder?: string;
+  instructions?: string;
+}
+
 export interface SiteSettings {
   seo: {
     title: string;
@@ -105,7 +120,16 @@ export interface SiteSettings {
   banners: SiteBanner[];
   heroSlides: HeroSlide[];
   menus: SiteMenus;
+  paymentMethods: PaymentMethodConfig[];
 }
+
+export const PAYMENT_PROVIDER_LABELS: Record<PaymentProvider, string> = {
+  paytr: "PayTR",
+  iyzico: "İyzico",
+  stripe: "Stripe",
+  havale: "Havale / EFT",
+  kapida: "Kapıda Ödeme",
+};
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   pending: "Beklemede",
