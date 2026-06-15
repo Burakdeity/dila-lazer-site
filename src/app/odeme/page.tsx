@@ -36,7 +36,20 @@ const PROVIDER_ICONS: Record<PaymentProvider, typeof CreditCard> = {
 
 async function startPayment(
   provider: PaymentProvider,
-  payload: { amount: number; orderId: string; email?: string }
+  payload: {
+    amount: number;
+    orderId: string;
+    email?: string;
+    buyer?: {
+      email?: string;
+      name?: string;
+      phone?: string;
+      address?: string;
+      city?: string;
+    };
+    items?: Array<{ name: string; unitPrice: number; quantity: number }>;
+    shipping?: number;
+  }
 ): Promise<{ redirectUrl?: string; demo?: boolean; error?: string }> {
   const endpoints: Partial<Record<PaymentProvider, string>> = {
     paytr: "/api/payments/paytr",
@@ -54,7 +67,9 @@ async function startPayment(
       amount: payload.amount,
       orderId: payload.orderId,
       email: payload.email,
-      buyer: { email: payload.email },
+      buyer: payload.buyer,
+      items: payload.items,
+      shipping: payload.shipping,
     }),
   });
 
@@ -63,11 +78,14 @@ async function startPayment(
     return { error: data.error || "Ödeme başlatılamadı" };
   }
 
+  if (data.token) {
+    return { redirectUrl: `/odeme/paytr?token=${data.token}`, demo: false };
+  }
   if (data.url) return { redirectUrl: data.url, demo: data.demo };
   if (data.iframeUrl) return { redirectUrl: data.iframeUrl, demo: data.demo };
   if (data.paymentPageUrl) return { redirectUrl: data.paymentPageUrl, demo: data.demo };
 
-  return { demo: data.demo };
+  return { demo: data.demo, error: data.error };
 }
 
 export default function CheckoutPage() {
@@ -78,6 +96,12 @@ export default function CheckoutPage() {
   const [carrier, setCarrier] = useState("yurtici");
   const [completing, setCompleting] = useState(false);
   const [payError, setPayError] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerCity, setCustomerCity] = useState("");
+  const [customerDistrict, setCustomerDistrict] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
 
   const total = subtotal();
   const discount = discountAmount();
@@ -100,6 +124,12 @@ export default function CheckoutPage() {
 
   const completeOrder = async () => {
     if (!selectedMethod) return;
+
+    if (!customerName.trim() || !customerPhone.trim() || !customerEmail.trim() || !customerCity.trim() || !customerAddress.trim()) {
+      setPayError("Lütfen teslimat bilgilerini eksiksiz doldurun.");
+      return;
+    }
+
     setCompleting(true);
     setPayError("");
 
@@ -114,6 +144,13 @@ export default function CheckoutPage() {
 
       const orderId = `SIP-${Date.now()}`;
       const provider = selectedMethod.provider;
+      const buyer = {
+        email: customerEmail.trim(),
+        name: customerName.trim(),
+        phone: customerPhone.trim(),
+        address: `${customerAddress.trim()}${customerDistrict ? `, ${customerDistrict.trim()}` : ""}`,
+        city: customerCity.trim(),
+      };
 
       if (provider === "havale" || provider === "kapida") {
         clearCart();
@@ -124,6 +161,14 @@ export default function CheckoutPage() {
       const result = await startPayment(provider, {
         amount: grandTotal,
         orderId,
+        email: buyer.email,
+        buyer,
+        items: items.map((item) => ({
+          name: item.name,
+          unitPrice: item.unitPrice,
+          quantity: item.quantity,
+        })),
+        shipping,
       });
 
       if (result.error) {
@@ -168,10 +213,49 @@ export default function CheckoutPage() {
           <div className="glass-card p-6">
             <h2 className="text-lg font-semibold text-brand-black mb-4">Teslimat Adresi</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {["Ad Soyad", "Telefon", "Şehir", "İlçe"].map((label) => (
-                <input key={label} placeholder={label} className="form-input w-full" />
-              ))}
-              <input placeholder="Adres" className="form-input w-full sm:col-span-2" />
+              <input
+                placeholder="Ad Soyad"
+                className="form-input w-full"
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
+                required
+              />
+              <input
+                placeholder="Telefon"
+                className="form-input w-full"
+                type="tel"
+                value={customerPhone}
+                onChange={(e) => setCustomerPhone(e.target.value)}
+                required
+              />
+              <input
+                placeholder="E-posta"
+                className="form-input w-full sm:col-span-2"
+                type="email"
+                value={customerEmail}
+                onChange={(e) => setCustomerEmail(e.target.value)}
+                required
+              />
+              <input
+                placeholder="Şehir"
+                className="form-input w-full"
+                value={customerCity}
+                onChange={(e) => setCustomerCity(e.target.value)}
+                required
+              />
+              <input
+                placeholder="İlçe"
+                className="form-input w-full"
+                value={customerDistrict}
+                onChange={(e) => setCustomerDistrict(e.target.value)}
+              />
+              <input
+                placeholder="Adres"
+                className="form-input w-full sm:col-span-2"
+                value={customerAddress}
+                onChange={(e) => setCustomerAddress(e.target.value)}
+                required
+              />
             </div>
           </div>
 

@@ -123,12 +123,35 @@ export async function getOrderStats() {
   return { total: orders.length, totalRevenue, pending, active };
 }
 
-export async function createOrder(data: Omit<Order, "id" | "orderNo" | "createdAt">): Promise<Order> {
+export async function getOrderByOrderNo(orderNo: string): Promise<Order | null> {
+  const orders = await ensureOrders();
+  const normalized = orderNo.trim();
+  return orders.find((o) => o.orderNo === normalized) ?? null;
+}
+
+export async function updateOrderStatusByOrderNo(
+  orderNo: string,
+  status: OrderStatus
+): Promise<Order | null> {
+  const orders = await ensureOrders();
+  const index = orders.findIndex((o) => o.orderNo === orderNo);
+  if (index === -1) return null;
+  orders[index] = { ...orders[index], status };
+  await saveOrders(orders);
+  return orders[index];
+}
+
+export async function createOrder(
+  data: Omit<Order, "id" | "orderNo" | "createdAt">,
+  options?: { orderNo?: string }
+): Promise<Order> {
   const orders = await ensureOrders();
   const order: Order = {
     ...data,
     id: randomUUID(),
-    orderNo: `SIP-2025-${String(orders.length + 1).padStart(3, "0")}`,
+    orderNo:
+      options?.orderNo ??
+      `SIP-2025-${String(orders.length + 1).padStart(3, "0")}`,
     createdAt: new Date().toISOString(),
   };
   orders.unshift(order);

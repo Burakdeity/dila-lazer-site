@@ -89,6 +89,11 @@ export function PaymentMethodsForm({ methods }: PaymentMethodsFormProps) {
           (PAYTR_MERCHANT_ID, IYZICO_API_KEY vb.). Buradan yalnızca hangi yöntemlerin görüneceğini ve
           havale bilgilerini yönetirsiniz.
         </p>
+        <p className="text-blue-200/80 text-xs mt-2">
+          <span className="text-blue-100 font-medium">PayTR Bildirim URL:</span>{" "}
+          <code className="text-blue-100">https://dilalazer.com/api/payments/paytr/callback</code>
+          {" "}(PayTR panel → Ayarlar → Bildirim URL)
+        </p>
       </div>
 
       <div className="flex items-center justify-between">
