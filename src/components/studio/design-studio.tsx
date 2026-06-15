@@ -342,10 +342,13 @@ export function DesignStudio() {
                     <div className="mt-5 p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-400 mb-2">Seçili font önizlemesi</p>
                       <p
-                        className="text-3xl sm:text-4xl truncate"
+                        className="text-3xl sm:text-4xl truncate transition-colors duration-300"
                         style={{
                           fontFamily: `"${font.family}", cursive, sans-serif`,
-                          color: glowColor,
+                          color: color.id === "rgb" ? "#FF4DA6" : color.hex,
+                          textShadow: color.id === "rgb"
+                            ? undefined
+                            : `0 0 12px ${color.hex}88, 0 0 24px ${color.hex}44`,
                         }}
                       >
                         {text || "Kendin Yarat!"}
@@ -359,7 +362,7 @@ export function DesignStudio() {
                     <FontPicker
                       selectedId={font.id}
                       onSelect={setFont}
-                      previewColor="#374151"
+                      previewColor={glowColor}
                     />
                   </div>
                 )}

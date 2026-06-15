@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Moon, Sun } from "lucide-react";
 import { NeonGlowText } from "@/components/studio/neon-glow-text";
 import { roomScenes } from "@/components/studio/room-scenes";
+import { wallGlowGradient, wallGlowSpot, resolveNeonGlowColor, hexToRgba } from "@/lib/neon-color";
 import type { NeonFont } from "@/data/neon-fonts";
 
 interface NeonWallPreviewProps {
@@ -56,20 +57,13 @@ export function NeonWallPreview({
   const metaTags = [room.label, isNight ? "Gece" : "Gündüz", colorName];
 
   const wallGlowStyle = useMemo(
-    () =>
-      isRgb
-        ? undefined
-        : ({
-            background: `radial-gradient(ellipse at center, ${glowColor}${isNight ? "70" : "40"} 0%, ${glowColor}${isNight ? "30" : "16"} 38%, transparent 74%)`,
-          } as const),
+    () => (isRgb ? undefined : { background: wallGlowGradient(glowColor, isNight) }),
     [glowColor, isNight, isRgb],
   );
 
   const wallGlowSpotStyle = useMemo(
-    () => ({
-      background: `radial-gradient(ellipse at center, ${glowColor}55 0%, transparent 72%)`,
-    }),
-    [glowColor],
+    () => (isRgb ? undefined : { background: wallGlowSpot(glowColor) }),
+    [glowColor, isRgb],
   );
 
   return (
@@ -117,7 +111,7 @@ export function NeonWallPreview({
           <>
             <div
               key={isRgb ? "rgb-glow" : glowColor}
-              className={`absolute left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-200 ${isRgb ? "neon-rgb-wall-glow" : ""}`}
+              className={`absolute left-1/2 -translate-x-1/2 pointer-events-none transition-[opacity,background] duration-300 ${isRgb ? "neon-rgb-wall-glow" : ""}`}
               style={{
                 top: `calc(${room.neonTop} - 4%)`,
                 width: isNight ? "78%" : "64%",
@@ -125,12 +119,13 @@ export function NeonWallPreview({
                 mixBlendMode: "screen",
                 ...wallGlowStyle,
                 filter: "blur(26px)",
-                opacity: isNight ? 0.9 : 0.55,
+                opacity: isNight ? 0.85 : 0.5,
               }}
             />
+            {!isRgb && (
             <div
               key={`spot-${glowColor}`}
-              className="absolute left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-200"
+              className="absolute left-1/2 -translate-x-1/2 pointer-events-none transition-[opacity,background] duration-300"
               style={{
                 top: `calc(${room.neonTop} + 2%)`,
                 width: "42%",
@@ -138,9 +133,10 @@ export function NeonWallPreview({
                 mixBlendMode: "screen",
                 ...wallGlowSpotStyle,
                 filter: "blur(12px)",
-                opacity: isNight ? 0.85 : 0.45,
+                opacity: isNight ? 0.75 : 0.4,
               }}
             />
+            )}
           </>
         )}
 
@@ -155,22 +151,24 @@ export function NeonWallPreview({
             {logoPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
+                key={glowColor}
                 src={logoPreview}
                 alt="Logo önizleme"
-                className="max-h-[80px] sm:max-h-[120px] max-w-[min(280px,90vw)] object-contain"
+                className="max-h-[80px] sm:max-h-[120px] max-w-[min(280px,90vw)] object-contain transition-[filter,opacity] duration-300"
                 style={{
                   filter: lightOn
                     ? [
-                        `drop-shadow(0 0 6px ${glowColor})`,
-                        `drop-shadow(0 0 18px ${glowColor})`,
-                        `drop-shadow(0 0 ${isNight ? 48 : 28}px ${glowColor}${isNight ? "cc" : "99"})`,
+                        `drop-shadow(0 0 6px ${hexToRgba(resolveNeonGlowColor(glowColor), 0.9)})`,
+                        `drop-shadow(0 0 18px ${hexToRgba(resolveNeonGlowColor(glowColor), 0.75)})`,
+                        `drop-shadow(0 0 ${isNight ? 48 : 28}px ${hexToRgba(resolveNeonGlowColor(glowColor), isNight ? 0.8 : 0.55)})`,
                       ].join(" ")
-                    : `brightness(0.45) drop-shadow(0 0 2px ${glowColor}33)`,
+                    : `brightness(0.45) drop-shadow(0 0 2px ${hexToRgba(resolveNeonGlowColor(glowColor), 0.2)})`,
                   opacity: lightOn ? 1 : 0.35,
                 }}
               />
             ) : (
               <NeonGlowText
+                key={`${glowColor}-${isRgb}-${text}`}
                 text={text}
                 font={font}
                 glowColor={glowColor}

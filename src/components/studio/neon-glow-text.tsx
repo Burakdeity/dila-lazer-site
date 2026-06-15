@@ -1,7 +1,8 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import type { NeonFont } from "@/data/neon-fonts";
+import { hexToRgba, resolveNeonGlowColor } from "@/lib/neon-color";
 
 interface NeonGlowTextProps {
   text: string;
@@ -20,44 +21,34 @@ function buildFontStyle(font: NeonFont): React.CSSProperties {
   };
 }
 
-function withAlpha(hex: string, alpha: number): string {
-  if (hex.startsWith("#") && hex.length === 7) {
-    return `${hex}${Math.round(alpha * 255)
-      .toString(16)
-      .padStart(2, "0")}`;
-  }
-  return hex;
-}
-
 function buildTubeGlow(glowColor: string, intensity: number) {
+  const color = resolveNeonGlowColor(glowColor);
   const t = Math.max(0.7, Math.min(1.25, intensity));
 
   const textShadow = [
     "0 0 1px #ffffff",
     "0 0 2px #ffffff",
     "0 0 3px #ffffff",
-    "0 0 4px #ffffff",
-    `0 0 6px ${glowColor}`,
-    `0 0 10px ${glowColor}`,
-    `0 0 16px ${withAlpha(glowColor, 0.95 * t)}`,
-    `0 0 28px ${withAlpha(glowColor, 0.8 * t)}`,
-    `0 0 44px ${withAlpha(glowColor, 0.55 * t)}`,
-    `0 0 64px ${withAlpha(glowColor, 0.32 * t)}`,
+    `0 0 6px ${hexToRgba(color, 0.95)}`,
+    `0 0 10px ${hexToRgba(color, 0.9 * t)}`,
+    `0 0 16px ${hexToRgba(color, 0.8 * t)}`,
+    `0 0 28px ${hexToRgba(color, 0.62 * t)}`,
+    `0 0 44px ${hexToRgba(color, 0.4 * t)}`,
+    `0 0 64px ${hexToRgba(color, 0.22 * t)}`,
   ].join(", ");
 
   const filter = [
     "drop-shadow(0 0 1px #ffffff)",
-    `drop-shadow(0 0 4px ${glowColor})`,
-    `drop-shadow(0 0 10px ${withAlpha(glowColor, 0.9 * t)})`,
-    `drop-shadow(0 0 20px ${withAlpha(glowColor, 0.7 * t)})`,
-    `drop-shadow(0 0 36px ${withAlpha(glowColor, 0.45 * t)})`,
-    `drop-shadow(0 0 56px ${withAlpha(glowColor, 0.28 * t)})`,
+    `drop-shadow(0 0 4px ${hexToRgba(color, 0.92)})`,
+    `drop-shadow(0 0 10px ${hexToRgba(color, 0.75 * t)})`,
+    `drop-shadow(0 0 20px ${hexToRgba(color, 0.55 * t)})`,
+    `drop-shadow(0 0 36px ${hexToRgba(color, 0.32 * t)})`,
   ].join(" ");
 
-  return { textShadow, filter };
+  return { textShadow, filter, strokeColor: hexToRgba(color, 0.88) };
 }
 
-export const NeonGlowText = memo(function NeonGlowText({
+export function NeonGlowText({
   text,
   font,
   glowColor,
@@ -77,8 +68,9 @@ export const NeonGlowText = memo(function NeonGlowText({
         className={`block whitespace-pre-wrap text-center select-none ${fontSize}`}
         style={{
           ...fontStyle,
-          color: glowColor,
+          color: resolveNeonGlowColor(glowColor),
           opacity: 0.28,
+          transition: "color 0.35s ease, opacity 0.35s ease",
         }}
       >
         {display}
@@ -88,21 +80,26 @@ export const NeonGlowText = memo(function NeonGlowText({
 
   return (
     <span
+      key={`${glowColor}-${isRgb}-${intensity}`}
       className={`block whitespace-pre-wrap text-center select-none ${fontSize} ${rgbClass}`}
       style={
         isRgb && lit
-          ? fontStyle
+          ? {
+              ...fontStyle,
+              transition: "filter 0.35s ease",
+            }
           : {
               ...fontStyle,
               color: "#fffef8",
-              WebkitTextStroke: `0.45px ${withAlpha(glowColor, 0.85)}`,
+              WebkitTextStroke: `0.45px ${tube.strokeColor}`,
               paintOrder: "stroke fill",
               textShadow: tube.textShadow,
               filter: tube.filter,
+              transition: "text-shadow 0.35s ease, filter 0.35s ease, -webkit-text-stroke-color 0.35s ease",
             }
       }
     >
       {display}
     </span>
   );
-});
+}
