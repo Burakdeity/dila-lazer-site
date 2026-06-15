@@ -17,6 +17,7 @@ import { ProcessSection } from "@/components/home/process-section";
 import { ProjectsSection } from "@/components/home/projects-section";
 import { BlogPreview } from "@/components/home/blog-preview";
 import { NeonTicker } from "@/components/effects/neon-ticker";
+import { SpinWheelSection } from "@/components/home/spin-wheel-section";
 import {
   getBestSellers,
   getNewArrivals,
@@ -51,6 +52,7 @@ export default async function HomePage() {
     <div className="bg-gray-50">
       <JsonLd data={homePageSchemas()} />
       <StoreHero slides={settings.heroSlides} />
+      <SpinWheelSection />
       <NeonTicker />
       <TrustBar />
       <CategoryCarousel categories={categories} />
