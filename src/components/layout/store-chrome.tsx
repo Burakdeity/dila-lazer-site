@@ -7,6 +7,7 @@ import { StoreHeader } from "@/components/layout/store-header";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { WhatsAppFloat } from "@/components/shared/whatsapp-float";
 import { SocialProofToast } from "@/components/shared/social-proof";
+import { SpinWheelPopup } from "@/components/spin-wheel/spin-wheel-popup";
 
 interface StoreChromeProps {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ export function StoreChrome({ children, categories, menus }: StoreChromeProps) {
       {children}
       <StoreFooter categories={categories} menus={menus} />
       <SocialProofToast />
+      <SpinWheelPopup />
       <WhatsAppFloat />
     </>
   );

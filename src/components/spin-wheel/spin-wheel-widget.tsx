@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Gift, Lock, Sparkles, Clock } from "lucide-react";
@@ -20,9 +21,11 @@ function formatCountdown(targetIso: string) {
 function WheelSvg({
   segments,
   rotation,
+  idPrefix,
 }: {
   segments: SpinSegment[];
   rotation: number;
+  idPrefix: string;
 }) {
   const count = segments.length;
   const slice = 360 / count;
@@ -33,11 +36,11 @@ function WheelSvg({
   return (
     <svg viewBox="0 0 300 300" className="w-full h-full drop-shadow-[0_0_40px_rgba(212,175,55,0.35)]">
       <defs>
-        <radialGradient id="wheelGlow" cx="50%" cy="50%" r="50%">
+        <radialGradient id={`${idPrefix}-wheelGlow`} cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#1e3a8a" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#000" stopOpacity="0.6" />
         </radialGradient>
-        <filter id="neonGlow">
+        <filter id={`${idPrefix}-neonGlow`}>
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -73,7 +76,7 @@ function WheelSvg({
                 fill={fill}
                 stroke="#d4af37"
                 strokeWidth="1.5"
-                filter="url(#neonGlow)"
+                filter={`url(#${idPrefix}-neonGlow)`}
               />
               <text
                 x={tx}
@@ -92,20 +95,26 @@ function WheelSvg({
           );
         })}
         <circle cx={cx} cy={cy} r="28" fill="#0f172a" stroke="#d4af37" strokeWidth="3" />
-        <circle cx={cx} cy={cy} r="18" fill="url(#wheelGlow)" stroke="#3b82f6" strokeWidth="1" />
+        <circle cx={cx} cy={cy} r="18" fill={`url(#${idPrefix}-wheelGlow)`} stroke="#3b82f6" strokeWidth="1" />
       </g>
       <polygon
         points="150,18 138,42 162,42"
         fill="#d4af37"
         stroke="#fff"
         strokeWidth="1.5"
-        filter="url(#neonGlow)"
+        filter={`url(#${idPrefix}-neonGlow)`}
       />
     </svg>
   );
 }
 
-export function SpinWheelWidget() {
+interface SpinWheelWidgetProps {
+  compact?: boolean;
+}
+
+export function SpinWheelWidget({ compact = false }: SpinWheelWidgetProps) {
+  const idPrefix = useRef(`wheel-${Math.random().toString(36).slice(2, 9)}`).current;
+  const pathname = usePathname();
   const { status: authStatus } = useSession();
   const [wheelStatus, setWheelStatus] = useState<SpinWheelStatus | null>(null);
   const [spinning, setSpinning] = useState(false);
@@ -171,15 +180,22 @@ export function SpinWheelWidget() {
 
   return (
     <div className="relative">
-      <div className="absolute -inset-4 bg-gradient-to-br from-blue-600/20 via-transparent to-amber-400/20 rounded-[2rem] blur-2xl pointer-events-none" />
+      {!compact && (
+        <div className="absolute -inset-4 bg-gradient-to-br from-blue-600/20 via-transparent to-amber-400/20 rounded-[2rem] blur-2xl pointer-events-none" />
+      )}
 
-      <div className="relative rounded-[2rem] border border-amber-400/30 bg-gradient-to-b from-[#0b1220] via-[#111827] to-[#0a0f1a] p-6 sm:p-10 shadow-[0_0_60px_rgba(59,130,246,0.15)]">
-        <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-widest mb-4">
+      <div
+        className={cn(
+          "relative rounded-[2rem] border border-amber-400/30 bg-gradient-to-b from-[#0b1220] via-[#111827] to-[#0a0f1a] shadow-[0_0_60px_rgba(59,130,246,0.15)]",
+          compact ? "p-4 sm:p-5" : "p-6 sm:p-10"
+        )}
+      >
+        <div className={cn("text-center", compact ? "mb-4" : "mb-8")}>
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-widest mb-3">
             <Sparkles className="h-3.5 w-3.5" />
             Şans Çarkı
           </span>
-          <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2">
+          <h2 className={cn("font-bold text-white mb-2", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-4xl")}>
             Çevir, <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-blue-400">Kazan!</span>
           </h2>
           <p className="text-sm text-white/60 max-w-md mx-auto">
@@ -187,7 +203,12 @@ export function SpinWheelWidget() {
           </p>
         </div>
 
-        <div className="relative mx-auto w-[min(100%,320px)] sm:w-[360px] aspect-square">
+        <div
+          className={cn(
+            "relative mx-auto aspect-square",
+            compact ? "w-[min(100%,240px)] sm:w-[260px]" : "w-[min(100%,320px)] sm:w-[360px]"
+          )}
+        >
           <div
             className={cn(
               "absolute inset-0 rounded-full",
@@ -197,10 +218,10 @@ export function SpinWheelWidget() {
               boxShadow: "0 0 0 6px rgba(212,175,55,0.25), 0 0 80px rgba(59,130,246,0.35), inset 0 0 40px rgba(0,0,0,0.5)",
             }}
           />
-          <WheelSvg segments={segments} rotation={rotation} />
+          <WheelSvg segments={segments} rotation={rotation} idPrefix={idPrefix} />
         </div>
 
-        <div className="mt-8 flex flex-col items-center gap-4">
+        <div className={cn("flex flex-col items-center gap-4", compact ? "mt-4" : "mt-8")}>
           {!isLoggedIn && authStatus !== "loading" && (
             <div className="flex items-center gap-2 text-sm text-amber-200/90 bg-amber-400/10 border border-amber-400/20 px-4 py-3 rounded-xl">
               <Lock className="h-4 w-4 shrink-0" />
@@ -253,8 +274,11 @@ export function SpinWheelWidget() {
 
           {!isLoggedIn ? (
             <Link
-              href="/giris?callbackUrl=/sans-carki"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-[#0f172a] font-bold text-sm uppercase tracking-wider hover:scale-105 transition-transform shadow-[0_0_30px_rgba(212,175,55,0.4)]"
+              href={`/giris?callbackUrl=${encodeURIComponent(pathname || "/")}`}
+              className={cn(
+                "inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-[#0f172a] font-bold uppercase tracking-wider hover:scale-105 transition-transform shadow-[0_0_30px_rgba(212,175,55,0.4)]",
+                compact ? "px-6 py-3 text-xs" : "px-8 py-4 text-sm"
+              )}
             >
               Giriş Yap & Çevir
             </Link>
