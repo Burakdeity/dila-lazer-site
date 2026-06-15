@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/teklif-al", priority: 0.8 },
     { path: "/portfolyo", priority: 0.8 },
     { path: "/kampanyalar", priority: 0.7 },
+    { path: "/sans-carki", priority: 0.8 },
     { path: "/blog", priority: 0.8 },
     { path: "/hakkimizda", priority: 0.7 },
     { path: "/iletisim", priority: 0.7 },

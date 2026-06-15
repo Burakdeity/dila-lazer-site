@@ -68,6 +68,8 @@ model User {
   favorites     Favorite[]
   quotes        Quote[]
   coupons       UserCoupon[]
+  walletCoupons UserWalletCoupon[]
+  spinWheelSpins SpinWheelSpin[]
   notifications Notification[]
   cart          Cart?
 }
@@ -374,4 +376,45 @@ model AppData {
   key       String   @id
   value     Json
   updatedAt DateTime @updatedAt
+}
+
+model SpinWheelSettings {
+  id              String   @id @default("default")
+  isActive        Boolean  @default(true)
+  cooldownHours   Int      @default(24)
+  couponValidDays Int      @default(7)
+  segments        Json
+  updatedAt       DateTime @updatedAt
+}
+
+model SpinWheelSpin {
+  id           String   @id @default(cuid())
+  userId       String
+  segmentIndex Int
+  prizeType    String
+  prizeLabel   String
+  couponCode   String?
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model UserWalletCoupon {
+  id            String    @id @default(cuid())
+  userId        String
+  code          String
+  discountType  String
+  discountValue Decimal   @db.Decimal(10, 2)
+  minOrder      Decimal?  @db.Decimal(10, 2)
+  expiresAt     DateTime
+  source        String    @default("spin_wheel")
+  usedAt        DateTime?
+  createdAt     DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, usedAt])
+  @@index([userId, code])
 }

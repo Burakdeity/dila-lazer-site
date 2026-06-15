@@ -26,11 +26,31 @@ const carriers = [
 ];
 
 export default function CheckoutPage() {
-  const { items, subtotal } = useCartStore();
+  const { items, subtotal, appliedCoupon, discountAmount, clearCart } = useCartStore();
   const [payment, setPayment] = useState("paytr");
   const [carrier, setCarrier] = useState("yurtici");
+  const [completing, setCompleting] = useState(false);
   const total = subtotal();
+  const discount = discountAmount();
   const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+  const grandTotal = Math.max(0, total - discount) + shipping;
+
+  const completeOrder = async () => {
+    setCompleting(true);
+    try {
+      if (appliedCoupon) {
+        await fetch("/api/coupons/redeem", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: appliedCoupon.code }),
+        });
+      }
+      clearCart();
+      window.location.href = "/hesabim/siparisler?success=true";
+    } catch {
+      setCompleting(false);
+    }
+  };
 
   if (items.length === 0) {
     return (
@@ -108,18 +128,32 @@ export default function CheckoutPage() {
           </div>
 
           {/* Summary */}
-          <div className="glass-card p-6">
-            <div className="flex justify-between mb-2">
-              <span className="text-gray-500">Toplam</span>
-              <span className="text-2xl font-bold text-brand-black">{formatPrice(total + shipping)}</span>
+          <div className="glass-card p-6 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Ara Toplam</span>
+              <span>{formatPrice(total)}</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-gray-400 mb-6">
+            {appliedCoupon && discount > 0 && (
+              <div className="flex justify-between text-sm text-emerald-600">
+                <span>Kupon ({appliedCoupon.code})</span>
+                <span>-{formatPrice(discount)}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Kargo</span>
+              <span>{shipping === 0 ? "Ücretsiz" : formatPrice(shipping)}</span>
+            </div>
+            <div className="flex justify-between pt-2 border-t border-gray-200">
+              <span className="text-gray-500">Toplam</span>
+              <span className="text-2xl font-bold text-brand-black">{formatPrice(grandTotal)}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-gray-400 pt-2 mb-4">
               <Shield className="h-3.5 w-3.5" />
               256-bit SSL ile güvenli ödeme
             </div>
-            <Button size="lg" className="w-full">
+            <Button size="lg" className="w-full" onClick={completeOrder} disabled={completing}>
               <Building2 className="h-4 w-4" />
-              Siparişi Tamamla
+              {completing ? "İşleniyor…" : "Siparişi Tamamla"}
             </Button>
           </div>
         </div>

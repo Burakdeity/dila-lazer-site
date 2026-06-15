@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Tag, X, Loader2 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { FreeShippingBar, FREE_SHIPPING_THRESHOLD } from "@/components/cart/free-shipping-bar";
@@ -12,9 +14,68 @@ import { formatPrice } from "@/lib/utils";
 const SHIPPING_FEE = 150;
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, subtotal, clearCart } = useCartStore();
+  const { data: session } = useSession();
+  const {
+    items,
+    couponCode,
+    appliedCoupon,
+    updateQuantity,
+    removeItem,
+    subtotal,
+    discountAmount,
+    clearCart,
+    setCoupon,
+    setAppliedCoupon,
+  } = useCartStore();
+  const [couponInput, setCouponInput] = useState(couponCode ?? "");
+  const [couponError, setCouponError] = useState("");
+  const [applying, setApplying] = useState(false);
+
   const total = subtotal();
+  const discount = discountAmount();
   const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+  const grandTotal = Math.max(0, total - discount) + shipping;
+
+  const applyCoupon = async () => {
+    setCouponError("");
+    if (!session?.user) {
+      setCouponError("Kupon kullanmak için giriş yapmalısınız");
+      return;
+    }
+    if (!couponInput.trim()) {
+      setCouponError("Kupon kodu girin");
+      return;
+    }
+    setApplying(true);
+    try {
+      const res = await fetch("/api/coupons/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponInput.trim(), subtotal: total }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setCouponError(data.error || "Kupon uygulanamadı");
+        return;
+      }
+      setAppliedCoupon({
+        code: data.coupon.code,
+        discountType: data.coupon.discountType,
+        discountValue: data.coupon.discountValue,
+      });
+    } catch {
+      setCouponError("Bağlantı hatası");
+    } finally {
+      setApplying(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCoupon("");
+    setCouponError("");
+  };
 
   if (items.length === 0) {
     return (
@@ -107,18 +168,69 @@ export default function CartPage() {
                   {shipping === 0 ? "Ücretsiz" : formatPrice(shipping)}
                 </span>
               </div>
+              {appliedCoupon && discount > 0 && (
+                <div className="flex justify-between text-sm text-emerald-600">
+                  <span className="flex items-center gap-1">
+                    <Tag className="h-3.5 w-3.5" />
+                    Kupon ({appliedCoupon.code})
+                  </span>
+                  <span className="font-medium">-{formatPrice(discount)}</span>
+                </div>
+              )}
               <div className="border-t border-gray-200 pt-3 flex justify-between">
                 <span className="text-brand-black font-medium">Toplam</span>
-                <span className="text-xl font-bold text-brand-black">{formatPrice(total + shipping)}</span>
+                <span className="text-xl font-bold text-brand-black">{formatPrice(grandTotal)}</span>
               </div>
             </div>
 
             <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Kupon kodu"
-                className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-brand-black text-sm placeholder:text-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
-              />
+              {appliedCoupon ? (
+                <div className="flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <span className="text-sm font-mono font-semibold text-emerald-700">{appliedCoupon.code}</span>
+                  <button
+                    onClick={removeCoupon}
+                    className="p-1 text-emerald-600 hover:text-red-500 transition-colors"
+                    aria-label="Kuponu kaldır"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                      placeholder="Kupon kodu (SPIN5, SPIN10…)"
+                      className="flex-1 px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-brand-black text-sm placeholder:text-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={applyCoupon}
+                      disabled={applying}
+                      className="shrink-0"
+                    >
+                      {applying ? <Loader2 className="h-4 w-4 animate-spin" /> : "Uygula"}
+                    </Button>
+                  </div>
+                  {couponError && <p className="text-xs text-red-500 mt-1.5">{couponError}</p>}
+                  {!session?.user && (
+                    <p className="text-xs text-gray-400 mt-1.5">
+                      <Link href="/giris?callbackUrl=/sepet" className="text-brand-red hover:underline">
+                        Giriş yapın
+                      </Link>{" "}
+                      veya{" "}
+                      <Link href="/sans-carki" className="text-brand-red hover:underline">
+                        şans çarkını
+                      </Link>{" "}
+                      çevirerek kupon kazanın.
+                    </p>
+                  )}
+                </>
+              )}
             </div>
 
             <Link href="/odeme" className="block mb-3">

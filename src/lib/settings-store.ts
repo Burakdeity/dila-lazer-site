@@ -7,6 +7,7 @@ const STORE_KEY = "settings";
 const defaultTopBarLinks: MenuLink[] = [
   { id: "1", label: "Sipariş Takip", href: "/siparis-takip", isActive: true },
   { id: "2", label: "Siparişlerim", href: "/hesabim/siparisler", isActive: true },
+  { id: "8", label: "Şans Çarkı", href: "/sans-carki", isActive: true },
   { id: "3", label: "Kampanyalar", href: "/kampanyalar", isActive: true },
   { id: "4", label: "Projeler", href: "/portfolyo", isActive: true },
   { id: "5", label: "Hakkımızda", href: "/hakkimizda", isActive: true },
@@ -17,6 +18,7 @@ const defaultTopBarLinks: MenuLink[] = [
 const defaultExtraNavLinks: MenuLink[] = [
   { id: "1", label: "Kendin Tasarla", href: "/ozel-tasarim-merkezi", isActive: true },
   { id: "2", label: "Teklif Al", href: "/teklif-al", isActive: true },
+  { id: "3", label: "Şans Çarkı", href: "/sans-carki", isActive: true },
 ];
 
 const defaultFooterCorporateLinks: MenuLink[] = [

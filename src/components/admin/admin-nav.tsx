@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
   FileText, Ticket, Megaphone, Newspaper, Image, Menu,
-  Search, Truck, Boxes, Calculator, Settings,
+  Search, Truck, Boxes, Calculator, Settings, CircleDot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminSignOut } from "@/components/admin/admin-sign-out";
@@ -18,6 +18,7 @@ const adminMenu = [
   { href: "/admin/musteriler", label: "Müşteriler", icon: Users },
   { href: "/admin/teklifler", label: "Teklifler", icon: FileText },
   { href: "/admin/kuponlar", label: "Kuponlar", icon: Ticket },
+  { href: "/admin/sans-carki", label: "Şans Çarkı", icon: CircleDot },
   { href: "/admin/kampanyalar", label: "Kampanyalar", icon: Megaphone },
   { href: "/admin/blog", label: "Blog", icon: Newspaper },
   { href: "/admin/bannerlar", label: "Bannerlar", icon: Image },
