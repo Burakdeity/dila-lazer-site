@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     images: [getDefaultOgImage()],
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "kOx6Nx0VWLpgRzaGqNH0dDq06zserqvE2FABsj6xMSs",
+  },
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
