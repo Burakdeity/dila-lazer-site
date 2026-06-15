@@ -32,7 +32,7 @@ export default function OrderTrackingPage() {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 -mt-8">
+      <div className="max-w-[1400px] mx-auto px-4 mt-6 sm:mt-8">
         <Suspense fallback={<div className="h-48 flex items-center justify-center text-gray-400">Yükleniyor…</div>}>
           <OrderTracking />
         </Suspense>
