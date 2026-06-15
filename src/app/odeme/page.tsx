@@ -404,7 +404,9 @@ export default function CheckoutPage() {
                       <span className="text-gray-400">Alıcı:</span> {selectedMethod.accountHolder}
                     </p>
                   )}
-                  <p className="font-mono text-brand-black mt-1">{selectedMethod.iban}</p>
+                  <p className="font-mono font-semibold text-brand-black mt-1 text-base tracking-wide break-all">
+                    {selectedMethod.iban}
+                  </p>
                   {selectedMethod.instructions && (
                     <p className="text-gray-500 mt-2 text-xs">{selectedMethod.instructions}</p>
                   )}

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { StoreLayout } from "@/components/layout/store-layout";
 import { AppProviders } from "@/components/providers/app-providers";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
@@ -8,10 +8,18 @@ import { getDefaultOgImage, siteDescription, siteKeywords } from "@/lib/seo";
 import { GoogleAnalytics } from "@/components/seo/google-analytics";
 import "./globals.css";
 
-const inter = Inter({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-jakarta",
+  weight: ["400", "500", "600", "700"],
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-plex-mono",
+  weight: ["500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -55,8 +63,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr" className={inter.variable} data-theme="light" suppressHydrationWarning>
-      <body className="min-h-screen antialiased bg-gray-50">
+    <html lang="tr" className={`${plusJakarta.variable} ${ibmPlexMono.variable}`} data-theme="light" suppressHydrationWarning>
+      <body className="min-h-screen antialiased bg-gray-50 font-sans">
         <GoogleAnalytics />
         <AppProviders>
           <AuthSessionProvider>

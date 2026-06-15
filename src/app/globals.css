@@ -8,8 +8,9 @@
   --color-surface-muted: #F8F9FA;
   --color-border: #E8EAED;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
 
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
@@ -28,7 +29,12 @@
   }
 
   body {
-    @apply bg-white text-brand-black font-sans transition-colors duration-300;
+    @apply bg-white text-brand-black font-sans text-[15px] leading-relaxed font-normal;
+  }
+
+  .font-mono {
+    font-weight: 500;
+    letter-spacing: 0.03em;
   }
 
   [data-theme="dark"] body {
@@ -184,7 +190,7 @@
   }
 
   .form-input {
-    @apply px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-brand-black text-sm placeholder:text-gray-400 focus:outline-none focus:border-brand-red/50 focus:ring-2 focus:ring-brand-red/10;
+    @apply px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-brand-black text-base placeholder:text-gray-400 focus:outline-none focus:border-brand-red/50 focus:ring-2 focus:ring-brand-red/10;
   }
 
   [data-theme="dark"] .form-input {
