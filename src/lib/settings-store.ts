@@ -56,8 +56,8 @@ const defaultHeroSlides: HeroSlide[] = [
     title: "Hayalinizdeki Modeli Basıyoruz",
     subtitle: "Prototip, dekoratif parça ve özel tasarım 3D baskı — PLA, PETG ve reçine seçenekleriyle hızlı üretim.",
     image: "/hero/slide-3d-kurumsal.png",
-    imageClass: "object-cover object-center sm:object-right opacity-50",
-    overlayClass: "bg-gradient-to-r from-brand-black via-brand-black/90 to-brand-black/45",
+    imageClass: "object-cover object-center sm:object-right opacity-65 brightness-[0.92]",
+    overlayClass: "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/75 to-brand-black/22",
     ctaLabel: "3D Ürünler",
     ctaHref: "/kategori/3d-urunler",
     secondaryLabel: "Teklif Al",
@@ -116,12 +116,22 @@ const defaultSettings: SiteSettings = {
 
 async function ensureSettings(): Promise<SiteSettings> {
   const parsed = await loadJsonStore<Partial<SiteSettings>>(STORE_KEY, defaultSettings);
+  const heroSlides = (parsed.heroSlides ?? defaultSettings.heroSlides).map((slide) =>
+    slide.id === "2"
+      ? {
+          ...slide,
+          imageClass: "object-cover object-center sm:object-right opacity-65 brightness-[0.92]",
+          overlayClass:
+            "absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/75 to-brand-black/22",
+        }
+      : slide
+  );
   return {
     seo: { ...defaultSettings.seo, ...parsed.seo },
     shipping: { ...defaultSettings.shipping, ...parsed.shipping },
     contact: { ...defaultSettings.contact, ...parsed.contact },
     banners: parsed.banners ?? defaultSettings.banners,
-    heroSlides: parsed.heroSlides ?? defaultSettings.heroSlides,
+    heroSlides,
     menus: {
       topBarLinks: parsed.menus?.topBarLinks ?? defaultSettings.menus.topBarLinks,
       extraNavLinks: parsed.menus?.extraNavLinks ?? defaultSettings.menus.extraNavLinks,
