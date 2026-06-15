@@ -125,7 +125,7 @@ export function OrderTracking() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-11 px-8 rounded-xl bg-brand-red text-white font-semibold hover:bg-brand-red/90 disabled:opacity-50 neon-btn-glow"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-11 px-8 rounded-xl bg-brand-red text-white font-semibold hover:bg-brand-red/90 disabled:opacity-50 shadow-sm hover:shadow-md transition-shadow"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
           Siparişi Sorgula
