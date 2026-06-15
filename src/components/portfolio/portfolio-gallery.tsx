@@ -31,7 +31,7 @@ export function PortfolioGallery() {
             Tamamlanan Projeler
           </h1>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            5000+ başarılı proje. Sektör ve şehre göre filtreleyin.
+            380+ başarılı proje. Sektör ve şehre göre filtreleyin.
           </p>
         </motion.div>
 
