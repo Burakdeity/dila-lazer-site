@@ -81,7 +81,6 @@ export function getNextSpinAt(lastSpinAt: Date, cooldownHours: number): Date {
 
 export async function getSpinWheelStatus(userId?: string): Promise<SpinWheelStatus> {
   const config = await getSpinWheelConfig();
-  const isLoggedIn = Boolean(userId);
 
   if (!userId) {
     return {

@@ -31,7 +31,7 @@ export function UserCouponsList() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const useCoupon = (coupon: WalletCouponView) => {
+  const applyCouponToCart = (coupon: WalletCouponView) => {
     setCoupon(coupon.code);
     setAppliedCoupon({
       code: coupon.code,
@@ -97,7 +97,7 @@ export function UserCouponsList() {
                   {copied === coupon.code ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
                   Kopyala
                 </button>
-                <Link href="/sepet" onClick={() => useCoupon(coupon)}>
+                <Link href="/sepet" onClick={() => applyCouponToCart(coupon)}>
                   <Button size="sm">Sepette Kullan</Button>
                 </Link>
               </div>
