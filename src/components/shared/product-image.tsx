@@ -14,6 +14,7 @@ type ProductImageProps = Omit<ImageProps, "src" | "alt"> & {
 function isRawImage(src: string) {
   return (
     src.startsWith("/uploads/") ||
+    src.startsWith("/api/uploads/") ||
     src.startsWith("/api/media") ||
     src.includes("blob.vercel-storage.com")
   );

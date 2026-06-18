@@ -1,7 +1,7 @@
 const words = [
   "NEON LED",
   "ÖZEL TASARIM",
-  "3D NEON",
+  "3D ÜRÜNLER",
   "LAZER KESİM",
   "PLEKSİ",
   "MDF DEKOR",

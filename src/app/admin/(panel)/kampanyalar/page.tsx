@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Pencil, Plus } from "lucide-react";
+import { ProductImage } from "@/components/shared/product-image";
 import { getAllCampaignsFromStore } from "@/lib/campaign-store";
 import { AdminPageHeader, AdminCard, AdminBadge, AdminStatCard } from "@/components/admin/admin-ui";
 
@@ -31,7 +31,7 @@ export default async function AdminCampaignsPage() {
           return (
             <AdminCard key={c.id} className="overflow-hidden">
               <div className="relative h-36 bg-black/40">
-                <Image src={c.image} alt="" fill className="object-cover" sizes="400px" />
+                <ProductImage src={c.image} alt={c.title} fill className="object-cover" sizes="400px" />
                 {c.discount && (
                   <span className="absolute top-3 left-3 px-2 py-1 rounded-full bg-brand-red text-white text-xs font-bold">
                     %{c.discount}

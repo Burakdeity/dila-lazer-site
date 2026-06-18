@@ -23,22 +23,49 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
 
       setUploading(true);
       const newUrls: string[] = [];
+      let lastError = "";
 
       for (const file of list) {
         const formData = new FormData();
         formData.append("file", file);
 
-        const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-        const data = await res.json();
+        try {
+          const res = await fetch("/api/admin/upload", {
+            method: "POST",
+            body: formData,
+            credentials: "same-origin",
+          });
 
-        if (!res.ok) {
-          setError(data.error || "Yükleme hatası");
-          continue;
+          let data: { url?: string; error?: string } = {};
+          try {
+            data = await res.json();
+          } catch {
+            lastError =
+              res.status === 401
+                ? "Oturum süresi doldu. Lütfen admin paneline tekrar giriş yapın."
+                : "Sunucu yanıtı okunamadı.";
+            continue;
+          }
+
+          if (!res.ok) {
+            lastError = data.error || "Yükleme hatası";
+            continue;
+          }
+
+          if (data.url) {
+            newUrls.push(data.url);
+          }
+        } catch {
+          lastError = "Bağlantı hatası. İnternet bağlantınızı kontrol edin.";
         }
-        newUrls.push(data.url);
       }
 
-      if (newUrls.length) onChange([...images, ...newUrls]);
+      if (newUrls.length) {
+        onChange([...images, ...newUrls]);
+      } else if (lastError) {
+        setError(lastError);
+      }
+
       setUploading(false);
     },
     [images, onChange]
@@ -74,10 +101,13 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
       >
         <input
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
+          accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,.heic,.heif"
           multiple
           className="absolute inset-0 cursor-pointer opacity-0"
-          onChange={(e) => e.target.files && uploadFiles(e.target.files)}
+          onChange={(e) => {
+            if (e.target.files?.length) uploadFiles(e.target.files);
+            e.target.value = "";
+          }}
           disabled={uploading}
         />
         <div className="flex flex-col items-center gap-3">
@@ -88,7 +118,7 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
           )}
           <div>
             <p className="text-sm font-medium text-white">Görselleri sürükleyin veya tıklayın</p>
-            <p className="text-xs text-gray-500 mt-1">JPG, PNG, WEBP — maks. 5 MB</p>
+            <p className="text-xs text-gray-500 mt-1">JPG, PNG, WEBP, GIF — maks. 5 MB</p>
           </div>
         </div>
       </div>

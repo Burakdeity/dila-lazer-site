@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Pencil, Plus } from "lucide-react";
+import { ProductImage } from "@/components/shared/product-image";
 import { getAllBlogPostsFromStore } from "@/lib/blog-store";
 import { AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/admin-ui";
 
@@ -29,7 +29,7 @@ export default async function AdminBlogPage() {
           <AdminCard key={post.slug} className="p-0 overflow-hidden">
             <div className="flex flex-col sm:flex-row">
               <div className="relative h-32 sm:h-auto sm:w-40 flex-shrink-0 bg-black/40">
-                <Image src={post.cover} alt="" fill className="object-cover" sizes="160px" />
+                <ProductImage src={post.cover} alt={post.title} fill className="object-cover" sizes="160px" />
               </div>
               <div className="p-5 flex-1">
                 <div className="flex items-start justify-between gap-3">
