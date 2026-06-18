@@ -1,20 +1,13 @@
 import { NextResponse } from "next/server";
 import { requireAdminSession, adminUnauthorized } from "@/lib/admin-auth";
-import {
-  getUploadAvailability,
-  saveUploadedImage,
-  uploadErrorMessage,
-  validateUploadFile,
-} from "@/lib/upload-storage";
+import { saveUploadedImage, uploadErrorMessage, validateUploadFile } from "@/lib/upload-storage";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const session = await requireAdminSession();
   if (!session) return adminUnauthorized();
-
-  const availability = getUploadAvailability();
-  if (!availability.ok) {
-    return NextResponse.json({ error: availability.error }, { status: 503 });
-  }
 
   try {
     const formData = await request.formData();

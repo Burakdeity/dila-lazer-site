@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 import { put } from "@vercel/blob";
 
 export const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "products");
-export const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+export const MAX_UPLOAD_SIZE = 10 * 1024 * 1024;
 export const ALLOWED_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -14,6 +14,7 @@ export const ALLOWED_TYPES = [
   "image/gif",
   "image/heic",
   "image/heif",
+  "application/octet-stream",
 ];
 export const ALLOWED_EXT = ["jpg", "jpeg", "png", "webp", "gif", "heic", "heif"];
 
@@ -29,25 +30,17 @@ export function resolveBlobToken(): string | undefined {
   return undefined;
 }
 
+/** Vercel'de Blob, yerelde dosya sistemi (token varsa yerelde de Blob denenebilir) */
 export function shouldUseBlobStorage(): boolean {
-  return Boolean(resolveBlobToken() || process.env.BLOB_STORE_ID);
-}
-
-export function getUploadAvailability(): { ok: true } | { ok: false; error: string } {
-  if (shouldUseBlobStorage()) {
-    return { ok: true };
-  }
   if (process.env.VERCEL === "1") {
-    return {
-      ok: false,
-      error:
-        "Vercel Blob Storage bağlı değil. Vercel panelinde Storage → Blob ekleyin veya BLOB_READ_WRITE_TOKEN tanımlayın.",
-    };
+    return true;
   }
-  return { ok: true };
+  return Boolean(resolveBlobToken());
 }
 
-export function validateUploadFile(file: File): { ok: true; ext: string; contentType: string } | { ok: false; error: string } {
+export function validateUploadFile(
+  file: File
+): { ok: true; ext: string; contentType: string } | { ok: false; error: string } {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const typeOk = !file.type || ALLOWED_TYPES.includes(file.type);
   const extOk = ALLOWED_EXT.includes(ext);
@@ -56,7 +49,10 @@ export function validateUploadFile(file: File): { ok: true; ext: string; content
     return { ok: false, error: "Sadece JPG, PNG, WEBP veya GIF yüklenebilir" };
   }
   if (file.size > MAX_UPLOAD_SIZE) {
-    return { ok: false, error: "Dosya boyutu 5 MB'dan küçük olmalı" };
+    return { ok: false, error: "Dosya boyutu 10 MB'dan küçük olmalı" };
+  }
+  if (file.size === 0) {
+    return { ok: false, error: "Boş dosya yüklenemez" };
   }
 
   const safeExt = extOk ? ext : "jpg";
@@ -69,13 +65,43 @@ export function uploadErrorMessage(err: unknown): string {
   if (message.includes("access") || message.includes("Access")) {
     return "Blob depolama erişim hatası. Vercel Storage ayarlarını kontrol edin.";
   }
-  if (message.includes("token") || message.includes("Token")) {
-    return "Blob kimlik doğrulama hatası. Vercel'de Redeploy yapın.";
+  if (
+    message.includes("token") ||
+    message.includes("Token") ||
+    message.includes("No token found") ||
+    message.includes("BLOB_READ_WRITE_TOKEN")
+  ) {
+    return "Vercel Blob Storage bağlı değil. Vercel panelinde Storage → Blob store ekleyip Redeploy yapın.";
   }
   if (message.includes("ENOENT") || message.includes("EACCES")) {
     return "Dosya kaydedilemedi. uploads klasörü yazılabilir olmalı.";
   }
-  return "Yükleme başarısız. Dosya boyutunu ve formatını kontrol edin.";
+  if (message.includes("Body exceeded") || message.includes("too large")) {
+    return "Dosya çok büyük. 10 MB altında bir görsel seçin.";
+  }
+  return `Yükleme başarısız: ${message}`;
+}
+
+async function uploadToBlob(
+  pathname: string,
+  buffer: Buffer,
+  contentType: string
+): Promise<string> {
+  const token = resolveBlobToken();
+  const putOptions = {
+    contentType,
+    addRandomSuffix: false,
+    ...(token ? { token } : {}),
+  };
+
+  try {
+    const blob = await put(pathname, buffer, { ...putOptions, access: "public" });
+    return blob.url;
+  } catch (publicErr) {
+    console.warn("Public blob upload failed, trying private:", publicErr);
+    await put(pathname, buffer, { ...putOptions, access: "private" });
+    return `/api/media?pathname=${encodeURIComponent(pathname)}`;
+  }
 }
 
 export async function saveUploadedImage(
@@ -87,21 +113,7 @@ export async function saveUploadedImage(
   const pathname = `products/${filename}`;
 
   if (shouldUseBlobStorage()) {
-    const token = resolveBlobToken();
-    const putOptions = {
-      contentType,
-      addRandomSuffix: false,
-      ...(token ? { token } : {}),
-    };
-
-    try {
-      const blob = await put(pathname, buffer, { ...putOptions, access: "public" });
-      return blob.url;
-    } catch (publicErr) {
-      console.warn("Public blob upload failed, trying private:", publicErr);
-      await put(pathname, buffer, { ...putOptions, access: "private" });
-      return `/api/media?pathname=${encodeURIComponent(pathname)}`;
-    }
+    return uploadToBlob(pathname, buffer, contentType);
   }
 
   await fs.mkdir(UPLOAD_DIR, { recursive: true });

@@ -13,6 +13,7 @@ export function SingleImageUpload({ value, onChange, label = "Görsel" }: Single
     <div>
       <p className="text-sm text-gray-400 mb-2">{label}</p>
       <ImageUploader
+        mode="single"
         images={value ? [value] : []}
         onChange={(images) => onChange(images[0] ?? "")}
       />

@@ -12,6 +12,16 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  if (pathname.startsWith("/api/admin")) {
+    if (!token || token.role !== "ADMIN") {
+      return NextResponse.json(
+        { error: "Yetkisiz erişim. Admin paneline tekrar giriş yapın." },
+        { status: 401 }
+      );
+    }
+    return NextResponse.next();
+  }
+
   if (pathname.startsWith("/admin") && pathname !== "/admin/giris") {
     if (!token || token.role !== "ADMIN") {
       return NextResponse.redirect(new URL("/admin/giris", req.url));
@@ -22,5 +32,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/hesabim/:path*", "/admin", "/admin/:path*"],
+  matcher: ["/hesabim/:path*", "/admin", "/admin/:path*", "/api/admin/:path*"],
 };
