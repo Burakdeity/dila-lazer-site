@@ -6,7 +6,6 @@ import type { SiteMenus } from "@/types/admin";
 import { StoreHeader } from "@/components/layout/store-header";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { WhatsAppFloat } from "@/components/shared/whatsapp-float";
-import { SocialProofToast } from "@/components/shared/social-proof";
 import { SpinWheelPopup } from "@/components/spin-wheel/spin-wheel-popup";
 
 interface StoreChromeProps {
@@ -28,7 +27,6 @@ export function StoreChrome({ children, categories, menus }: StoreChromeProps) {
       <StoreHeader categories={categories} menus={menus} />
       {children}
       <StoreFooter categories={categories} menus={menus} />
-      <SocialProofToast />
       <SpinWheelPopup />
       <WhatsAppFloat />
     </>

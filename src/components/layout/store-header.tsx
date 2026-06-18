@@ -43,7 +43,7 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
         <div className="absolute inset-0 neon-topbar-shimmer pointer-events-none" />
         <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-9 relative z-10">
           <p className="hidden sm:block truncate text-white/80">
-            Premium neon ve lazer kesim — Türkiye geneli teslimat
+            Neon · Dekor · Lazer Kesim — Türkiye geneli teslimat
           </p>
           <a
             href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
