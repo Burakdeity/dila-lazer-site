@@ -151,7 +151,7 @@ export function ProductCatalog({
       <div className="bg-gradient-to-br from-brand-red to-red-700 rounded-2xl p-5 text-white">
         <p className="font-bold text-sm mb-1">Kendin Tasarla</p>
         <p className="text-xs text-white/80 mb-3 leading-relaxed">
-          Logonuzla kendi neon tabelanızı tasarlayın.
+          Logonuzla kendi neonunuzu tasarlayın.
         </p>
         <Link
           href="/ozel-tasarim-merkezi"

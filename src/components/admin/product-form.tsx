@@ -163,7 +163,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                     if (!isEdit && !slug) setSlug(slugify(e.target.value));
                   }}
                   className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-white/10 text-white focus:border-brand-red focus:outline-none"
-                  placeholder="Örn: Cafe Neon Tabela"
+                  placeholder="Örn: Cafe Neon LED"
                 />
               </div>
               <div>
@@ -172,7 +172,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-white/10 text-white focus:border-brand-red focus:outline-none font-mono text-sm"
-                  placeholder="cafe-neon-tabela"
+                  placeholder="cafe-neon"
                 />
               </div>
               <div>

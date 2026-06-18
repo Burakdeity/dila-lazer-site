@@ -47,7 +47,7 @@ export default function OrdersPage() {
       <AccountEmptyState
         icon={Package}
         title="Siparişlerim"
-        description="Henüz siparişiniz bulunmuyor. Premium tabela çözümlerimizi keşfedin."
+        description="Henüz siparişiniz bulunmuyor. Premium neon çözümlerimizi keşfedin."
         action={
           <Link
             href="/urunler"

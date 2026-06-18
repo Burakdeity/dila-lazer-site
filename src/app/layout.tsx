@@ -25,7 +25,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: `${brand.name} | Sakarya Neon Tabela, LED & Lazer Kesim`,
+    default: `${brand.name} | Sakarya Neon, LED & Lazer Kesim`,
     template: `%s | ${brand.name}`,
   },
   description: siteDescription,
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "tr_TR",
     siteName: brand.name,
-    title: `${brand.name} | Sakarya Neon Tabela, LED & Lazer Kesim`,
+    title: `${brand.name} | Sakarya Neon, LED & Lazer Kesim`,
     description: siteDescription,
     images: [{ url: getDefaultOgImage(), width: 1200, height: 630, alt: brand.name }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${brand.name} | Sakarya Neon Tabela, LED & Lazer Kesim`,
+    title: `${brand.name} | Sakarya Neon, LED & Lazer Kesim`,
     description: siteDescription,
     images: [getDefaultOgImage()],
   },

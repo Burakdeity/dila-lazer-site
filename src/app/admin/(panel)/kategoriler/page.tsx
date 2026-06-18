@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Pencil, Plus } from "lucide-react";
+import { ProductImage } from "@/components/shared/product-image";
 import { getMainCategories } from "@/lib/catalog";
 import { getAllProductsFromStore } from "@/lib/product-store";
 import { AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/admin-ui";
@@ -37,7 +37,7 @@ export default async function AdminCategoriesPage() {
           <AdminCard key={cat.slug} className="overflow-hidden">
             <div className="flex gap-4 p-5">
               <div className="relative h-20 w-20 rounded-xl overflow-hidden flex-shrink-0 bg-black/40">
-                <Image src={cat.image} alt="" fill className="object-cover" sizes="80px" />
+                <ProductImage src={cat.image} alt={cat.name} fill className="object-cover" sizes="80px" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2">

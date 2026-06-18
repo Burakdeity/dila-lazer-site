@@ -1,5 +1,5 @@
 /**
- * Duvar odaklı oda sahneleri — neon tabela üst duvara yerleştirilir.
+ * Duvar odaklı oda sahneleri — neon LED üst duvara yerleştirilir.
  * Görseller üst duvar alanına kırpılır; neonTop duvar üzerindeki Y konumu.
  */
 export interface RoomScene {

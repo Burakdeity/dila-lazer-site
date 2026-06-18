@@ -2,25 +2,25 @@ import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
 
 export const siteDescription =
-  "Sakarya Adapazarı merkezli neon LED tabela, pleksi, 3D kutu harf ve lazer kesim atölyesi. Kendin Tasarla stüdyosu, ücretsiz teklif, 81 ile teslimat ve 2 yıl garanti.";
+  "Sakarya Adapazarı merkezli neon LED, pleksi, 3D kutu harf ve lazer kesim atölyesi. Kendin Tasarla stüdyosu, ücretsiz teklif, 81 ile teslimat ve 2 yıl garanti.";
 
 export const siteKeywords = [
-  "sakarya neon tabela",
-  "sakarya led tabela",
-  "adapazarı tabela",
+  "sakarya neon",
+  "sakarya led neon",
+  "adapazarı neon",
   "sakarya lazer kesim",
-  "sakarya reklam tabela",
+  "sakarya reklam neon",
   "sakarya 3d kutu harf",
-  "sakarya pleksi tabela",
-  "neon tabela",
-  "led tabela",
+  "sakarya pleksi",
+  "neon LED",
+  "led neon",
   "özel neon yazı",
   "kendin tasarla neon",
   "mdf dekor",
   "3d kutu harf",
-  "lazer kesim tabela",
-  "cafe tabela",
-  "dükkan tabelası",
+  "lazer kesim neon",
+  "cafe neon",
+  "dükkan ürünü",
 ] as const;
 
 export const sakaryaGeo = {

@@ -1,7 +1,7 @@
 export const portfolioProjects = [
   {
     id: "1",
-    title: "Lüks Otel Giriş Neon Tabela",
+    title: "Lüks Otel Giriş Neon LED",
     slug: "luks-otel-giris-neon",
     sector: "Otel & Turizm",
     city: "İstanbul",
@@ -31,7 +31,7 @@ export const portfolioProjects = [
   },
   {
     id: "4",
-    title: "Mağaza Vitrin LED Tabela",
+    title: "Mağaza Vitrin LED Neon",
     slug: "magaza-vitrin-led",
     sector: "Perakende",
     city: "Bursa",

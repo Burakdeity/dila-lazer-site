@@ -3,9 +3,9 @@ import type { MainCategory } from "@/types/catalog";
 export const mainCategories: MainCategory[] = [
   {
     id: "neon-led",
-    name: "Neon LED Tabelalar",
+    name: "Neon LED Ürünler",
     slug: "neon-led-tabelalar",
-    description: "Premium neon flex ve LED tabela çözümleri",
+    description: "Premium neon flex ve LED neon çözümleri",
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
     icon: "Zap",
     subcategories: [
@@ -18,7 +18,7 @@ export const mainCategories: MainCategory[] = [
       { id: "oyun", name: "Oyun Odası Neonları", slug: "oyun-odasi-neonlari" },
       { id: "ozel", name: "Kişiye Özel Neonlar", slug: "kisiye-ozel-neonlar" },
       { id: "logo", name: "Logo Neonlar", slug: "logo-neonlar" },
-      { id: "acik", name: "Açık Tabelaları", slug: "acik-tabelalari" },
+      { id: "acik", name: "Açık Neonları", slug: "acik-tabelalari" },
     ],
   },
   {
@@ -43,12 +43,12 @@ export const mainCategories: MainCategory[] = [
     id: "pleksi",
     name: "Pleksi Ürünler",
     slug: "pleksi-urunler",
-    description: "Şeffaf ve opak pleksi tabela, isimlik ve dekor ürünleri",
+    description: "Şeffaf ve opak pleksi ürün, isimlik ve dekor ürünleri",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
     icon: "Box",
     subcategories: [
       { id: "isimlik", name: "Pleksi İsimlikler", slug: "pleksi-isimlikler" },
-      { id: "kapi", name: "Pleksi Kapı Tabelaları", slug: "pleksi-kapi-tabelalari" },
+      { id: "kapi", name: "Pleksi Kapı Levhaları", slug: "pleksi-kapi-tabelalari" },
       { id: "masa", name: "Pleksi Masa İsimlikleri", slug: "pleksi-masa-isimlikleri" },
       { id: "logo", name: "Pleksi Logolar", slug: "pleksi-logolar" },
       { id: "odul", name: "Pleksi Ödüller", slug: "pleksi-oduller" },

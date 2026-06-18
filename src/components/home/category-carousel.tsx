@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductImage } from "@/components/shared/product-image";
 import type { MainCategory } from "@/types/catalog";
 
 function buildCarouselItems(categories: MainCategory[]) {
@@ -53,13 +53,13 @@ export function CategoryCarousel({ categories }: { categories: MainCategory[] })
                 href={item.href}
                 className="flex flex-col items-center gap-2.5 shrink-0 w-[88px] group"
               >
-                <div className="w-[72px] h-[72px] rounded-2xl border border-gray-200 overflow-hidden bg-gray-50 shadow-sm group-hover:border-brand-red group-hover:shadow-[0_0_16px_rgba(213,0,0,0.25)] transition-all">
-                  <Image
+                <div className="relative w-[72px] h-[72px] rounded-2xl border border-gray-200 overflow-hidden bg-gray-50 shadow-sm group-hover:border-brand-red group-hover:shadow-[0_0_16px_rgba(213,0,0,0.25)] transition-all">
+                  <ProductImage
                     src={item.image}
                     alt={item.name}
-                    width={72}
-                    height={72}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    sizes="72px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <span className="text-[11px] text-center text-gray-600 font-medium leading-tight group-hover:text-brand-red transition-colors line-clamp-2">

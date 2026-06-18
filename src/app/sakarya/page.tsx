@@ -10,9 +10,9 @@ import { getWhatsAppUrl } from "@/lib/utils";
 
 const sakaryaFaqs = [
   {
-    question: "Sakarya'da neon tabela yaptırabilir miyim?",
+    question: "Sakarya'da neon yaptırabilir miyim?",
     answer:
-      "Evet. Adapazarı atölyemizde özel üretim neon ve LED tabela hizmeti veriyoruz. Mağaza, cafe, ofis ve ev dekorasyonu için tasarımdan montaja kadar destek sağlıyoruz.",
+      "Evet. Adapazarı atölyemizde özel üretim neon ve LED neon hizmeti veriyoruz. Mağaza, cafe, ofis ve ev dekorasyonu için tasarımdan montaja kadar destek sağlıyoruz.",
   },
   {
     question: "Sakarya dışına teslimat yapıyor musunuz?",
@@ -20,7 +20,7 @@ const sakaryaFaqs = [
       "Evet. Sakarya ve çevre ilçelere hızlı teslimat yapıyoruz; ayrıca Türkiye'nin 81 iline sigortalı kargo ile gönderim sağlıyoruz.",
   },
   {
-    question: "Neon tabela fiyatları Sakarya için nasıl hesaplanır?",
+    question: "Neon fiyatları Sakarya için nasıl hesaplanır?",
     answer:
       "Fiyat; yazı uzunluğu, ölçü, renk, iç/dış mekan kullanımı ve montaj ihtiyacına göre değişir. Ücretsiz teklif formu veya WhatsApp üzerinden ölçü paylaşarak anında fiyat alabilirsiniz.",
   },
@@ -33,7 +33,7 @@ const sakaryaFaqs = [
 
 const services = [
   {
-    title: "Neon & LED Tabela",
+    title: "Neon & LED",
     desc: "Cafe, restoran, mağaza ve vitrin için özel neon yazılar. IP korumalı dış mekan seçenekleri.",
     href: "/kategori/neon-led-tabelalar",
   },
@@ -44,7 +44,7 @@ const services = [
   },
   {
     title: "Lazer Kesim",
-    desc: "MDF, pleksi ve ahşap malzemelerde hassas lazer kesim ile dekor ve tabela üretimi.",
+    desc: "MDF, pleksi ve ahşap malzemelerde hassas lazer kesim ile dekor ve neon üretimi.",
     href: "/urunler",
   },
   {
@@ -55,9 +55,9 @@ const services = [
 ];
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Sakarya Neon Tabela | LED Tabela & Lazer Kesim — Adapazarı",
+  title: "Sakarya Neon | LED Neon & Lazer Kesim — Adapazarı",
   description:
-    "Sakarya Adapazarı'nda neon tabela, LED tabela, 3D kutu harf ve lazer kesim. Ücretsiz teklif, atölye ziyareti, montaj desteği ve 2 yıl garanti. Dila Lazer.",
+    "Sakarya Adapazarı'nda neon LED, LED neon, 3D kutu harf ve lazer kesim. Ücretsiz teklif, atölye ziyareti, montaj desteği ve 2 yıl garanti. Dila Lazer.",
   path: "/sakarya",
 });
 
@@ -72,10 +72,10 @@ export default function SakaryaPage() {
             Sakarya · Adapazarı
           </p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight max-w-3xl">
-            Sakarya&apos;nın <span className="text-brand-red neon-text">Neon Tabela</span> ve Lazer Kesim Atölyesi
+            Sakarya&apos;nın <span className="text-brand-red neon-text">Neon LED</span> ve Lazer Kesim Atölyesi
           </h1>
           <p className="mt-5 text-white/75 text-base sm:text-lg max-w-2xl leading-relaxed">
-            {brand.name}, Sakarya Adapazarı merkezli atölyesinde neon LED tabela, pleksi tabela, 3D kutu harf
+            {brand.name}, Sakarya Adapazarı merkezli atölyesinde neon LED, pleksi ürün, 3D kutu harf
             ve lazer kesim üretimi yapar. İşletmenizi öne çıkaran özel tasarımlar için ücretsiz teklif alın.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -87,7 +87,7 @@ export default function SakaryaPage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href={getWhatsAppUrl("Merhaba, Sakarya neon tabela hakkında bilgi almak istiyorum.")}
+              href={getWhatsAppUrl("Merhaba, Sakarya neon ürünler hakkında bilgi almak istiyorum.")}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 bg-white/10 text-white text-sm font-medium rounded-lg border border-white/20 hover:bg-white/15 transition-colors"
@@ -124,7 +124,7 @@ export default function SakaryaPage() {
             Sakarya&apos;da Sunduğumuz Hizmetler
           </h2>
           <p className="text-gray-500 mb-10 max-w-2xl">
-            Adapazarı ve Sakarya genelinde işletmeler, ev dekorasyonu ve kurumsal projeler için uçtan uca tabela çözümleri.
+            Adapazarı ve Sakarya genelinde işletmeler, ev dekorasyonu ve kurumsal projeler için uçtan uca neon çözümleri.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {services.map((service) => (
@@ -153,7 +153,7 @@ export default function SakaryaPage() {
           </h2>
           <div className="prose prose-sm sm:prose-base max-w-none text-gray-600">
             <p>
-              Sakarya&apos;da neon tabela arayan işletmeler için yerel bir atölye ile çalışmak; hızlı iletişim,
+              Sakarya&apos;da neon arayan işletmeler için yerel bir atölye ile çalışmak; hızlı iletişim,
               ölçü kontrolü, montaj desteği ve satış sonrası servis açısından büyük avantaj sağlar.
               {brand.name} olarak Adapazarı&apos;daki üretim tesisimizde tasarımdan paketlemeye kadar tüm süreci
               kendi ekibimizle yönetiyoruz.

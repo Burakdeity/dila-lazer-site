@@ -1,7 +1,7 @@
 export const brand = {
   name: process.env.NEXT_PUBLIC_BRAND_NAME || "Dila Lazer",
   logo: "/logo.png",
-  tagline: "Reklam · Tabela · Dekorasyon · Lazer Kesim",
+  tagline: "Reklam · Dekorasyon · Lazer Kesim",
   colors: {
     red: "#D50000",
     black: "#111111",
@@ -15,9 +15,9 @@ export const brand = {
     mapsQuery: "Papuççular, Bostancı Sk. No:60, 54100 Adapazarı, Sakarya",
   },
   social: {
-    instagram: "https://instagram.com",
-    youtube: "https://youtube.com",
-    linkedin: "https://linkedin.com",
+    instagram: "https://www.instagram.com/dilalazer/",
+    youtube: "",
+    linkedin: "",
   },
 } as const;
 

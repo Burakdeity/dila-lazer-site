@@ -25,6 +25,8 @@ export function ProductImage({
   className,
   fallbackClassName,
   fill,
+  width,
+  height,
   ...props
 }: ProductImageProps) {
   const [error, setError] = useState(false);
@@ -50,6 +52,8 @@ export function ProductImage({
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         loading="lazy"
         decoding="async"
         onError={() => setError(true)}

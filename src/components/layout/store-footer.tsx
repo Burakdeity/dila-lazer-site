@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { brand } from "@/lib/brand";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, Instagram } from "lucide-react";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import type { MainCategory } from "@/types/catalog";
 import type { SiteMenus } from "@/types/admin";
@@ -64,6 +64,19 @@ export function StoreFooter({ categories, menus }: StoreFooterProps) {
                 <MapPin className="h-4 w-4 text-brand-red shrink-0" />
                 {brand.contact.address}
               </li>
+              {brand.social.instagram && (
+                <li className="flex items-center gap-2">
+                  <Instagram className="h-4 w-4 text-brand-red shrink-0" />
+                  <a
+                    href={brand.social.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-brand-red transition-colors"
+                  >
+                    @dilalazer
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 

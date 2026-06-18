@@ -7,7 +7,7 @@ import { ProductCatalog } from "@/components/catalog/product-catalog";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Sakarya Neon Tabela Ürünleri",
+  title: "Sakarya Neon Ürünleri",
   description: "Sakarya ve Türkiye geneline neon LED, MDF, pleksi, 3D ürünler. Filtreleyin, sıralayın ve güvenle sipariş verin.",
   path: "/urunler",
 });
@@ -22,7 +22,7 @@ export default async function ProductsPage() {
         products={products}
         categories={categories}
         title="Tüm Ürünler"
-        description="Neon tabela, dekorasyon ve elektronik ürünlerde geniş koleksiyon. İstediğiniz kategoriye göre filtreleyin veya arama yapın."
+        description="Neon, dekorasyon ve elektronik ürünlerde geniş koleksiyon. İstediğiniz kategoriye göre filtreleyin veya arama yapın."
         breadcrumbs={[{ label: "Ürünler" }]}
       />
     </Suspense>

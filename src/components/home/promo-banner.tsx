@@ -22,7 +22,7 @@ export function PromoBanner() {
             <div className="relative p-6 sm:p-8">
               <span className="text-xs font-semibold uppercase tracking-widest text-brand-red">Kampanya</span>
               <h2 className="text-xl sm:text-2xl font-bold text-white mt-1 mb-2">
-                Neon Tabelalarda %30&apos;a Varan İndirim
+                Neon LED Ürünlerde %30&apos;a Varan İndirim
               </h2>
               <span className="inline-flex items-center gap-1 text-sm text-white/80 group-hover:text-white transition-colors">
                 İncele <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />

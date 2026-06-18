@@ -328,7 +328,7 @@ export function DesignStudio() {
                 transition={{ duration: 0.2 }}
               >
                 {activeTab === "text" && (
-                  <Panel title="Tabela Yazısı" icon={Type}>
+                  <Panel title="Neon Yazısı" icon={Type}>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Neon yazınız</label>
                     <input
                       type="text"

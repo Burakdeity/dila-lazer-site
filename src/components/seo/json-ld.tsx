@@ -49,7 +49,7 @@ export function localBusinessSchema() {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "Store"],
     "@id": `${getSiteUrl()}/#localbusiness`,
-    name: `${brand.name} — Sakarya Neon Tabela`,
+    name: `${brand.name} — Sakarya Neon`,
     image: absoluteUrl("/logo.png"),
     url: getSiteUrl(),
     telephone: brand.contact.phone.replace(/\s/g, ""),
@@ -78,12 +78,12 @@ export function localBusinessSchema() {
       { "@type": "Country", name: "Türkiye" },
     ],
     knowsAbout: [
-      "Neon tabela",
-      "LED tabela",
+      "Neon LED",
+      "LED aydınlatma",
       "Lazer kesim",
       "3D kutu harf",
-      "Pleksi tabela",
-      "Reklam tabelası",
+      "Pleksi ürünler",
+      "Reklam levhası",
     ],
     openingHoursSpecification: [
       {
@@ -186,6 +186,6 @@ export function faqSchema(items: { question: string; answer: string }[]) {
 export function sakaryaPageSchemas(faqs: { question: string; answer: string }[]) {
   return [localBusinessSchema(), breadcrumbSchema([
     { name: "Ana Sayfa", path: "/" },
-    { name: "Sakarya Neon Tabela", path: "/sakarya" },
+    { name: "Sakarya Neon", path: "/sakarya" },
   ]), faqSchema(faqs)];
 }

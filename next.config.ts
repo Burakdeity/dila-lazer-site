@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     localPatterns: [
       { pathname: "/uploads/**" },
+      { pathname: "/api/media" },
       { pathname: "/hero/**" },
       { pathname: "/logo.png" },
       { pathname: "/placeholder-neon.png" },

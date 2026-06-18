@@ -27,7 +27,7 @@ export default function OrderTrackingPage() {
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">Siparişiniz Nerede?</h1>
           <p className="text-white/60 max-w-lg mx-auto">
-            Sipariş numaranız ve kayıtlı e-posta adresinizle neon tabela siparişinizin durumunu anında öğrenin.
+            Sipariş numaranız ve kayıtlı e-posta adresinizle neon siparişinizin durumunu anında öğrenin.
           </p>
         </div>
       </div>

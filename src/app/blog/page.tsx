@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Neon tabela, dekorasyon ve elektronik ürünler hakkında rehberler.",
+  description: "Neon, dekorasyon ve elektronik ürünler hakkında rehberler.",
 };
 
 export default async function BlogPage() {

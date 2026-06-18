@@ -11,7 +11,7 @@ import { Container } from "@/components/ui/container";
 const slides = [
   {
     id: 1,
-    title: "Premium Neon & LED Tabelalar",
+    title: "Premium Neon & LED Neon Ürünler",
     subtitle: "Markanızı ışıkla öne çıkarın. Özel üretim, 81 ile teslimat.",
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80",
     cta: { label: "Neon Koleksiyonu", href: "/kategori/neon-led-tabelalar" },

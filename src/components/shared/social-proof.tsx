@@ -6,13 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, X } from "lucide-react";
 
 const recentOrders = [
-  { name: "Mehmet Y.", cityFrom: "İstanbul'dan", product: "3D Neon Logo Tabelası", time: "35 dk önce" },
-  { name: "Selin A.", cityFrom: "Ankara'dan", product: "LED Kutu Harf Tabelası", time: "1 saat önce" },
-  { name: "Ahmet K.", cityFrom: "İzmir'den", product: "Cafe Neon Tabelası", time: "2 saat önce" },
-  { name: "Burak T.", cityFrom: "Bursa'dan", product: "Pleksi İşletme Tabelası", time: "4 saat önce" },
-  { name: "Elif S.", cityFrom: "Antalya'dan", product: "Neon Duvar Tabelası", time: "Dün" },
+  { name: "Mehmet Y.", cityFrom: "İstanbul'dan", product: "3D Neon Logo", time: "35 dk önce" },
+  { name: "Selin A.", cityFrom: "Ankara'dan", product: "LED Kutu Harfsı", time: "1 saat önce" },
+  { name: "Ahmet K.", cityFrom: "İzmir'den", product: "Cafe Neon LEDsı", time: "2 saat önce" },
+  { name: "Burak T.", cityFrom: "Bursa'dan", product: "Pleksi İşletme Levhası", time: "4 saat önce" },
+  { name: "Elif S.", cityFrom: "Antalya'dan", product: "Neon Duvar", time: "Dün" },
   { name: "Can D.", cityFrom: "Gaziantep'ten", product: "Özel Tasarım Neon", time: "2 gün önce" },
-  { name: "Zeynep M.", cityFrom: "Kocaeli'den", product: "RGB Neon Tabela", time: "3 gün önce" },
+  { name: "Zeynep M.", cityFrom: "Kocaeli'den", product: "RGB Neon LED", time: "3 gün önce" },
 ];
 
 const HIDDEN_PATHS = ["/admin", "/odeme", "/giris", "/kayit"];

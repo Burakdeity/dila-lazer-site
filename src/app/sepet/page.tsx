@@ -83,7 +83,7 @@ export default function CartPage() {
         <Container className="text-center py-20">
           <ShoppingBag className="h-16 w-16 text-gray-300 mx-auto mb-6" />
           <h1 className="text-2xl font-bold text-brand-black mb-4">Sepetiniz Boş</h1>
-          <p className="text-gray-500 mb-8">Premium tabela çözümlerimizi keşfedin.</p>
+          <p className="text-gray-500 mb-8">Premium neon çözümlerimizi keşfedin.</p>
           <Link href="/urunler">
             <Button size="lg">Ürünleri İncele</Button>
           </Link>

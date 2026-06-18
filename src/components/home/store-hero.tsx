@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductImage } from "@/components/shared/product-image";
 import { NeonAmbient } from "@/components/effects/neon-ambient";
 import type { HeroSlide } from "@/types/admin";
 
@@ -50,13 +50,12 @@ export function StoreHero({ slides: allSlides }: StoreHeroProps) {
               transition={{ duration: 0.6 }}
               className="absolute inset-0"
             >
-              <Image
+              <ProductImage
                 src={slide.image}
                 alt=""
                 fill
                 className={slide.imageClass ?? "object-cover opacity-50"}
                 sizes="(max-width: 1400px) 100vw, 1400px"
-                priority={current === 0}
               />
               <div
                 className={

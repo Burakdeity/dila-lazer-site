@@ -9,7 +9,7 @@ export default function ReturnPolicyPage() {
   return (
     <InfoPage title="İade Politikası">
       <p>
-        Kişiye özel üretilen neon tabela, MDF ve pleksi ürünlerde standart iade uygulanmaz. Üretim hatası
+        Kişiye özel üretilen neon LED, MDF ve pleksi ürünlerde standart iade uygulanmaz. Üretim hatası
         veya hasarlı teslimat durumunda 7 gün içinde destek ekibimize ulaşın; ücretsiz yeniden üretim veya
         onarım sağlanır.
       </p>

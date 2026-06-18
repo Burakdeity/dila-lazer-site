@@ -39,11 +39,11 @@ export default function QuotePage() {
             <input placeholder="Firma Adı" className="form-input" />
           </div>
           <select required className="form-input w-full">
-            <option value="">Tabela Türü Seçin *</option>
-            <option>3D Neon Tabela</option>
-            <option>LED Tabela</option>
+            <option value="">Ürün Türü Seçin *</option>
+            <option>3D Neon LED</option>
+            <option>LED Neon</option>
             <option>Kutu Harf</option>
-            <option>Pleksi Tabela</option>
+            <option>Pleksi Ürün</option>
             <option>Diğer</option>
           </select>
           <textarea

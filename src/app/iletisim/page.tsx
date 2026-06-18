@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, Instagram } from "lucide-react";
 import { ContactMap } from "@/components/contact/contact-map";
 import { InfoPage } from "@/components/pages/info-page";
 import { brand } from "@/lib/brand";
@@ -9,7 +9,7 @@ import { getWhatsAppUrl } from "@/lib/utils";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "İletişim — Sakarya Adapazarı Atölye",
-  description: `${brand.name} Sakarya Adapazarı atölye adresi, telefon ve WhatsApp. Neon tabela için ücretsiz teklif alın.`,
+  description: `${brand.name} Sakarya Adapazarı atölye adresi, telefon ve WhatsApp. Neon ürünler için ücretsiz teklif alın.`,
   path: "/iletisim",
 });
 
@@ -42,6 +42,22 @@ export default function ContactPage() {
             <p>{brand.contact.address}</p>
           </div>
         </li>
+        {brand.social.instagram && (
+          <li className="flex items-start gap-3">
+            <Instagram className="h-5 w-5 text-brand-red shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-brand-black">Instagram</p>
+              <a
+                href={brand.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brand-red"
+              >
+                @dilalazer
+              </a>
+            </div>
+          </li>
+        )}
       </ul>
       <p className="mt-6">
         Hızlı destek için{" "}

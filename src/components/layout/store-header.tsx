@@ -43,7 +43,7 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
         <div className="absolute inset-0 neon-topbar-shimmer pointer-events-none" />
         <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-9 relative z-10">
           <p className="hidden sm:block truncate text-white/80">
-            Premium neon, tabela ve lazer kesim — Türkiye geneli teslimat
+            Premium neon ve lazer kesim — Türkiye geneli teslimat
           </p>
           <a
             href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
@@ -136,7 +136,7 @@ export function StoreHeader({ categories, menus }: StoreHeaderProps) {
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Neon tabela, MDF, pleksi veya kategori ara..."
+                  placeholder="Neon, MDF, pleksi veya kategori ara..."
                   className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-l-lg text-sm text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
                 />
               </div>

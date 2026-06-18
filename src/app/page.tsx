@@ -13,10 +13,7 @@ import { FeaturedCollection } from "@/components/home/featured-collection";
 import { StatsSection } from "@/components/home/stats-section";
 import { Testimonials } from "@/components/home/testimonials";
 import { CtaSection } from "@/components/home/cta-section";
-import { LocalSeoSection } from "@/components/home/local-seo-section";
 import { ProcessSection } from "@/components/home/process-section";
-import { ProjectsSection } from "@/components/home/projects-section";
-import { BlogPreview } from "@/components/home/blog-preview";
 import { NeonTicker } from "@/components/effects/neon-ticker";
 import {
   getBestSellers,
@@ -25,22 +22,20 @@ import {
   getAllProducts,
   getMainCategories,
 } from "@/lib/catalog";
-import { getAllBlogPostsFromStore } from "@/lib/blog-store";
 import { getSettings } from "@/lib/settings-store";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Sakarya Neon Tabela, LED Tabela & Lazer Kesim",
+  title: "Sakarya Neon, LED Neon & Lazer Kesim",
   path: "/",
 });
 
 export default async function HomePage() {
-  const [bestSellers, newArrivals, featured, allProducts, categories, blogPosts, settings] = await Promise.all([
+  const [bestSellers, newArrivals, featured, allProducts, categories, settings] = await Promise.all([
     getBestSellers(8),
     getNewArrivals(8),
     getFeaturedProducts(8),
     getAllProducts(),
     getMainCategories(),
-    getAllBlogPostsFromStore(),
     getSettings(),
   ]);
 
@@ -73,10 +68,7 @@ export default async function HomePage() {
         muted
       />
       <StatsSection />
-      <LocalSeoSection />
-      <ProjectsSection />
       <Testimonials />
-      <BlogPreview posts={blogPosts} />
       <CtaSection />
     </div>
   );

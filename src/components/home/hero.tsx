@@ -41,7 +41,7 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-gray-200 text-xs text-gray-600 mb-8 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-brand-red animate-pulse" />
-              Türkiye&apos;nin #1 Premium Tabela Üreticisi
+              Türkiye&apos;nin #1 Premium Neon Üreticisi
             </span>
           </motion.div>
 
@@ -55,7 +55,7 @@ export function Hero() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-red-400 neon-text">
               Premium Neon
             </span>{" "}
-            ve 3D Tabela Çözümleri
+            ve 3D Neon Çözümleri
           </motion.h1>
 
           <motion.p
@@ -64,7 +64,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-lg sm:text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed"
           >
-            Türkiye&apos;nin her yerine özel üretim, yüksek kalite ve profesyonel tabela çözümleri.
+            Türkiye&apos;nin her yerine özel üretim, yüksek kalite ve profesyonel neon çözümleri.
           </motion.p>
 
           <motion.div
@@ -85,7 +85,7 @@ export function Hero() {
                 Tasarım Oluştur
               </Button>
             </Link>
-            <a href={getWhatsAppUrl("Merhaba, tabela hakkında bilgi almak istiyorum.")} target="_blank" rel="noopener noreferrer">
+            <a href={getWhatsAppUrl("Merhaba, ürünler hakkında bilgi almak istiyorum.")} target="_blank" rel="noopener noreferrer">
               <Button variant="whatsapp" size="lg">
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp&apos;tan Yaz

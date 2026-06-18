@@ -23,7 +23,7 @@ const defaultExtraNavLinks: MenuLink[] = [
 
 const defaultFooterCorporateLinks: MenuLink[] = [
   { id: "1", label: "Hakkımızda", href: "/hakkimizda", isActive: true },
-  { id: "6", label: "Sakarya Neon Tabela", href: "/sakarya", isActive: true },
+  { id: "6", label: "Sakarya Neon", href: "/sakarya", isActive: true },
   { id: "2", label: "Projeler & Referanslar", href: "/portfolyo", isActive: true },
   { id: "3", label: "Blog", href: "/blog", isActive: true },
   { id: "4", label: "İletişim", href: "/iletisim", isActive: true },
@@ -41,9 +41,9 @@ const defaultFooterServiceLinks: MenuLink[] = [
 const defaultHeroSlides: HeroSlide[] = [
   {
     id: "1",
-    eyebrow: "Neon & LED Tabela",
+    eyebrow: "Neon & LED",
     title: "Markanızı Işıkla Öne Çıkarın",
-    subtitle: "Sakarya Adapazarı atölyemizde özel üretim neon tabelalar, 81 ile güvenli teslimat ve 2 yıl garanti.",
+    subtitle: "Sakarya Adapazarı atölyemizde özel üretim neon ürünler, 81 ile güvenli teslimat ve 2 yıl garanti.",
     image: "/hero/slide-neon-led.png",
     imageClass: "object-cover opacity-[0.58]",
     overlayClass:
@@ -132,11 +132,11 @@ const defaultPaymentMethods: PaymentMethodConfig[] = [
 
 const defaultSettings: SiteSettings = {
   seo: {
-    title: "Dila Lazer | Sakarya Neon Tabela, LED & Lazer Kesim",
+    title: "Dila Lazer | Sakarya Neon, LED & Lazer Kesim",
     description:
-      "Sakarya Adapazarı merkezli neon LED tabela, pleksi, 3D kutu harf ve lazer kesim atölyesi. Özel tasarım, ücretsiz teklif, 81 ile teslimat.",
+      "Sakarya Adapazarı merkezli neon LED, pleksi, 3D kutu harf ve lazer kesim atölyesi. Özel tasarım, ücretsiz teklif, 81 ile teslimat.",
     keywords:
-      "sakarya neon tabela, sakarya led tabela, adapazarı tabela, sakarya lazer kesim, neon tabela, led tabela, pleksi, 3d kutu harf",
+      "sakarya neon, sakarya led neon, adapazarı neon, sakarya lazer kesim, neon LED, led neon, pleksi, 3d kutu harf",
   },
   shipping: {
     freeShippingMin: 1500,

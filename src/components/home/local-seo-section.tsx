@@ -14,10 +14,10 @@ export function LocalSeoSection() {
               Sakarya · Adapazarı
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-brand-black">
-              Sakarya&apos;da Neon Tabela ve Lazer Kesim Atölyesi
+              Sakarya&apos;da Neon LED ve Lazer Kesim Atölyesi
             </h2>
             <p className="text-gray-500 mt-3 text-sm sm:text-base leading-relaxed">
-              {brand.name}, Adapazarı&apos;daki atölyesinde neon LED tabela, 3D kutu harf ve lazer kesim üretimi yapar.
+              {brand.name}, Adapazarı&apos;daki atölyesinde neon LED, 3D kutu harf ve lazer kesim üretimi yapar.
               Sakarya ve çevresine hızlı teslimat; Türkiye geneline kargo ile gönderim.
             </p>
           </div>

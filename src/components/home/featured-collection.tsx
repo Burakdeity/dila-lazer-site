@@ -25,7 +25,7 @@ export function FeaturedCollection({ products }: FeaturedCollectionProps) {
               Öne Çıkan Koleksiyon
             </h2>
             <p className="text-sm text-gray-500 mt-1 max-w-md">
-              En popüler neon ve tabela ürünlerimizden özenle seçilmiş parçalar.
+              En popüler neon ürünlerimizden özenle seçilmiş parçalar.
             </p>
           </div>
           <Link

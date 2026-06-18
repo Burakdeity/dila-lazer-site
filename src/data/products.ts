@@ -1,11 +1,11 @@
 export const products = [
   {
     id: "1",
-    name: "Premium 3D Neon Logo Tabela",
+    name: "Premium 3D Neon Logo",
     slug: "premium-3d-neon-logo-tabela",
-    shortDesc: "Markanızı öne çıkaran 3D neon logo tabela",
+    shortDesc: "Markanızı öne çıkaran 3D neon logo neon",
     description:
-      "CNC kesim, LED montaj ve premium pleksi malzeme ile üretilen 3D neon logo tabelanız. İç ve dış mekan kullanımına uygun, 2 yıl garanti.",
+      "CNC kesim, LED montaj ve premium pleksi malzeme ile üretilen 3D neon logo neonnız. İç ve dış mekan kullanımına uygun, 2 yıl garanti.",
     basePrice: 4500,
     categorySlug: "3d-neon-tabelalar",
     images: [
@@ -26,11 +26,11 @@ export const products = [
   },
   {
     id: "2",
-    name: "LED Kutu Harf Tabela",
+    name: "LED Kutu Harf",
     slug: "led-kutu-harf-tabela",
-    shortDesc: "Kurumsal LED kutu harf tabela sistemi",
+    shortDesc: "Kurumsal LED kutu harf neon sistemi",
     description:
-      "Alüminyum gövde, opal akrilik yüzey ve enerji tasarruflu LED modüller ile üretilen profesyonel kutu harf tabela.",
+      "Alüminyum gövde, opal akrilik yüzey ve enerji tasarruflu LED modüller ile üretilen profesyonel kutu harf neon.",
     basePrice: 3200,
     categorySlug: "kutu-harf-tabelalar",
     images: [
@@ -50,11 +50,11 @@ export const products = [
   },
   {
     id: "3",
-    name: "Cafe Neon Yazı Tabela",
+    name: "Cafe Neon Yazı",
     slug: "cafe-neon-yazi-tabela",
     shortDesc: "Sıcak atmosfer için cafe neon yazı",
     description:
-      "El yapımı neon flex teknolojisi ile üretilen, cafe ve restoranlar için özel tasarım neon yazı tabelalar.",
+      "El yapımı neon flex teknolojisi ile üretilen, cafe ve restoranlar için özel tasarım neon yazı ürünler.",
     basePrice: 2800,
     categorySlug: "cafe-tabelalari",
     images: [
@@ -74,11 +74,11 @@ export const products = [
   },
   {
     id: "4",
-    name: "Kurumsal Pleksi Tabela",
+    name: "Kurumsal Pleksi Ürün",
     slug: "kurumsal-pleksi-tabela",
-    shortDesc: "Şık ve profesyonel pleksi tabela",
+    shortDesc: "Şık ve profesyonel pleksi ürün",
     description:
-      "UV baskılı, LED aydınlatmalı pleksi tabela. Ofis, mağaza ve kurumsal alanlar için ideal.",
+      "UV baskılı, LED aydınlatmalı pleksi ürün. Ofis, mağaza ve kurumsal alanlar için ideal.",
     basePrice: 1800,
     categorySlug: "pleksi-tabelalar",
     images: [
