@@ -20,13 +20,6 @@ import { calcGrandTotal, calcShipping } from "@/lib/checkout";
 import { useCartStore } from "@/store/cart";
 import type { PaymentMethodConfig, PaymentProvider } from "@/types/admin";
 
-const carriers = [
-  { id: "yurtici", name: "Yurtiçi Kargo" },
-  { id: "aras", name: "Aras Kargo" },
-  { id: "mng", name: "MNG Kargo" },
-  { id: "surat", name: "Sürat Kargo" },
-];
-
 const PROVIDER_ICONS: Record<PaymentProvider, typeof CreditCard> = {
   paytr: CreditCard,
   iyzico: Wallet,
@@ -97,7 +90,6 @@ export default function CheckoutPage() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodConfig[]>([]);
   const [loadingMethods, setLoadingMethods] = useState(true);
   const [payment, setPayment] = useState("");
-  const [carrier, setCarrier] = useState("yurtici");
   const [completing, setCompleting] = useState(false);
   const [payError, setPayError] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -115,7 +107,6 @@ export default function CheckoutPage() {
   const grandTotal = calcGrandTotal(total, discount, shipping);
 
   const selectedMethod = paymentMethods.find((m) => m.id === payment);
-  const selectedCarrier = carriers.find((c) => c.id === carrier);
 
   useEffect(() => {
     fetch("/api/payments/methods")
@@ -192,7 +183,6 @@ export default function CheckoutPage() {
           couponCode: appliedCoupon?.code,
           shippingCost: shipping,
           paymentMethod: selectedMethod.provider,
-          carrier: selectedCarrier?.name,
           notes: orderNotes.trim() || undefined,
         }),
       });
@@ -336,26 +326,6 @@ export default function CheckoutPage() {
                 onChange={(e) => setOrderNotes(e.target.value)}
                 maxLength={500}
               />
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="text-lg font-semibold text-brand-black mb-4">Kargo Firması</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {carriers.map((c) => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    onClick={() => setCarrier(c.id)}
-                    className={`p-4 rounded-xl text-sm transition-colors ${
-                      carrier === c.id
-                        ? "bg-brand-red text-white"
-                        : "bg-gray-50 text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    {c.name}
-                  </button>
-                ))}
-              </div>
             </div>
 
             <div className="glass-card p-6">
