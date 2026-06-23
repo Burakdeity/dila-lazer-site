@@ -6,8 +6,11 @@ import {
   getAppUrl,
   getClientIp,
   getPaytrConfig,
+  normalizeBasketForPaytr,
   tlToKurus,
 } from "@/lib/paytr";
+
+export const runtime = "nodejs";
 
 type BasketItem = { name: string; unitPrice: number; quantity: number };
 
@@ -52,8 +55,11 @@ export async function POST(request: Request) {
     const config = getPaytrConfig();
     if (!config) {
       return NextResponse.json(
-        { error: "PayTR yapılandırması eksik", demo: true },
-        { status: 200 }
+        {
+          error:
+            "PayTR yapılandırması eksik. Vercel ortam değişkenlerine PAYTR_MERCHANT_ID, PAYTR_MERCHANT_KEY ve PAYTR_MERCHANT_SALT ekleyin.",
+        },
+        { status: 503 }
       );
     }
 
@@ -61,18 +67,16 @@ export async function POST(request: Request) {
     const userIp = getClientIp(request);
     const paymentAmount = tlToKurus(amount);
 
-    const basketItems: BasketItem[] =
+    const rawItems: BasketItem[] =
       items.length > 0
         ? items
         : existingOrder.items?.map((i) => ({
             name: i.name,
             unitPrice: i.unitPrice,
             quantity: i.quantity,
-          })) ?? [{ name: "Sipariş", unitPrice: amount - shipping, quantity: 1 }];
+          })) ?? [{ name: "Siparis", unitPrice: amount - shipping, quantity: 1 }];
 
-    if (shipping > 0 && !basketItems.some((i) => i.name === "Kargo")) {
-      basketItems.push({ name: "Kargo", unitPrice: shipping, quantity: 1 });
-    }
+    const basketItems = normalizeBasketForPaytr(rawItems, shipping, amount);
 
     const userBasket = buildUserBasket(
       basketItems.map((item) => ({
@@ -139,6 +143,7 @@ export async function POST(request: Request) {
     const result = (await paytrRes.json()) as { status: string; token?: string; reason?: string };
 
     if (result.status !== "success" || !result.token) {
+      console.error("[PayTR] Token failed:", result.reason, { orderNo, userIp, paymentAmount });
       return NextResponse.json(
         { error: result.reason || "PayTR token alınamadı" },
         { status: 502 }

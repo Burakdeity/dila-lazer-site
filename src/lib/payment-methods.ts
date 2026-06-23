@@ -1,10 +1,16 @@
 import type { PaymentMethodConfig } from "@/types/admin";
+import { getPaytrConfig } from "@/lib/paytr";
 import { getSettings } from "@/lib/settings-store";
 
 export async function getActivePaymentMethods(): Promise<PaymentMethodConfig[]> {
   const { paymentMethods } = await getSettings();
+  const paytrReady = Boolean(getPaytrConfig());
+
   return [...paymentMethods]
-    .filter((m) => m.isActive)
+    .filter((m) => {
+      if (m.provider === "paytr" && !paytrReady) return false;
+      return m.isActive;
+    })
     .sort((a, b) => a.sortOrder - b.sortOrder);
 }
 

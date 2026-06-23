@@ -75,18 +75,20 @@ async function startPayment(
   });
 
   const data = await res.json();
-  if (!res.ok && !data.demo) {
-    return { error: data.error || "Ödeme başlatılamadı" };
-  }
 
   if (data.token) {
     return { redirectUrl: `/odeme/paytr?token=${data.token}`, demo: false };
   }
+
+  if (!res.ok || data.error) {
+    return { error: data.error || "Ödeme başlatılamadı" };
+  }
+
   if (data.url) return { redirectUrl: data.url, demo: data.demo };
   if (data.iframeUrl) return { redirectUrl: data.iframeUrl, demo: data.demo };
   if (data.paymentPageUrl) return { redirectUrl: data.paymentPageUrl, demo: data.demo };
 
-  return { demo: data.demo, error: data.error };
+  return { error: "Ödeme oturumu oluşturulamadı" };
 }
 
 export default function CheckoutPage() {
@@ -238,14 +240,14 @@ export default function CheckoutPage() {
         return;
       }
 
-      if (result.redirectUrl && !result.demo) {
+      if (result.redirectUrl) {
         clearCart();
         window.location.href = result.redirectUrl;
         return;
       }
 
-      clearCart();
-      window.location.href = `/siparis/onay?order=${orderNo}&demo=1`;
+      setPayError(result.error || "Ödeme başlatılamadı. Lütfen tekrar deneyin.");
+      setCompleting(false);
     } catch {
       setPayError("Bir hata oluştu. Lütfen tekrar deneyin.");
       setCompleting(false);

@@ -11,9 +11,10 @@ const PROVIDERS: PaymentProvider[] = ["paytr", "iyzico", "stripe", "havale", "ka
 
 interface PaymentMethodsFormProps {
   methods: PaymentMethodConfig[];
+  paytrConfigured?: boolean;
 }
 
-export function PaymentMethodsForm({ methods }: PaymentMethodsFormProps) {
+export function PaymentMethodsForm({ methods, paytrConfigured = false }: PaymentMethodsFormProps) {
   const router = useRouter();
   const [form, setForm] = useState(() =>
     [...methods].sort((a, b) => a.sortOrder - b.sortOrder)
@@ -93,6 +94,20 @@ export function PaymentMethodsForm({ methods }: PaymentMethodsFormProps) {
           <span className="text-blue-100 font-medium">PayTR Bildirim URL:</span>{" "}
           <code className="text-blue-100">https://dilalazer.com/api/payments/paytr/callback</code>
           {" "}(PayTR panel → Ayarlar → Bildirim URL)
+        </p>
+        <p className="text-xs mt-3">
+          PayTR durumu:{" "}
+          <span
+            className={
+              paytrConfigured
+                ? "text-green-300 font-medium"
+                : "text-amber-300 font-medium"
+            }
+          >
+            {paytrConfigured
+              ? "API anahtarları yüklü — ödeme aktif"
+              : "API anahtarları eksik — Vercel ortam değişkenlerini ekleyin"}
+          </span>
         </p>
       </div>
 

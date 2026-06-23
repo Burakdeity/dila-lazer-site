@@ -7,11 +7,15 @@ export type PaytrConfig = {
 };
 
 export function getPaytrConfig(): PaytrConfig | null {
-  const merchantId = process.env.PAYTR_MERCHANT_ID;
-  const merchantKey = process.env.PAYTR_MERCHANT_KEY;
-  const merchantSalt = process.env.PAYTR_MERCHANT_SALT;
+  const merchantId = process.env.PAYTR_MERCHANT_ID?.trim();
+  const merchantKey = process.env.PAYTR_MERCHANT_KEY?.trim();
+  const merchantSalt = process.env.PAYTR_MERCHANT_SALT?.trim();
   if (!merchantId || !merchantKey || !merchantSalt) return null;
   return { merchantId, merchantKey, merchantSalt };
+}
+
+export function isPaytrConfigured(): boolean {
+  return getPaytrConfig() !== null;
 }
 
 export function getAppUrl(): string {
@@ -61,6 +65,30 @@ export function buildPaytrToken(params: {
     .digest("base64");
 }
 
+export type PaytrBasketItem = { name: string; unitPrice: number; quantity: number };
+
+function basketTotalTl(items: PaytrBasketItem[]): number {
+  return items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+}
+
+/** PayTR sepet toplamı payment_amount ile birebir eşleşmeli (indirim dahil). */
+export function normalizeBasketForPaytr(
+  items: PaytrBasketItem[],
+  shipping: number,
+  targetAmountTl: number
+): PaytrBasketItem[] {
+  const basket = [...items];
+  if (shipping > 0 && !basket.some((item) => item.name === "Kargo")) {
+    basket.push({ name: "Kargo", unitPrice: shipping, quantity: 1 });
+  }
+
+  if (Math.abs(basketTotalTl(basket) - targetAmountTl) < 0.01) {
+    return basket;
+  }
+
+  return [{ name: "Siparis Toplami", unitPrice: targetAmountTl, quantity: 1 }];
+}
+
 export function buildUserBasket(
   items: Array<{ name: string; price: number; quantity: number }>
 ): string {
@@ -88,20 +116,29 @@ export function verifyPaytrCallback(
   return token === callback.hash;
 }
 
-export function getClientIp(request: Request): string {
-  const devIp = process.env.PAYTR_DEV_IP;
-  if (devIp && process.env.NODE_ENV !== "production") return devIp;
-
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const ip = forwarded.split(",")[0]?.trim();
-    if (ip) return ip.slice(0, 39);
+function pickClientIp(candidates: Array<string | null | undefined>): string | null {
+  for (const raw of candidates) {
+    const ip = raw?.split(",")[0]?.trim();
+    if (ip && ip !== "127.0.0.1" && ip !== "::1") {
+      return ip.slice(0, 39);
+    }
   }
+  return null;
+}
 
-  const realIp = request.headers.get("x-real-ip");
-  if (realIp) return realIp.slice(0, 39);
+export function getClientIp(request: Request): string {
+  const devIp = process.env.PAYTR_DEV_IP?.trim();
+  if (devIp && process.env.NODE_ENV !== "production") return devIp.slice(0, 39);
 
-  return "127.0.0.1";
+  const ip =
+    pickClientIp([
+      request.headers.get("cf-connecting-ip"),
+      request.headers.get("x-vercel-forwarded-for"),
+      request.headers.get("x-forwarded-for"),
+      request.headers.get("x-real-ip"),
+    ]) ?? "127.0.0.1";
+
+  return ip;
 }
 
 export function tlToKurus(amount: number): number {

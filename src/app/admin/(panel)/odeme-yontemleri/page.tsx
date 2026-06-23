@@ -1,5 +1,6 @@
 import { AdminPageHeader } from "@/components/admin/admin-ui";
 import { PaymentMethodsForm } from "@/components/admin/payment-methods-form";
+import { isPaytrConfigured } from "@/lib/paytr";
 import { getSettings } from "@/lib/settings-store";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,10 @@ export default async function AdminPaymentMethodsPage() {
         title="Ödeme Yöntemleri"
         description="PayTR, İyzico, havale ve diğer ödeme seçeneklerini yönetin"
       />
-      <PaymentMethodsForm methods={settings.paymentMethods} />
+      <PaymentMethodsForm
+        methods={settings.paymentMethods}
+        paytrConfigured={isPaytrConfigured()}
+      />
     </div>
   );
 }

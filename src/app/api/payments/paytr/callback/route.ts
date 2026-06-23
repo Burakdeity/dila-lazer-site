@@ -1,6 +1,15 @@
 import { getOrderByOrderNo, updateOrderStatusByOrderNo } from "@/lib/order-store";
 import { getPaytrConfig, verifyPaytrCallback } from "@/lib/paytr";
 
+export const runtime = "nodejs";
+
+function paytrOk(): Response {
+  return new Response("OK", {
+    status: 200,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const config = getPaytrConfig();
@@ -33,7 +42,7 @@ export async function POST(request: Request) {
     const order = await getOrderByOrderNo(merchantOid);
     if (!order) {
       console.error("[PayTR callback] Order not found:", merchantOid);
-      return new Response("OK", { status: 200 });
+      return paytrOk();
     }
 
     if (status === "success") {
@@ -44,7 +53,7 @@ export async function POST(request: Request) {
       await updateOrderStatusByOrderNo(merchantOid, "cancelled");
     }
 
-    return new Response("OK", { status: 200 });
+    return paytrOk();
   } catch (err) {
     console.error("[PayTR callback]", err);
     return new Response("Error", { status: 500 });
